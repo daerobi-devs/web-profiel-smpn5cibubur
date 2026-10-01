@@ -11,7 +11,7 @@ import {
   BookOpen,
 } from '@phosphor-icons/react/dist/ssr';
 import type { Metadata } from 'next';
-import { defaultStaffList } from '@/lib/staffData';
+import { getStaffList } from '@/lib/supabaseData';
 import { TeacherDirectory } from '@/components/ui/TeacherDirectory';
 
 export const metadata: Metadata = {
@@ -20,7 +20,8 @@ export const metadata: Metadata = {
     'Daftar lengkap pendidik profesional dan tenaga kependidikan berdedikasi di SMP Negeri 5 Cibeber, Kabupaten Lebak, Banten.',
 };
 
-export default function GuruPage() {
+export default async function GuruPage() {
+  const staffList = await getStaffList();
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* Hero Banner Dewan Guru */}
@@ -67,7 +68,7 @@ export default function GuruPage() {
 
           <div className="pt-2 flex flex-wrap justify-center gap-3 text-xs">
             <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white font-bold shadow-xs">
-              Total: {defaultStaffList.length} Pendidik &amp; Staf
+              Total: {staffList.length} Pendidik &amp; Staf
             </span>
             <span className="px-3.5 py-1.5 rounded-lg bg-white/25 backdrop-blur-md text-white border border-white/35 font-bold shadow-xs">
               100% Kualifikasi S1/S2
@@ -80,7 +81,7 @@ export default function GuruPage() {
       <section className="section-padding">
         <div className="container-site max-w-6xl mx-auto space-y-12">
           {/* Komponen Interaktif Teacher Directory */}
-          <TeacherDirectory initialStaff={defaultStaffList} />
+          <TeacherDirectory initialStaff={staffList} />
 
           {/* Navigasi Cepat ke Halaman Terkait */}
           <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#1E5631] to-[#143e22] text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl shadow-emerald-950/20">

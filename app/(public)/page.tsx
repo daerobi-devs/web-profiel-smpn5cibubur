@@ -17,6 +17,12 @@ import AchievementCarousel from '@/components/ui/AchievementCarousel';
 import HomeStatsCounter from '@/components/ui/HomeStatsCounter';
 import HeroBackgroundSlider from '@/components/ui/HeroBackgroundSlider';
 import {
+  ScrollFadeUp,
+  ScrollFadeScale,
+  ScrollStaggerContainer,
+  ScrollStaggerItem,
+} from '@/components/ui/motion';
+import {
   getWebSettings,
   getHeroSlides,
   getPublishedArticles,
@@ -24,6 +30,7 @@ import {
   getActiveAchievements,
   getActiveEkskul,
 } from '@/lib/supabaseData';
+import { defaultStaffList } from '@/lib/staffData';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -73,6 +80,19 @@ async function getHomeData() {
     imageUrl: ac.image_url ?? null,
   }));
 
+  // Hitung jumlah guru/staf dinamis dari settings.school_staff_data (Zero extra DB query, tidak membebani server)
+  let dynamicStaffCount = defaultStaffList.length;
+  if (settings.school_staff_data) {
+    try {
+      const parsed = JSON.parse(settings.school_staff_data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        dynamicStaffCount = parsed.length;
+      }
+    } catch {
+      dynamicStaffCount = defaultStaffList.length;
+    }
+  }
+
   return {
     settings,
     heroSlides,
@@ -80,7 +100,7 @@ async function getHomeData() {
     facilities: normalizedFacilities.slice(0, 4),
     achievements: normalizedAchievements.slice(0, 12),
     ekskul,
-    staffCount: 18,
+    staffCount: dynamicStaffCount,
     articleCount: articles.length,
     achievementCount: achievements.length,
   };
@@ -118,38 +138,46 @@ export default async function HomePage() {
 
         <div className="container-site relative z-10 text-center max-w-4xl mx-auto">
           {/* Centered School Logo */}
-          <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 mx-auto drop-shadow-[0_4px_16px_rgba(255,255,255,0.95)] transition-transform hover:scale-105 duration-300">
-            <Image
-              src="/assets/logo-smpn5cibeber.png"
-              alt="Logo Resmi SMPN 5 Cibeber"
-              fill
-              priority
-              className="object-contain"
-              sizes="(max-width: 768px) 130px, 160px"
-            />
-          </div>
+          <ScrollFadeScale delay={0.1} duration={0.8}>
+            <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 mx-auto drop-shadow-[0_4px_16px_rgba(255,255,255,0.95)] transition-transform hover:scale-105 duration-300">
+              <Image
+                src="/assets/logo-smpn5cibeber.png"
+                alt="Logo Resmi SMPN 5 Cibeber"
+                fill
+                priority
+                className="object-contain"
+                sizes="(max-width: 768px) 130px, 160px"
+              />
+            </div>
+          </ScrollFadeScale>
 
-          {/* Big Bold Institutional Typography — Tebal & Tegas dengan Halo Putih Murni Anti-Samar */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-wider uppercase mt-4 leading-tight [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_20px_#fff,0_2px_8px_rgba(255,255,255,0.95)]">
-            {schoolName}
-          </h1>
+          <ScrollFadeUp delay={0.2} duration={0.8} distance={20}>
+            {/* Big Bold Institutional Typography — Tebal & Tegas dengan Halo Putih Murni Anti-Samar */}
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-wider uppercase mt-4 leading-tight [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_20px_#fff,0_2px_8px_rgba(255,255,255,0.95)]">
+              {schoolName}
+            </h1>
 
-          {/* Golden Academic Serif Tagline */}
-          <p className="font-serif-academic text-base sm:text-xl md:text-2xl font-black text-[#B45309] italic tracking-wide mt-1.5 sm:mt-2 [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_18px_#fff,0_2px_6px_rgba(255,255,255,0.95)]">
-            &ldquo;{schoolTagline}&rdquo;
-          </p>
+            {/* Golden Academic Serif Tagline */}
+            <p className="font-serif-academic text-base sm:text-xl md:text-2xl font-black text-[#B45309] italic tracking-wide mt-1.5 sm:mt-2 [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_18px_#fff,0_2px_6px_rgba(255,255,255,0.95)]">
+              &ldquo;{schoolTagline}&rdquo;
+            </p>
 
-          {/* Institutional Sub-description */}
-          <p className="text-xs sm:text-sm md:text-base text-slate-950 max-w-2xl mx-auto mt-3 leading-relaxed font-bold [text-shadow:0_0_3px_#fff,0_0_8px_#fff,0_0_14px_#fff,0_1px_6px_rgba(255,255,255,0.95)]">
-            {schoolSubdesc}
-          </p>
+            {/* Institutional Sub-description */}
+            <p className="text-xs sm:text-sm md:text-base text-slate-950 max-w-2xl mx-auto mt-3 leading-relaxed font-bold [text-shadow:0_0_3px_#fff,0_0_8px_#fff,0_0_14px_#fff,0_1px_6px_rgba(255,255,255,0.95)]">
+              {schoolSubdesc}
+            </p>
+          </ScrollFadeUp>
         </div>
       </section>
 
       {/* =========================================================
           2. FLOATING METRIC COUNTER BAR (ANIMATED STATS - BSJ STYLE)
           ========================================================= */}
-      <HomeStatsCounter accreditation={accreditation} staffCount={staffCount} />
+      <HomeStatsCounter
+        accreditation={accreditation}
+        staffCount={staffCount}
+        achievementCount={achievementCount}
+      />
 
       {/* =========================================================
           3. KEPALA SEKOLAH WELCOME NOTE (PREMIUM EDITORIAL PULL-QUOTE CARD)
@@ -158,7 +186,7 @@ export default async function HomePage() {
         <div className="container-site relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch max-w-6xl mx-auto">
             {/* Foto Kepala Sekolah dengan Gradient Overlay & Badge */}
-            <div className="lg:col-span-5 flex justify-center items-center">
+            <ScrollFadeScale delay={0.08} duration={0.8} className="lg:col-span-5 flex justify-center items-center">
               <div className="relative w-full max-w-[280px] sm:max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-slate-200/60">
                 <Image
                   src={settings.headmaster_image || '/assets/kepala-sekolah.jpg'}
@@ -183,10 +211,10 @@ export default async function HomePage() {
                   </p>
                 </div>
               </div>
-            </div>
+            </ScrollFadeScale>
 
             {/* Pure White Card: Pesan Kepemimpinan */}
-            <div className="lg:col-span-7 flex flex-col">
+            <ScrollFadeUp delay={0.18} duration={0.8} className="lg:col-span-7 flex flex-col">
               <div className="card p-6 sm:p-8 lg:p-10 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 flex-1 flex flex-col justify-between">
                 <div>
                   {/* Eyebrow Label */}
@@ -213,7 +241,7 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollFadeUp>
           </div>
         </div>
       </section>
@@ -223,23 +251,25 @@ export default async function HomePage() {
           ========================================================= */}
       <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
         <div className="container-site relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1">
-                <span>Warta &bull; Risalah &bull; Publikasi</span>
+          <ScrollFadeUp delay={0.05} duration={0.7}>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1">
+                  <span>Warta &bull; Risalah &bull; Publikasi</span>
+                </div>
+                <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
+                  Kabar &amp; Warta Resmi Sekolah
+                </h2>
               </div>
-              <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
-                Kabar &amp; Warta Resmi Sekolah
-              </h2>
+              <Link
+                href="/berita"
+                className="shrink-0 text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 transition-colors group"
+              >
+                <span>Arsip Berita &amp; Artikel Lengkap</span>
+                <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
-            <Link
-              href="/berita"
-              className="shrink-0 text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 transition-colors group"
-            >
-              <span>Arsip Berita &amp; Artikel Lengkap</span>
-              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
+          </ScrollFadeUp>
 
           {latestArticles.length === 0 ? (
             <div className="card text-center py-16 bg-white border border-slate-200/80 rounded-2xl">
@@ -251,7 +281,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
               {/* Kolom Kiri: Berita Utama Unggulan (7 Kolom) */}
               {latestArticles[0] && (
-                <div className="lg:col-span-7">
+                <ScrollFadeUp delay={0.12} duration={0.75} className="lg:col-span-7">
                   <Link
                     href={`/berita/${latestArticles[0].slug}`}
                     className="group block card overflow-hidden bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl shadow-xs hover:shadow-xl transition-all duration-300"
@@ -297,11 +327,11 @@ export default async function HomePage() {
                       </div>
                     </div>
                   </Link>
-                </div>
+                </ScrollFadeUp>
               )}
 
               {/* Kolom Kanan: Berita Kronologis Bertingkat (5 Kolom) */}
-              <div className="lg:col-span-5 space-y-3 sm:space-y-4">
+              <ScrollFadeUp delay={0.2} duration={0.75} className="lg:col-span-5 space-y-3 sm:space-y-4">
                 <div className="px-1 pb-1 border-b border-slate-200 flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
                   <span>Rilis Terkini</span>
                   <span>Kronologi</span>
@@ -345,7 +375,7 @@ export default async function HomePage() {
                     </Link>
                   ))}
                 </div>
-              </div>
+              </ScrollFadeUp>
             </div>
           )}
         </div>
@@ -381,60 +411,63 @@ export default async function HomePage() {
       {facilities.length > 0 && (
         <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
           <div className="container-site relative z-10">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#D97706]">
-                  Sarana &bull; Prasarana &bull; Laboratorium
-                </span>
-                <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight mt-1">
-                  Lingkungan &amp; Fasilitas Pembelajaran
-                </h2>
-              </div>
-              <Link
-                href="/fasilitas"
-                className="text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 transition-colors group"
-              >
-                <span>Jelajahi Seluruh Fasilitas Kampus</span>
-                <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {facilities.map((facility) => (
-                <div
-                  key={facility.id}
-                  className="card overflow-hidden bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group"
+            <ScrollFadeUp delay={0.05} duration={0.7}>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#D97706]">
+                    Sarana &bull; Prasarana &bull; Laboratorium
+                  </span>
+                  <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight mt-1">
+                    Lingkungan &amp; Fasilitas Pembelajaran
+                  </h2>
+                </div>
+                <Link
+                  href="/fasilitas"
+                  className="text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 transition-colors group"
                 >
-                  <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full bg-slate-100 overflow-hidden">
-                    {facility.imageUrl ? (
-                      <Image
-                        src={facility.imageUrl}
-                        alt={facility.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 25vw"
-                        className="object-cover group-hover:scale-108 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-300">
-                        <Buildings size={40} weight="light" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-serif-academic font-bold text-base text-[#1E293B] group-hover:text-[#1E5631] transition-colors leading-snug">
-                        {facility.name}
-                      </h3>
-                      {facility.description && (
-                        <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
-                          {facility.description}
-                        </p>
+                  <span>Jelajahi Seluruh Fasilitas Kampus</span>
+                  <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </ScrollFadeUp>
+
+            <ScrollStaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" stagger={0.12} delay={0.1}>
+              {facilities.map((facility) => (
+                <ScrollStaggerItem key={facility.id} className="flex">
+                  <div
+                    className="card overflow-hidden bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group w-full"
+                  >
+                    <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full bg-slate-100 overflow-hidden">
+                      {facility.imageUrl ? (
+                        <Image
+                          src={facility.imageUrl}
+                          alt={facility.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 25vw"
+                          className="object-cover group-hover:scale-108 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-300">
+                          <Buildings size={40} weight="light" />
+                        </div>
                       )}
                     </div>
+                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="font-serif-academic font-bold text-base text-[#1E293B] group-hover:text-[#1E5631] transition-colors leading-snug">
+                          {facility.name}
+                        </h3>
+                        {facility.description && (
+                          <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
+                            {facility.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </ScrollStaggerItem>
               ))}
-            </div>
+            </ScrollStaggerContainer>
           </div>
         </section>
       )}

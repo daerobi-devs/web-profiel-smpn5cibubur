@@ -1,14 +1,15 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { getWebSettings, getActiveEkskul } from '@/lib/supabaseData';
 import EkskulList from '@/components/ui/EkskulList';
 import { ekskulData, type EkskulItem } from '@/lib/ekskul-data';
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Trophy } from '@phosphor-icons/react/dist/ssr';
+import { Trophy, CaretRight, Sparkle } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata: Metadata = {
   title: 'Ekstrakurikuler & Pembinaan Bakat Siswa — SMPN 5 Cibeber',
   description:
-    'Daftar lengkap kegiatan ekstrakurikuler di SMP Negeri 5 Cibeber: Pramuka, Paskibra, PMR, Futsal, Voli, Karawitan Sunda, Pencak Silat, dan Rohis.',
+    'Daftar lengkap kegiatan ekstrakurikuler di SMP Negeri 5 Cibeber: Pramuka, Marching Band, Paskibra, PMR, Futsal, Voli, Karawitan Sunda, Pencak Silat, dan Rohis.',
 };
 
 export default async function EkstrakurikulerPage() {
@@ -38,46 +39,73 @@ export default async function EkstrakurikulerPage() {
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen">
-      <main className="container-site pt-6 pb-16 sm:pt-8 sm:pb-24">
-        {/* Clean Editorial Masthead */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-slate-200/90 mb-8">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1.5">
-              <Link href="/" className="hover:text-[#1E5631] transition-colors">
-                Beranda
-              </Link>
-              <span>/</span>
-              <Link href="/prestasi" className="hover:text-[#1E5631] transition-colors">
-                Kesiswaan
-              </Link>
-              <span>/</span>
-              <span className="text-[#1E5631] font-bold">Ekstrakurikuler</span>
-            </div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#D97706] block">
-              Kesiswaan &bull; Pembinaan Karakter &bull; Prestasi Bakat
-            </span>
-            <h1 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-black text-[#1E5631] tracking-tight mt-0.5">
-              Ekstrakurikuler &amp; Pembinaan Siswa
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mt-1.5 leading-relaxed">
-              Mewadahi minat, bakat, ketangkasan fisik, dan daya cipta seni seluruh siswa SMPN 5 Cibeber menuju generasi unggul berkarakter luhur.
-            </p>
+      {/* Hero Banner Ekstrakurikuler — Selaras dengan Halaman Prestasi & Dewan Guru */}
+      <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
+        <div className="absolute inset-0 z-0 pointer-events-none select-none">
+          <Image
+            src="/assets/ekskul-banner-bg.jpg"
+            alt="Ekstrakurikuler dan Pembinaan Siswa SMPN 5 Cibeber"
+            fill
+            priority
+            className="object-cover object-[center_35%]"
+            sizes="100vw"
+          />
+          {/* Emerald Gradient Overlay dengan saturasi foto tetap hidup */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/80 via-[#1E5631]/68 to-[#143e22]/90" />
+          <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/20 to-emerald-950/55" />
+        </div>
+
+        <div className="container-site relative z-10 text-center space-y-4 max-w-4xl mx-auto">
+          {/* Breadcrumb Navigation */}
+          <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-1.5 text-xs text-emerald-200">
+            <Link href="/" className="hover:text-white transition-colors">
+              Beranda
+            </Link>
+            <CaretRight size={12} weight="bold" />
+            <Link href="/prestasi" className="hover:text-white transition-colors">
+              Kesiswaan
+            </Link>
+            <CaretRight size={12} weight="bold" />
+            <span className="text-white font-semibold">Ekstrakurikuler</span>
+          </nav>
+
+          {/* Badge Eyebrow */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-xs font-bold text-amber-300 shadow-sm">
+            <Sparkle size={16} weight="fill" />
+            <span>Kesiswaan &bull; Pembinaan Karakter &bull; Prestasi Bakat</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold shadow-2xs">
-              {items.length} Kegiatan Aktif
+          {/* Big Bold Academic Title */}
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
+            Ekstrakurikuler &amp; Pembinaan Siswa
+          </h1>
+
+          {/* Subtitle Description */}
+          <p className="text-sm sm:text-base text-emerald-50 max-w-2xl mx-auto leading-relaxed drop-shadow-sm font-medium">
+            Mewadahi minat, bakat, ketangkasan fisik, dan daya cipta seni seluruh siswa SMPN 5 Cibeber menuju generasi unggul berkarakter luhur.
+          </p>
+
+          {/* Quick Action Badges */}
+          <div className="pt-2 flex flex-wrap justify-center gap-2.5 text-xs">
+            <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold shadow-xs">
+              {items.length} Pilihan Ekskul Aktif
+            </span>
+            <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-amber-300 font-semibold shadow-xs">
+              Pembinaan Rutin Mingguan
             </span>
             <Link
               href="/prestasi"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold transition-all shadow-xs active:scale-95"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow-xs transition-colors"
             >
-              <Trophy size={13} weight="fill" />
-              <span>Lihat Prestasi Siswa</span>
+              <Trophy size={14} weight="fill" />
+              <span>Lihat Prestasi Siswa &rarr;</span>
             </Link>
           </div>
         </div>
+      </section>
 
+      {/* Main Content Area */}
+      <main className="container-site py-10 sm:py-16">
         {/* Interactive List & Filter Component */}
         <EkskulList items={items} schoolWhatsapp={settings.school_whatsapp} />
       </main>

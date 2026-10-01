@@ -5,54 +5,94 @@ import { motion, useInView, type Variants } from 'motion/react';
 import {
   ShieldCheck,
   CalendarCheck,
-  GraduationCap,
+  Trophy,
   ChalkboardTeacher,
 } from '@phosphor-icons/react';
 
 interface HomeStatsCounterProps {
   accreditation: string;
   staffCount: number;
+  achievementCount?: number;
 }
 
 function CounterValue({
   target,
   suffix = '',
-  duration = 1.4,
+  normalDuration = 2.8,
+  fastDuration = 0.35,
 }: {
   target: number;
   suffix?: string;
-  duration?: number;
+  normalDuration?: number;
+  fastDuration?: number;
 }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-20px' });
+  const currentCountRef = useRef(0);
+  const isFinishedRef = useRef(false);
+  const isAcceleratedRef = useRef(false);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || target <= 0) return;
 
-    const start = 0;
-    const end = target;
-    const startTime = performance.now();
-    const durationMs = duration * 1000;
+    let startTime = performance.now();
+    let durationMs = normalDuration * 1000;
+    let startVal = 0;
+    let animId: number;
+
+    // Akselerasi ketika pengguna mulai scroll / swipe / wheel
+    const accelerate = () => {
+      if (!isAcceleratedRef.current && !isFinishedRef.current) {
+        isAcceleratedRef.current = true;
+        startVal = currentCountRef.current;
+        startTime = performance.now();
+        durationMs = fastDuration * 1000;
+      }
+    };
+
+    window.addEventListener('scroll', accelerate, { passive: true, once: true });
+    window.addEventListener('wheel', accelerate, { passive: true, once: true });
+    window.addEventListener('touchmove', accelerate, { passive: true, once: true });
 
     const updateCounter = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / durationMs, 1);
-      // Easing curve (easeOutExpo)
-      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      const current = Math.floor(ease * (end - start) + start);
-      setCount(current);
 
-      if (progress < 1) {
-        requestAnimationFrame(updateCounter);
+      // Easing: Normal berjalan pelan & teratur (ritmis terlihat satu per satu);
+      // Ketika di-scroll, langsung melejit cepat ke target akhir.
+      let ease = progress;
+      if (isAcceleratedRef.current) {
+        ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       } else {
-        setCount(end);
+        ease = 1 - Math.pow(1 - progress, 1.6);
+      }
+
+      const nextVal = Math.min(target, Math.round(startVal + ease * (target - startVal)));
+      currentCountRef.current = nextVal;
+      setCount(nextVal);
+
+      if (progress < 1 && nextVal < target) {
+        animId = requestAnimationFrame(updateCounter);
+      } else {
+        setCount(target);
+        currentCountRef.current = target;
+        isFinishedRef.current = true;
+        window.removeEventListener('scroll', accelerate);
+        window.removeEventListener('wheel', accelerate);
+        window.removeEventListener('touchmove', accelerate);
       }
     };
 
-    const animId = requestAnimationFrame(updateCounter);
-    return () => cancelAnimationFrame(animId);
-  }, [inView, target, duration]);
+    animId = requestAnimationFrame(updateCounter);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('scroll', accelerate);
+      window.removeEventListener('wheel', accelerate);
+      window.removeEventListener('touchmove', accelerate);
+    };
+  }, [inView, target, normalDuration, fastDuration]);
 
   return (
     <span ref={ref} className="tabular-nums">
@@ -65,32 +105,34 @@ function CounterValue({
 export default function HomeStatsCounter({
   accreditation = 'B',
   staffCount = 12,
+  achievementCount = 15,
 }: HomeStatsCounterProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-40px' });
+  const appleEase = [0.16, 1, 0.3, 1] as const;
 
   const containerVariants: Variants = {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.12,
-        ease: 'easeOut',
+        duration: 0.7,
+        staggerChildren: 0.1,
+        ease: appleEase,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 16, scale: 0.95 },
+    hidden: { opacity: 0, y: 14, scale: 0.96 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.5,
-        ease: 'easeOut',
+        duration: 0.6,
+        ease: appleEase,
       },
     },
   };
@@ -149,7 +191,7 @@ export default function HomeStatsCounter({
             </p>
           </motion.div>
 
-          {/* Metric 3: 100% Kelulusan */}
+          {/* Metric 3: Prestasi Kejuaraan (Sinkron Dinamis dengan Database Supabase) */}
           <motion.div
             variants={itemVariants}
             whileHover={{ y: -2, scale: 1.01 }}
@@ -158,16 +200,16 @@ export default function HomeStatsCounter({
             className="py-2 px-2 sm:px-3 flex flex-col items-center text-center transition-colors group cursor-default"
           >
             <div className="h-9 w-9 rounded-xl bg-emerald-50 text-[#1E5631] border border-emerald-100/80 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <GraduationCap size={20} weight="duotone" />
+              <Trophy size={20} weight="duotone" />
             </div>
             <p className="font-serif-academic text-xl sm:text-2xl lg:text-3xl font-bold text-[#1E5631] tracking-tight whitespace-nowrap">
-              <CounterValue target={100} suffix="%" />
+              <CounterValue target={achievementCount > 0 ? achievementCount : 15} suffix="+" />
             </p>
             <p className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
-              Tingkat Kelulusan
+              Prestasi Kejuaraan
             </p>
             <p className="text-[11px] text-slate-500 mt-0.5">
-              Lanjut ke SMA / SMK Negeri
+              Tingkat Kabupaten &amp; Provinsi
             </p>
           </motion.div>
 
@@ -183,7 +225,7 @@ export default function HomeStatsCounter({
               <ChalkboardTeacher size={20} weight="duotone" />
             </div>
             <p className="font-serif-academic text-xl sm:text-2xl lg:text-3xl font-bold text-[#D97706] tracking-tight whitespace-nowrap">
-              <CounterValue target={staffCount > 0 ? staffCount : 12} suffix="+" />
+              <CounterValue target={staffCount > 0 ? staffCount : 12} />
             </p>
             <p className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
               Dewan Guru &amp; Staf

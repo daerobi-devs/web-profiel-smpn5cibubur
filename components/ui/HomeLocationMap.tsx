@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
   MapPin,
@@ -6,7 +8,8 @@ import {
   ArrowSquareOut,
   NavigationArrow,
   Compass,
-} from '@phosphor-icons/react/dist/ssr';
+} from '@phosphor-icons/react';
+import { ScrollFadeUp, ScrollFadeScale } from '@/components/ui/motion';
 
 interface HomeLocationMapProps {
   settings?: Record<string, string>;
@@ -29,36 +32,38 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
     <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-[#F1F5F9]/60 to-[#F8FAFC] border-t border-slate-200/80">
       <div className="container-site relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
-          <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1 flex items-center gap-1.5">
-              <Compass size={14} weight="bold" />
-              <span>Aksesibilitas &bull; Kunjungan Kampus &bull; Navigasi</span>
+        <ScrollFadeUp delay={0.05} duration={0.7}>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1 flex items-center gap-1.5">
+                <Compass size={14} weight="bold" />
+                <span>Aksesibilitas &bull; Kunjungan Kampus &bull; Navigasi</span>
+              </div>
+              <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
+                Lokasi &amp; Peta Kampus Sekolah
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mt-1.5 leading-relaxed">
+                Terletak di kawasan asri Warungbanten, Kecamatan Cibeber, Kabupaten Lebak yang sejuk, tenang, dan kondusif untuk mendukung fokus belajar putra-putri Anda.
+              </p>
             </div>
-            <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
-              Lokasi &amp; Peta Kampus Sekolah
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mt-1.5 leading-relaxed">
-              Terletak di kawasan asri Warungbanten, Kecamatan Cibeber, Kabupaten Lebak yang sejuk, tenang, dan kondusif untuk mendukung fokus belajar putra-putri Anda.
-            </p>
-          </div>
 
-          <a
-            href={mapsLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-2xs hover:shadow-xs transition-all group"
-          >
-            <NavigationArrow size={14} weight="bold" className="text-[#D97706] group-hover:rotate-45 transition-transform" />
-            <span>Petunjuk Arah Google Maps</span>
-            <ArrowSquareOut size={13} weight="bold" />
-          </a>
-        </div>
+            <a
+              href={mapsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-2xs hover:shadow-xs transition-all group"
+            >
+              <NavigationArrow size={14} weight="bold" className="text-[#D97706] group-hover:rotate-45 transition-transform" />
+              <span>Petunjuk Arah Google Maps</span>
+              <ArrowSquareOut size={13} weight="bold" />
+            </a>
+          </div>
+        </ScrollFadeUp>
 
         {/* 2-Column Grid: Map Embed + Campus Info Guide */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
           {/* Kolom Kiri: Peta Google Maps Interaktif (7 Kolom) */}
-          <div className="lg:col-span-7 flex flex-col">
+          <ScrollFadeScale delay={0.1} duration={0.75} className="lg:col-span-7 flex flex-col">
             <div className="relative w-full h-[320px] sm:h-[380px] lg:h-full min-h-[320px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm bg-slate-100 group">
               <iframe
                 src={mapsEmbed}
@@ -78,10 +83,10 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
                 <span>SMPN 5 Cibeber &bull; Warungbanten</span>
               </div>
             </div>
-          </div>
+          </ScrollFadeScale>
 
           {/* Kolom Kanan: Panduan Kunjungan & Informasi Akses (5 Kolom) */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+          <ScrollFadeUp delay={0.18} duration={0.75} className="lg:col-span-5 flex flex-col justify-between space-y-4">
             {/* Card Informasi Alamat & Akses */}
             <div className="p-5 sm:p-6 bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
               <h3 className="font-serif-academic font-bold text-base text-[#1E5631] pb-2.5 border-b border-slate-100 flex items-center gap-2">
@@ -152,7 +157,7 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
                 </a>
               )}
             </div>
-          </div>
+          </ScrollFadeUp>
         </div>
       </div>
     </section>

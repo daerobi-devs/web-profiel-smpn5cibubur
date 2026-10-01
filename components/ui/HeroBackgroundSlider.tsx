@@ -42,7 +42,7 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
 
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % activeSlides.length);
-    }, 6500);
+    }, 4500);
 
     return () => clearInterval(timer);
   }, [activeSlides.length]);
@@ -52,7 +52,7 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
       {/* 
         Zero-Flash Seamless Crossfade:
         Semua foto tetap terpasang (mounted) di DOM secara permanen.
-        Foto aktif berada di layer zIndex 10 dengan transisi opacity 1.2s.
+        Foto aktif berada di layer zIndex 10 dengan transisi opacity 900ms.
         TIDAK ADA jeda kosong, dan TIDAK ADA kedipan putih sama sekali!
       */}
       {activeSlides.map((slide, index) => {
@@ -60,7 +60,7 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
         return (
           <div
             key={slide.image_url + index}
-            className={`absolute inset-0 transition-opacity duration-1200 ease-in-out ${
+            className={`absolute inset-0 transition-opacity duration-900 ease-in-out ${
               isActive ? 'opacity-100 z-10' : 'opacity-0 z-5'
             }`}
           >
@@ -69,7 +69,7 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
               alt={slide.title}
               fill
               priority={index === 0}
-              className={`object-cover object-center transition-transform duration-[6500ms] ease-out ${
+              className={`object-cover object-center transition-transform duration-[4500ms] ease-out ${
                 isActive ? 'scale-100' : 'scale-103'
               }`}
               sizes="100vw"

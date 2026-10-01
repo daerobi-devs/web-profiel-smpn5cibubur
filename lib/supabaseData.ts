@@ -3,6 +3,8 @@
  * Terhubung ke Supabase Cloud PostgreSQL (Single Source of Truth)
  */
 
+import { defaultStaffList, type StaffMember } from '@/lib/staffData';
+
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://bgyeqdyguuflljgzilzy.supabase.co';
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJneWVxZHlndXVmbGxqZ3ppbHp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0MjU1MTgsImV4cCI6MjEwNjAwMTUxOH0.P-inKoVotxDNXITp-aaYGpmXq0BCEsbPtwlJ4yHrZc8';
 
@@ -141,7 +143,7 @@ export interface ArticleItem {
 
 export async function getPublishedArticles(): Promise<ArticleItem[]> {
   return fetchFromSupabase<ArticleItem[]>(
-    'articles?published=eq.true&order=published_at.desc,created_at.desc&select=*',
+    'articles?published=eq.true&order=published_at.desc,created_at.desc&select=id,title,slug,excerpt,image_url,author,category,published,published_at,created_at',
     []
   );
 }
@@ -262,3 +264,22 @@ export async function getActivePpdbSteps(): Promise<PpdbStepItem[]> {
     []
   );
 }
+
+// =============================================================================
+// 9. DEWAN GURU & TENAGA KEPENDIDIKAN (STAFF & FACULTY)
+// =============================================================================
+export async function getStaffList(): Promise<StaffMember[]> {
+  try {
+    const settings = await getWebSettings();
+    if (settings.school_staff_data) {
+      const parsed = JSON.parse(settings.school_staff_data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.warn('[Staff] Gagal membaca data staf dinamis, menggunakan fallback data lokal', e);
+  }
+  return defaultStaffList;
+}
+

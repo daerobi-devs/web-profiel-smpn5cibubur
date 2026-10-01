@@ -13,6 +13,10 @@ import {
   DownloadSimple,
   CaretRight,
   BookmarkSimple,
+  CalendarPlus,
+  ShareNetwork,
+  Check,
+  ArrowSquareOut,
 } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AgendaItem, sampleAgendas } from '@/lib/agenda-data';
@@ -36,6 +40,25 @@ export default function AgendaList({
 
   const [selectedFilter, setSelectedFilter] = useState<string>('SEMUA');
   const [searchQuery, setSearchQuery] = useState('');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const createGoogleCalendarUrl = (item: AgendaItem) => {
+    const title = encodeURIComponent(`${item.title} — SMPN 5 Cibeber`);
+    const details = encodeURIComponent(
+      `${item.description}\n\nWaktu: ${item.time}\nSasaran: ${item.participants}\nTempat: ${item.location}\nPenyelenggara: SMP Negeri 5 Cibeber`
+    );
+    const loc = encodeURIComponent(item.location);
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${loc}`;
+  };
+
+  const handleCopyAgenda = (item: AgendaItem) => {
+    const text = `📅 ${item.title} — SMPN 5 Cibeber\n🗓️ Tanggal: ${item.dateStr} (${item.time})\n📍 Lokasi: ${item.location}\n👥 Peserta: ${item.participants}\n\n${item.description}\n\nInfo selengkapnya: https://ekosistem.daeroom.my.id/agenda`;
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(text);
+      setCopiedId(item.id);
+      setTimeout(() => setCopiedId(null), 2500);
+    }
+  };
 
   const filterButtons = [
     { key: 'SEMUA', label: 'Semua Agenda' },
@@ -91,11 +114,11 @@ export default function AgendaList({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#D97706]">
-              Jadwal Resmi &amp; Kalender Akademik
+              Pencarian &amp; Filter Jadwal
             </span>
-            <h1 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-black text-[#1E5631] tracking-tight mt-0.5">
-              Agenda Kegiatan Sekolah
-            </h1>
+            <h2 className="font-serif-academic text-xl sm:text-2xl lg:text-3xl font-black text-[#1E5631] tracking-tight mt-0.5">
+              Daftar Kalender Kegiatan
+            </h2>
           </div>
 
           {/* Kolom Pencarian di Atas Kanan */}
@@ -263,6 +286,38 @@ export default function AgendaList({
                     </div>
                   </div>
                 </div>
+
+                {/* Tombol Aksi Agenda Utama: Simpan Kalender & Bagikan */}
+                <div className="flex flex-wrap items-center gap-2.5 pt-4 border-t border-slate-100">
+                  <a
+                    href={createGoogleCalendarUrl(leadAgenda)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E5631] hover:bg-[#164325] text-white text-xs font-bold transition-all shadow-xs active:scale-95"
+                  >
+                    <CalendarPlus size={15} weight="bold" />
+                    <span>Simpan ke Google Calendar</span>
+                    <ArrowSquareOut size={13} weight="bold" className="opacity-75" />
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => handleCopyAgenda(leadAgenda)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95 cursor-pointer"
+                  >
+                    {copiedId === leadAgenda.id ? (
+                      <>
+                        <Check size={15} weight="bold" className="text-emerald-600" />
+                        <span className="text-emerald-700">Tersalin ke Clipboard!</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShareNetwork size={15} weight="bold" />
+                        <span>Bagikan Rincian</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -312,10 +367,35 @@ export default function AgendaList({
                               {item.title}
                             </h4>
 
-                            <p className="text-[11px] text-slate-500 truncate flex items-center gap-1">
-                              <MapPin size={12} className="text-[#1E5631] shrink-0" />
-                              <span>{item.location}</span>
-                            </p>
+                            <div className="flex items-center justify-between pt-1 text-[11px] text-slate-500">
+                              <p className="truncate flex items-center gap-1 max-w-[170px]">
+                                <MapPin size={12} className="text-[#1E5631] shrink-0" />
+                                <span className="truncate">{item.location}</span>
+                              </p>
+                              <div className="flex items-center gap-1">
+                                <a
+                                  href={createGoogleCalendarUrl(item)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title="Simpan ke Google Calendar"
+                                  className="p-1 rounded-md bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white transition-colors"
+                                >
+                                  <CalendarPlus size={13} weight="bold" />
+                                </a>
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopyAgenda(item)}
+                                  title="Salin Rincian Agenda"
+                                  className="p-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+                                >
+                                  {copiedId === item.id ? (
+                                    <Check size={13} weight="bold" className="text-emerald-600" />
+                                  ) : (
+                                    <ShareNetwork size={13} weight="bold" />
+                                  )}
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       );
@@ -419,13 +499,40 @@ export default function AgendaList({
 
                     {/* Metadata Footer */}
                     <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
-                      <div className="flex items-center gap-1 text-[11px]">
-                        <Clock size={14} className="text-[#1E5631] shrink-0" />
-                        <span>{agenda.time}</span>
+                      <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex items-center gap-1 text-[11px]">
+                          <Clock size={14} className="text-[#1E5631] shrink-0" />
+                          <span>{agenda.time}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-[11px] max-w-[150px] truncate">
+                          <MapPin size={14} className="text-[#1E5631] shrink-0" />
+                          <span className="truncate">{agenda.location}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1 text-[11px] max-w-[200px] truncate">
-                        <MapPin size={14} className="text-[#1E5631] shrink-0" />
-                        <span className="truncate">{agenda.location}</span>
+
+                      <div className="flex items-center gap-1.5">
+                        <a
+                          href={createGoogleCalendarUrl(agenda)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Simpan ke Google Calendar"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white text-[11px] font-bold transition-colors shadow-2xs"
+                        >
+                          <CalendarPlus size={13} weight="bold" />
+                          <span className="hidden sm:inline">Kalender</span>
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyAgenda(agenda)}
+                          title="Salin Rincian Agenda"
+                          className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+                        >
+                          {copiedId === agenda.id ? (
+                            <Check size={13} weight="bold" className="text-emerald-600" />
+                          ) : (
+                            <ShareNetwork size={13} weight="bold" />
+                          )}
+                        </button>
                       </div>
                     </div>
                   </motion.div>
