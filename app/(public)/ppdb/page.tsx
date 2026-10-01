@@ -1,5 +1,4 @@
-import { db } from '@/lib/db';
-import MegaMendungPattern from '@/components/ui/MegaMendungPattern';
+import { getActivePpdbSteps, getWebSettings } from '@/lib/supabaseData';
 import {
   UserPlus,
   FileText,
@@ -32,33 +31,26 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 async function getPpdbData() {
-  const [steps, settings] = await Promise.all([
-    db.ppdbStep.findMany({ where: { active: true }, orderBy: { stepOrder: 'asc' } }),
-    db.setting.findMany({
-      where: {
-        key: {
-          in: [
-            'ppdb_year',
-            'ppdb_quota',
-            'ppdb_open_date',
-            'ppdb_close_date',
-            'ppdb_announcement_date',
-            'ppdb_registration_date',
-            'ppdb_info',
-            'school_whatsapp',
-            'school_phone',
-          ],
-        },
-      },
-    }),
+  const [rawSteps, settings] = await Promise.all([
+    getActivePpdbSteps(),
+    getWebSettings(),
   ]);
-  return { steps, settings: Object.fromEntries(settings.map((x) => [x.key, x.value])) };
+
+  const steps = rawSteps.map((s) => ({
+    id: s.id,
+    title: s.title,
+    description: s.description,
+    icon: s.icon,
+    stepOrder: s.step_order,
+  }));
+
+  return { steps, settings };
 }
 
 export default async function PpdbPage() {
   const { steps, settings } = await getPpdbData();
-  const year = settings.ppdb_year ?? '2025/2026';
-  const cleanWa = (settings.school_whatsapp ?? '6281234567890').replace(/[^0-9]/g, '');
+  const year = settings.ppdb_year ?? '2026/2027';
+  const cleanWa = (settings.school_whatsapp ?? '6285281459726').replace(/[^0-9]/g, '');
 
   const waPpdbLink = `https://wa.me/${cleanWa}?text=${encodeURIComponent(
     `Halo Panitia PPDB SMPN 5 Cibeber, saya ingin berkonsultasi mengenai pendaftaran siswa baru tahun ajaran ${year}.`
@@ -68,9 +60,6 @@ export default async function PpdbPage() {
     <div>
       {/* Header Hero Section — Academic Green (#1E5631) */}
       <section className="bg-gradient-to-b from-[#1E5631] via-[#1E5631] to-[#164325] text-white py-16 md:py-20 relative overflow-hidden border-b border-emerald-950/20">
-        {/* Siluet Batik Mega Mendung Warna Putih Khusus Latar Hijau */}
-        <MegaMendungPattern variant="white" opacity="opacity-[0.18]" />
-
         <div className="container-site relative z-10 text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/20 text-xs font-bold text-amber-300">
             <span>PPDB Tahun Ajaran {year}</span>
@@ -187,9 +176,6 @@ export default async function PpdbPage() {
 
       {/* 4 Jalur Pendaftaran */}
       <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-        {/* Siluet Batik Mega Mendung Khas Jawa Barat */}
-        <MegaMendungPattern opacity="opacity-[0.13]" />
-
         <div className="container-site relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
             {/* Judul Utama — Academic Green (#1E5631) */}
@@ -319,9 +305,6 @@ export default async function PpdbPage() {
       {/* Alur Pendaftaran */}
       {steps.length > 0 && (
         <section id="alur" className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-          {/* Siluet Batik Mega Mendung Khas Jawa Barat */}
-          <MegaMendungPattern opacity="opacity-[0.13]" />
-
           <div className="container-site max-w-4xl mx-auto relative z-10">
             <div className="text-center space-y-2 mb-12">
               {/* Judul Utama — Academic Green (#1E5631) */}
@@ -335,7 +318,7 @@ export default async function PpdbPage() {
 
             <div className="space-y-4">
               {steps.map((step, idx) => {
-                const IconComponent = iconMap[step.icon] ?? FileText;
+                const IconComponent = (step.icon && iconMap[step.icon]) ? iconMap[step.icon] : FileText;
                 return (
                   <div
                     key={step.id}

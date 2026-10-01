@@ -73,6 +73,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    overflow-x: clip;
+    max-width: 100vw;
   }
 
   body {
@@ -80,6 +82,9 @@
     color: var(--color-text-body);
     font-family: var(--font-outfit), system-ui, sans-serif;
     line-height: 1.6;
+    overflow-x: clip;
+    max-width: 100vw;
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -445,29 +450,29 @@
   .container-site {
     max-width: 1280px;
     margin-inline: auto;
-    padding-inline: 1.5rem;
+    padding-inline: 1rem;
   }
 
   @media (min-width: 640px) {
     .container-site {
-      padding-inline: 2rem;
+      padding-inline: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container-site {
-      padding-inline: 3rem;
+      padding-inline: 2.5rem;
     }
   }
 
   /* --- Section spacing --- */
   .section-padding {
-    padding-block: 4rem;
+    padding-block: 3.25rem;
   }
 
   @media (min-width: 768px) {
     .section-padding {
-      padding-block: 6rem;
+      padding-block: 5.5rem;
     }
   }
 
@@ -573,5 +578,10 @@
   .prose-content img {
     border-radius: var(--radius-lg);
     margin-block: 1.5em;
+  }
+
+  /* Academic Heritage Serif Font (Kanisius & Exeter inspiration) */
+  .font-serif-academic {
+    font-family: var(--font-serif-academic), Georgia, Cambria, 'Times New Roman', Times, serif;
   }
 }

@@ -7,7 +7,7 @@ type ContactFormProps = {
   whatsappNumber?: string;
 };
 
-export default function ContactForm({ whatsappNumber = '6281234567890' }: ContactFormProps) {
+export default function ContactForm({ whatsappNumber = '6285281459726' }: ContactFormProps) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [role, setRole] = useState('Orang Tua Siswa');

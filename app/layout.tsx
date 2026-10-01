@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
-import { Outfit, Geist_Mono } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { Outfit, Geist_Mono, Newsreader } from 'next/font/google';
 import './globals.css';
 
 const outfit = Outfit({
@@ -8,11 +8,25 @@ const outfit = Outfit({
   display: 'swap',
 });
 
+const newsreader = Newsreader({
+  variable: '--font-serif-academic',
+  subsets: ['latin'],
+  display: 'swap',
+  style: ['normal', 'italic'],
+});
+
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
   display: 'swap',
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#1E5631',
+};
 
 export const metadata: Metadata = {
   title: {
@@ -22,6 +36,11 @@ export const metadata: Metadata = {
   description:
     'Website resmi SMPN 5 Cibeber, Kabupaten Lebak, Provinsi Banten. Informasi sekolah, berita, profil, fasilitas, galeri, prestasi, dan PPDB.',
   keywords: ['SMPN 5 Cibeber', 'SMP Negeri 5 Cibeber', 'Lebak', 'Banten', 'sekolah', 'pendidikan'],
+  icons: {
+    icon: '/assets/logo-smpn5cibeber.png',
+    shortcut: '/assets/logo-smpn5cibeber.png',
+    apple: '/assets/logo-smpn5cibeber.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
@@ -37,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="light" style={{ colorScheme: 'light' }}>
       <body
-        className={`${outfit.variable} ${geistMono.variable} antialiased bg-[#F8FAFC] text-[#1E293B]`}
+        className={`${outfit.variable} ${newsreader.variable} ${geistMono.variable} antialiased bg-[#F8FAFC] text-[#1E293B]`}
       >
         {children}
       </body>

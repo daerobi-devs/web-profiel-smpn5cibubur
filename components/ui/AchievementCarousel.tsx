@@ -63,8 +63,11 @@ export default function AchievementCarousel({
       {/* Header bar dengan Judul & Tombol Kontrol Geser Kanan-Kiri */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
-            Prestasi Gemilang Siswa
+          <span className="text-xs font-bold uppercase tracking-wider text-amber-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+            Jejak Karya &bull; Kehormatan &bull; Keteladanan
+          </span>
+          <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight mt-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
+            Prestasi &amp; Penghargaan Siswa
           </h2>
         </div>
 
@@ -113,7 +116,7 @@ export default function AchievementCarousel({
 
         <div
           ref={scrollRef}
-          className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory py-3 px-0.5 [&::-webkit-scrollbar]:hidden"
+          className="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory py-3 px-0.5 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -122,7 +125,7 @@ export default function AchievementCarousel({
           {achievements.map((ach) => (
             <div
               key={ach.id}
-              className="w-[280px] sm:w-[325px] shrink-0 snap-start overflow-hidden bg-white/95 backdrop-blur-md border border-white/90 shadow-xl shadow-emerald-950/20 hover:shadow-2xl hover:border-amber-400 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group rounded-2xl"
+              className="w-[260px] sm:w-[325px] shrink-0 snap-start overflow-hidden bg-white/95 backdrop-blur-md border border-white/90 shadow-xl shadow-emerald-950/20 hover:shadow-2xl hover:border-amber-400 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group rounded-2xl"
             >
               {/* Thumbnail / Piala */}
               <div className="relative aspect-[4/3] w-full bg-slate-200 overflow-hidden">
@@ -157,7 +160,7 @@ export default function AchievementCarousel({
                   <span className="inline-block px-2 py-0.5 rounded bg-amber-100 text-[#b45309] text-[10px] font-bold uppercase mb-2">
                     Tingkat {ach.level}
                   </span>
-                  <h3 className="font-bold text-sm text-[#1E293B] group-hover:text-[#1E5631] transition-colors line-clamp-2 leading-snug">
+                  <h3 className="font-serif-academic font-bold text-base text-[#1E293B] group-hover:text-[#1E5631] transition-colors line-clamp-2 leading-snug">
                     {ach.title}
                   </h3>
                   {ach.description && (

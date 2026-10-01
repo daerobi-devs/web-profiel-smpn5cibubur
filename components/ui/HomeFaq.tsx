@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { CaretDown, Question } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'motion/react';
-import MegaMendungPattern from '@/components/ui/MegaMendungPattern';
 
 const faqs = [
   {
@@ -37,16 +36,16 @@ export default function HomeFaq() {
 
   return (
     <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC] border-t border-slate-200/80">
-      {/* Siluet Batik Mega Mendung */}
-      <MegaMendungPattern opacity="opacity-[0.13]" />
-
       <div className="container-site max-w-4xl mx-auto relative z-10">
-        <div className="text-center space-y-3 mb-10">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E5631] tracking-tight">
+        <div className="text-center space-y-3 mb-12">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#D97706]">
+            Informasi &bull; Panduan &bull; Tanya Jawab
+          </span>
+          <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight mt-1">
             Pertanyaan yang Sering Diajukan (FAQ)
           </h2>
-          <p className="text-sm text-[#1E293B]/70 max-w-xl mx-auto">
-            Informasi penting dan jawaban atas pertanyaan umum dari orang tua serta calon peserta didik baru.
+          <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto font-medium">
+            Informasi penting dan panduan resmi bagi orang tua serta calon peserta didik baru SMPN 5 Cibeber.
           </p>
         </div>
 
@@ -56,14 +55,14 @@ export default function HomeFaq() {
             return (
               <div
                 key={idx}
-                className="card overflow-hidden border border-slate-200 bg-white transition-colors shadow-xs"
+                className="overflow-hidden border border-slate-200/90 bg-white rounded-2xl transition-all shadow-xs hover:border-[#1E5631]/40"
               >
                 <button
                   onClick={() => toggle(idx)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 focus:outline-none"
+                  className="w-full p-4 sm:p-6 text-left flex items-center justify-between gap-3 sm:gap-4 focus:outline-none cursor-pointer"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-sm sm:text-base font-bold text-[#1E293B] leading-snug">
+                  <span className="font-serif-academic text-sm sm:text-lg font-bold text-[#1E293B] leading-snug">
                     {faq.q}
                   </span>
                   <motion.div

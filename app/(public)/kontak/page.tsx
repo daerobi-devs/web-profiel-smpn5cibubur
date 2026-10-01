@@ -1,8 +1,7 @@
 import Image from 'next/image';
-import { db } from '@/lib/db';
-import { Phone, Envelope, MapPin, WhatsappLogo, Clock, ChatTeardropText } from '@phosphor-icons/react/dist/ssr';
+import { getWebSettings } from '@/lib/supabaseData';
+import { Phone, Envelope, MapPin, WhatsappLogo, Clock, ChatTeardropText, ArrowSquareOut } from '@phosphor-icons/react/dist/ssr';
 import ContactForm from '@/components/ui/ContactForm';
-import MegaMendungPattern from '@/components/ui/MegaMendungPattern';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,26 +9,8 @@ export const metadata: Metadata = {
   description: 'Alamat lengkap, peta lokasi Google Maps, kontak WhatsApp, email, dan formulir pengaduan SMPN 5 Cibeber.',
 };
 
-async function getContactSettings() {
-  const settings = await db.setting.findMany({
-    where: {
-      key: {
-        in: [
-          'school_name',
-          'school_address',
-          'school_phone',
-          'school_email',
-          'school_whatsapp',
-          'maps_embed_url',
-        ],
-      },
-    },
-  });
-  return Object.fromEntries(settings.map((x) => [x.key, x.value]));
-}
-
 export default async function KontakPage() {
-  const settings = await getContactSettings();
+  const settings = await getWebSettings();
 
   return (
     <div>
@@ -74,11 +55,8 @@ export default async function KontakPage() {
         </div>
       </section>
 
-      {/* Formulir Kontak & Peta dengan Siluet Batik Mega Mendung */}
+      {/* Formulir Kontak & Peta */}
       <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-        {/* Siluet Batik Mega Mendung Khas Jawa Barat */}
-        <MegaMendungPattern opacity="opacity-[0.13]" />
-
         <div className="container-site relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-14">
             {/* Kolom Kiri: Form Kirim Pesan (7 Kolom) */}
@@ -181,47 +159,50 @@ export default async function KontakPage() {
           </div>
 
           {/* Peta Google Maps Interaktif */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-[#1E5631]">Peta Lokasi Sekolah</h2>
-                <p className="text-xs text-[#1E293B]/70">Petunjuk rute menuju sekolah SMPN 5 Cibeber</p>
-              </div>
-              {settings.maps_embed_url && (
-                <a
-                  href={settings.maps_embed_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-secondary btn-sm"
-                >
-                  Buka di Google Maps
-                </a>
-              )}
-            </div>
+          {(() => {
+            const mapsEmbed =
+              settings.maps_embed_url ||
+              'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.790938640733!2d106.3265556147708!3d-6.833301695061611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e42886c787be401%3A0x446d78d9b1073d6c!2sSMP%20Negeri%205%20Cibeber!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid';
+            const mapsLink = settings.maps_url || 'https://maps.app.goo.gl/VfLAPVfajTQ4HNCGA';
 
-            <div className="card overflow-hidden p-0 rounded-2xl border border-slate-200/90 shadow-sm bg-white">
-              {settings.maps_embed_url ? (
-                <iframe
-                  src={settings.maps_embed_url}
-                  width="100%"
-                  height="420"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Peta Lokasi SMPN 5 Cibeber"
-                  className="w-full"
-                />
-              ) : (
-                <div className="h-80 flex items-center justify-center bg-slate-50">
-                  <div className="text-center space-y-2">
-                    <MapPin size={36} className="text-slate-300 mx-auto" />
-                    <p className="text-sm text-slate-400">Peta belum dikonfigurasi</p>
+            return (
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-black text-[#1E5631]">
+                      Peta Lokasi Resmi Sekolah
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                      Petunjuk navigasi dan rute langsung menuju kampus SMPN 5 Cibeber
+                    </p>
                   </div>
+                  <a
+                    href={mapsLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#1E5631] border border-emerald-200 text-xs font-bold transition-all shadow-xs w-fit"
+                  >
+                    <span>Buka di Google Maps</span>
+                    <ArrowSquareOut size={14} weight="bold" />
+                  </a>
                 </div>
-              )}
-            </div>
-          </div>
+
+                <div className="card overflow-hidden p-0 rounded-3xl border border-slate-200/90 shadow-md bg-white">
+                  <iframe
+                    src={mapsEmbed}
+                    width="100%"
+                    height="450"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Peta Lokasi Resmi SMPN 5 Cibeber"
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
     </div>

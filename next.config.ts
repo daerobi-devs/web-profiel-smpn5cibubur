@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   images: {
     localPatterns: [
       {
@@ -19,6 +20,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'bgyeqdyguuflljgzilzy.supabase.co',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
       },
       {
@@ -29,12 +34,31 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'images.pexels.com',
       },
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
     ],
   },
   experimental: {
     serverActions: {
       bodySizeLimit: '5mb',
     },
+  },
+  async redirects() {
+    const adminUrl = process.env.NEXT_PUBLIC_ADMIN_PORTAL_URL || 'http://localhost:3000';
+    return [
+      {
+        source: '/admin',
+        destination: adminUrl,
+        permanent: false,
+      },
+      {
+        source: '/admin/:path*',
+        destination: adminUrl,
+        permanent: false,
+      },
+    ];
   },
 };
 

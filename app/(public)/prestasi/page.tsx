@@ -1,26 +1,32 @@
 import Image from 'next/image';
-import { db } from '@/lib/db';
+import Link from 'next/link';
+import { getActiveAchievements } from '@/lib/supabaseData';
 import { Trophy } from '@phosphor-icons/react/dist/ssr';
-import { getLevelBadge } from '@/lib/utils';
-import MegaMendungPattern from '@/components/ui/MegaMendungPattern';
+import PrestasiArticleList from '@/components/ui/PrestasiArticleList';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Prestasi & Penghargaan Siswa',
-  description: 'Daftar raihan juara, penghargaan, dan prestasi akademik serta non-akademik siswa SMPN 5 Cibeber.',
+  title: 'Prestasi & Kejuaraan Siswa — SMPN 5 Cibeber',
+  description: 'Daftar raihan juara, liputan penghargaan, dan rekam prestasi akademik serta non-akademik siswa SMPN 5 Cibeber.',
 };
 
 export default async function PrestasiPage() {
-  const achievements = await db.achievement.findMany({
-    where: { active: true },
-    orderBy: [{ year: 'desc' }, { level: 'asc' }, { order: 'asc' }],
-  });
+  const rawAchievements = await getActiveAchievements();
+
+  const achievements = rawAchievements.map((a) => ({
+    id: a.id,
+    title: a.title,
+    description: a.description ?? null,
+    level: a.level,
+    year: a.year,
+    imageUrl: a.image_url ?? null,
+  }));
 
   const years = Array.from(new Set(achievements.map((a) => a.year))).sort((a, b) => b - a);
 
   return (
     <div>
-      {/* Hero Banner Prestasi — Background Foto Tim Siswa Marching Band dengan Tint Hijau Lembut */}
+      {/* Hero Banner Prestasi — Background Foto Tim Siswa Marching Band dengan Tint Hijau Lembut (100% Preserved) */}
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
@@ -57,70 +63,20 @@ export default async function PrestasiPage() {
             <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-amber-300 font-semibold shadow-xs">
               Dokumentasi {years.length} Tahun Terakhir
             </span>
+            <Link
+              href="/ekstrakurikuler"
+              className="px-3.5 py-1.5 rounded-lg bg-amber-500/90 hover:bg-amber-500 text-slate-950 font-bold shadow-xs transition-colors"
+            >
+              Lihat Ekstrakurikuler Siswa &rarr;
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Katalog Prestasi dengan Siluet Batik Mega Mendung */}
-      <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-        {/* Siluet Batik Mega Mendung Khas Jawa Barat */}
-        <MegaMendungPattern opacity="opacity-[0.13]" />
-
-        <div className="container-site relative z-10">
-          {achievements.length === 0 ? (
-            <div className="card p-16 text-center space-y-2 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-sm rounded-2xl">
-              <Trophy size={40} className="text-slate-300 mx-auto" />
-              <p className="text-slate-500 font-medium">Belum ada data prestasi.</p>
-            </div>
-          ) : (
-            <div className="space-y-12">
-              {years.map((year) => {
-                const items = achievements.filter((a) => a.year === year);
-                return (
-                  <div key={year} className="space-y-5">
-                    <div className="flex items-center gap-2 pb-2 border-b border-slate-200/90">
-                      <span className="text-sm font-extrabold font-mono text-[#1E5631]">
-                        Tahun {year}
-                      </span>
-                      <span className="text-xs text-slate-400">({items.length} penghargaan)</span>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {items.map((a) => {
-                        const { label, class: badgeClass } = getLevelBadge(a.level);
-                        return (
-                          <div
-                            key={a.id}
-                            className="p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-amber-400 transition-all duration-300 flex items-start gap-4 group"
-                          >
-                            <div className="h-11 w-11 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                              <Trophy size={22} className="text-[#D97706]" weight="duotone" />
-                            </div>
-                            <div className="min-w-0 flex-1 space-y-1">
-                              <div className="flex items-start justify-between gap-2">
-                                <h2 className="text-sm sm:text-base font-bold text-[#1E293B] group-hover:text-[#1E5631] transition-colors leading-snug">
-                                  {a.title}
-                                </h2>
-                                <span className={`badge ${badgeClass} shrink-0`}>{label}</span>
-                              </div>
-                              <p className="text-xs text-slate-500 font-medium">
-                                Tingkat: {label}
-                              </p>
-                              {a.description && (
-                                <p className="text-xs text-[#1E293B]/75 leading-relaxed pt-1">
-                                  {a.description}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+      {/* Konten Prestasi Siswa — Direct Read Editorial Hall of Fame */}
+      <section className="section-padding bg-[#F8FAFC]">
+        <div className="container-site">
+          <PrestasiArticleList achievements={achievements} years={years} />
         </div>
       </section>
     </div>

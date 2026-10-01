@@ -1,20 +1,21 @@
 import Image from 'next/image';
-import { db } from '@/lib/db';
-import { Buildings, CheckCircle } from '@phosphor-icons/react/dist/ssr';
+import { getActiveFacilities } from '@/lib/supabaseData';
+import { Buildings } from '@phosphor-icons/react/dist/ssr';
 import { getCategoryLabel } from '@/lib/utils';
-import MegaMendungPattern from '@/components/ui/MegaMendungPattern';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Fasilitas & Sarana Prasarana Sekolah',
+  title: 'Fasilitas & Sarana Prasarana Sekolah — SMPN 5 Cibeber',
   description: 'Daftar fasilitas laboratorium komputer, perpustakaan, lapangan olahraga, musala, dan ruang kelas SMPN 5 Cibeber.',
 };
 
 export default async function FasilitasPage() {
-  const facilities = await db.facility.findMany({
-    where: { active: true },
-    orderBy: [{ order: 'asc' }, { name: 'asc' }],
-  });
+  const rawFacilities = await getActiveFacilities();
+
+  const facilities = rawFacilities.map((f) => ({
+    ...f,
+    imageUrl: f.image_url,
+  }));
 
   const categories = Array.from(new Set(facilities.map((f) => f.category)));
 
@@ -31,7 +32,6 @@ export default async function FasilitasPage() {
             className="object-cover object-[center_35%]"
             sizes="100vw"
           />
-          {/* Lapisan Hijau Diturunkan Opasitasnya agar Foto Lapangan & Panggung Terlihat Jelas */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/75 via-[#1E5631]/65 to-[#143e22]/88" />
           <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/20 to-emerald-950/55" />
         </div>
@@ -61,11 +61,8 @@ export default async function FasilitasPage() {
         </div>
       </section>
 
-      {/* Katalog Sarana Sekolah dengan Siluet Batik Mega Mendung */}
+      {/* Katalog Sarana Sekolah */}
       <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-        {/* Siluet Batik Mega Mendung Khas Jawa Barat */}
-        <MegaMendungPattern opacity="opacity-[0.13]" />
-
         <div className="container-site relative z-10">
           {facilities.length === 0 ? (
             <div className="card p-16 text-center space-y-2 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-sm rounded-2xl">

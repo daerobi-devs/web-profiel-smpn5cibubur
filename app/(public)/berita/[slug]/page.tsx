@@ -1,10 +1,9 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { db } from '@/lib/db';
+import { getArticleBySlug } from '@/lib/supabaseData';
 import { formatDate } from '@/lib/utils';
 import { ArrowLeft, CalendarBlank } from '@phosphor-icons/react/dist/ssr';
-import MegaMendungPattern from '@/components/ui/MegaMendungPattern';
 import type { Metadata } from 'next';
 
 type Props = {
@@ -13,25 +12,24 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = await db.article.findUnique({ where: { slug, published: true } });
+  const article = await getArticleBySlug(slug);
   if (!article) return { title: 'Berita tidak ditemukan' };
   return {
     title: article.title,
-    description: article.excerpt,
+    description: article.excerpt || undefined,
   };
 }
 
 export default async function ArticleDetailPage({ params }: Props) {
   const { slug } = await params;
-  const article = await db.article.findUnique({ where: { slug, published: true } });
+  const article = await getArticleBySlug(slug);
 
   if (!article) notFound();
 
+  const publishedDate = article.published_at ? new Date(article.published_at) : new Date(article.created_at);
+
   return (
     <div className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-      {/* Siluet Batik Mega Mendung Khas Jawa Barat */}
-      <MegaMendungPattern opacity="opacity-[0.11]" />
-
       <div className="container-site relative z-10">
         <div className="max-w-3xl mx-auto">
           <Link href="/berita" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-[#1E5631] active:scale-95 transition-all mb-6 font-medium">
@@ -48,16 +46,18 @@ export default async function ArticleDetailPage({ params }: Props) {
               </h1>
               <div className="flex items-center gap-2 text-sm text-slate-500">
                 <CalendarBlank size={15} />
-                <time dateTime={(article.publishedAt ?? article.createdAt).toISOString()}>
-                  {formatDate(article.publishedAt ?? article.createdAt)}
+                <time dateTime={publishedDate.toISOString()}>
+                  {formatDate(publishedDate)}
                 </time>
+                <span>&bull;</span>
+                <span>{article.author || 'Humas SMPN 5 Cibeber'}</span>
               </div>
             </header>
 
-            {article.imageUrl && (
+            {article.image_url && (
               <div className="relative aspect-video rounded-2xl overflow-hidden mb-8 bg-slate-100">
                 <Image
-                  src={article.imageUrl}
+                  src={article.image_url}
                   alt={article.title}
                   fill
                   className="object-cover"
@@ -67,9 +67,9 @@ export default async function ArticleDetailPage({ params }: Props) {
               </div>
             )}
 
-            {/* Teks isi berita & deskripsi — Dark Charcoal (#1E293B) */}
+            {/* Konten Berita / Artikel — Menggunakan prose typography tailwind */}
             <div
-              className="prose-content text-[#1E293B]"
+              className="prose prose-slate max-w-none text-[#1E293B] leading-relaxed text-sm sm:text-base"
               dangerouslySetInnerHTML={{ __html: article.content }}
             />
           </article>
