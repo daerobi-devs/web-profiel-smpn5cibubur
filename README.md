@@ -114,16 +114,16 @@ cd web-profiel-smpn5cibubur
 ```
 
 ### 3. Konfigurasi Lingkungan (`.env`)
-Buat file `.env` di *root* direktori proyek:
+Salin file `.env.example` menjadi `.env`, lalu sesuaikan kredensial:
 ```env
 # URL Akses Aplikasi
 NEXT_PUBLIC_APP_URL="http://localhost:3001"
 NEXT_PUBLIC_APP_NAME="SMPN 5 Cibeber"
 NEXT_PUBLIC_ADMIN_PORTAL_URL="http://localhost:3000"
 
-# Kredensial Supabase Cloud (Single Source of Truth)
-NEXT_PUBLIC_SUPABASE_URL="https://bgyeqdyguuflljgzilzy.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+# Kredensial Supabase Cloud
+NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
 ```
 
 ### 4. Instalasi Dependensi
