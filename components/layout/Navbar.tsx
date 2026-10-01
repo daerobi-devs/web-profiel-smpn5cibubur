@@ -149,6 +149,10 @@ export default function Navbar({ settings }: NavbarProps) {
   const whatsapp = settings?.school_whatsapp || '0852-8145-9726';
   const ppdbYear = settings?.ppdb_year || '2026/2027';
   const accreditation = settings?.school_accreditation || 'B';
+  const adminUrl =
+    process.env.NEXT_PUBLIC_ADMIN_PORTAL_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    'https://ekosistem.daeroom.my.id';
 
   return (
     <>
@@ -178,7 +182,7 @@ export default function Navbar({ settings }: NavbarProps) {
             {/* Right: Akses Pengelola Sekolah */}
             <div className="flex items-center gap-4">
               <a
-                href={process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}
+                href={adminUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-emerald-200/90 hover:text-white transition-colors"
@@ -872,7 +876,7 @@ export default function Navbar({ settings }: NavbarProps) {
                   {/* Quick Utility Links on Mobile */}
                   <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
                     <a
-                      href={process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}
+                      href={adminUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setMobileOpen(false)}

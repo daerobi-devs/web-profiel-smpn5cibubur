@@ -30,6 +30,10 @@ export default function Footer({ settings = {} }: FooterProps) {
   const year = new Date().getFullYear();
 
   const cleanWa = whatsapp.replace(/[^0-9]/g, '');
+  const adminUrl =
+    process.env.NEXT_PUBLIC_ADMIN_PORTAL_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    'https://ekosistem.daeroom.my.id';
 
   return (
     <footer className="relative overflow-hidden bg-[#1E5631] text-emerald-100/90 border-t border-[#164325]">
@@ -174,13 +178,15 @@ export default function Footer({ settings = {} }: FooterProps) {
             &copy; {year} {schoolName}. Hak cipta dilindungi undang-undang.
           </p>
           <div className="flex items-center gap-3">
-            <Link
-              href="/admin/login"
+            <a
+              href={adminUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#164325] border border-white/15 hover:border-white/30 text-emerald-100 hover:text-white transition-all text-[11px] active:scale-95"
             >
               <LockSimple size={12} weight="bold" />
               <span>Portal Administrator</span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>
