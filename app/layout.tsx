@@ -46,6 +46,7 @@ export const metadata: Metadata = {
     locale: 'id_ID',
     siteName: 'SMPN 5 Cibeber',
   },
+  referrer: 'strict-origin-when-cross-origin',
 };
 
 export default function RootLayout({
