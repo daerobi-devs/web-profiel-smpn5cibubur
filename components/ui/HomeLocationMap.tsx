@@ -5,7 +5,6 @@ import {
   MapPin,
   Clock,
   WhatsappLogo,
-  ArrowSquareOut,
   NavigationArrow,
   Compass,
 } from '@phosphor-icons/react';
@@ -33,30 +32,17 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
       <div className="container-site relative z-10">
         {/* Section Header */}
         <ScrollFadeUp delay={0.05} duration={0.7}>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1 flex items-center gap-1.5">
-                <Compass size={14} weight="bold" />
-                <span>Aksesibilitas &bull; Kunjungan Kampus &bull; Navigasi</span>
-              </div>
-              <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
-                Lokasi &amp; Peta Kampus Sekolah
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mt-1.5 leading-relaxed">
-                Terletak di kawasan asri Warungbanten, Kecamatan Cibeber, Kabupaten Lebak yang sejuk, tenang, dan kondusif untuk mendukung fokus belajar putra-putri Anda.
-              </p>
+          <div className="max-w-3xl mb-8 sm:mb-10">
+            <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1 flex items-center gap-1.5">
+              <Compass size={14} weight="bold" />
+              <span>Aksesibilitas &bull; Kunjungan Kampus &bull; Navigasi</span>
             </div>
-
-            <a
-              href={mapsLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-slate-300 shadow-2xs hover:shadow-xs transition-all group"
-            >
-              <NavigationArrow size={14} weight="bold" className="text-[#D97706] group-hover:rotate-45 transition-transform" />
-              <span>Petunjuk Arah Google Maps</span>
-              <ArrowSquareOut size={13} weight="bold" />
-            </a>
+            <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
+              Lokasi &amp; Peta Kampus Sekolah
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+              Terletak di kawasan asri Warungbanten, Kecamatan Cibeber, Kabupaten Lebak yang sejuk, tenang, dan kondusif untuk mendukung fokus belajar putra-putri Anda.
+            </p>
           </div>
         </ScrollFadeUp>
 

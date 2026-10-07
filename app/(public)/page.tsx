@@ -190,7 +190,7 @@ export default async function HomePage() {
               <div className="relative w-full max-w-[280px] sm:max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-slate-200/60">
                 <Image
                   src={settings.headmaster_image || '/assets/kepala-sekolah.jpg'}
-                  alt={settings.headmaster_name || 'Drs. H. Ahmad Fauzi, M.Pd.'}
+                  alt={settings.headmaster_name || 'Adang Restuwardani, S.Pd'}
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 768px) 280px, 340px"
@@ -201,13 +201,10 @@ export default async function HomePage() {
                     Pimpinan Sekolah
                   </span>
                   <h4 className="text-white font-bold text-base sm:text-lg leading-tight drop-shadow-sm">
-                    {settings.headmaster_name || 'Drs. H. Ahmad Fauzi, M.Pd.'}
+                    {settings.headmaster_name || 'Adang Restuwardani, S.Pd'}
                   </h4>
                   <p className="text-emerald-300 text-xs font-medium mt-0.5">
                     Kepala SMPN 5 Cibeber
-                  </p>
-                  <p className="text-slate-300 text-[10px] font-mono mt-0.5">
-                    NIP. {settings.headmaster_nip || '196805121994031001'}
                   </p>
                 </div>
               </div>
@@ -233,7 +230,7 @@ export default async function HomePage() {
                 <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
                   <div>
                     <p className="font-bold text-slate-900 text-sm sm:text-base">
-                      {settings.headmaster_name || 'Drs. H. Ahmad Fauzi, M.Pd.'}
+                      {settings.headmaster_name || 'Adang Restuwardani, S.Pd'}
                     </p>
                     <p className="text-xs text-slate-500 font-medium">
                       Kepala SMP Negeri 5 Cibeber &bull; Kab. Lebak, Banten

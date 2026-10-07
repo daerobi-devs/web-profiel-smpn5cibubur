@@ -18,7 +18,7 @@ export interface StaffMember {
 export const defaultStaffList: StaffMember[] = [
   {
     id: 'staff-1',
-    name: 'Drs. H. Ahmad Fauzi, M.Pd.',
+    name: 'Adang Restuwardani, S.Pd',
     position: 'Kepala Sekolah',
     level: 1,
     order: 1,

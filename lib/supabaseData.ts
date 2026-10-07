@@ -52,7 +52,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   school_email: 'smpnlimacibeber@yahoo.com',
   school_accreditation: 'B',
   school_npsn: '20607865',
-  headmaster_name: 'Drs. H. Ahmad Fauzi, M.Pd.',
+  headmaster_name: 'Adang Restuwardani, S.Pd',
   headmaster_nip: '19680512 199412 1 002',
   headmaster_welcome: 'Selamat datang di portal informasi resmi SMP Negeri 5 Cibeber. Kami meyakini bahwa setiap anak memiliki keunikan dan potensi luar biasa yang siap bertumbuh bila didukung oleh lingkungan sekolah yang kondusif.',
   headmaster_image: '/assets/kepala-sekolah.jpg',

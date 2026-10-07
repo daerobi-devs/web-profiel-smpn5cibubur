@@ -73,42 +73,34 @@ export default function AchievementCarousel({
             </h2>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Tombol Panah Geser Samping (Scroll Kiri & Kanan) */}
-            <div className="flex items-center gap-1 bg-white/20 backdrop-blur-md p-1 rounded-xl border border-white/30 shadow-sm">
+          <div className="flex items-center gap-2.5">
+            {/* Tombol Panah Geser Samping (Twin Minimalist Glass Circles) */}
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => scroll('left')}
                 disabled={!canScrollLeft}
                 aria-label="Geser ke kiri"
-                className={`p-2 rounded-lg transition-all duration-200 ${
-                  canScrollLeft
-                    ? 'bg-white text-[#1E5631] shadow-sm hover:bg-amber-400 hover:text-slate-900 active:scale-90 cursor-pointer'
-                    : 'text-white/40 cursor-not-allowed'
-                }`}
+                className="w-9 h-9 rounded-full flex items-center justify-center border border-white/25 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/15 active:scale-95 cursor-pointer shadow-xs"
               >
-                <CaretLeft size={18} weight="bold" />
+                <CaretLeft size={16} weight="bold" />
               </button>
               <button
                 onClick={() => scroll('right')}
                 disabled={!canScrollRight}
                 aria-label="Geser ke kanan"
-                className={`p-2 rounded-lg transition-all duration-200 ${
-                  canScrollRight
-                    ? 'bg-white text-[#1E5631] shadow-sm hover:bg-amber-400 hover:text-slate-900 active:scale-90 cursor-pointer'
-                    : 'text-white/40 cursor-not-allowed'
-                }`}
+                className="w-9 h-9 rounded-full flex items-center justify-center border border-white/25 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/15 active:scale-95 cursor-pointer shadow-xs"
               >
-                <CaretRight size={18} weight="bold" />
+                <CaretRight size={16} weight="bold" />
               </button>
             </div>
 
             {/* Tautan Lihat Semua Halaman Prestasi */}
             <Link
               href="/prestasi"
-              className="text-xs sm:text-sm font-bold text-amber-300 hover:text-white inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 shadow-sm hover:bg-white/30 transition-all"
+              className="h-9 px-4 rounded-full text-xs font-bold text-amber-300 hover:text-white inline-flex items-center gap-1.5 bg-white/15 hover:bg-white/25 border border-white/25 backdrop-blur-md transition-all duration-200 shadow-xs active:scale-95"
             >
               <span>Lihat Semua</span>
-              <ArrowRight size={14} weight="bold" />
+              <ArrowRight size={13} weight="bold" />
             </Link>
           </div>
         </div>
