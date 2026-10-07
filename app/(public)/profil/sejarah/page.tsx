@@ -35,7 +35,7 @@ export default async function SejarahPage() {
     },
     {
       year: 'Fase Pembangunan',
-      title: 'Pengembangan Sarana Kampus Terpadu',
+      title: 'Pengembangan Sarana Sekolah Terpadu',
       desc: 'Pembangunan ruang kelas representatif secara bertahap, disusul pembangunan Laboratorium IPA, Laboratorium Komputer, Perpustakaan sekolah, lapangan upacara/olahraga serbaguna, hingga panggung ekspresi seni dan sanitasi ramah lingkungan.',
       badge: 'Fasilitas Terpadu',
     },
@@ -54,7 +54,7 @@ export default async function SejarahPage() {
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
             src="/assets/gedung-smpn5cibeber.jpg"
-            alt="Gedung Kampus SMPN 5 Cibeber"
+            alt="Gedung SMPN 5 Cibeber"
             fill
             priority
             className="object-cover object-[center_40%]"
@@ -122,7 +122,7 @@ export default async function SejarahPage() {
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-slate-100 ring-1 ring-slate-900/10 group">
                 <Image
                   src="/assets/gedung-smpn5cibeber.jpg"
-                  alt="Gedung Kampus SMP Negeri 5 Cibeber"
+                  alt="Gedung SMP Negeri 5 Cibeber"
                   fill
                   priority
                   sizes="(max-width: 640px) 100vw, 420px"
@@ -131,7 +131,7 @@ export default async function SejarahPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-emerald-950/15 to-transparent pointer-events-none" />
                 <div className="absolute bottom-3 left-4 right-4 text-white">
                   <p className="text-xs sm:text-sm font-extrabold drop-shadow-sm leading-tight">
-                    Kampus SMP Negeri 5 Cibeber
+                    Gedung SMP Negeri 5 Cibeber
                   </p>
                   <p className="text-[11px] text-emerald-200 font-medium drop-shadow-xs mt-0.5">
                     Warungbanten, Kec. Cibeber, Kab. Lebak, Banten

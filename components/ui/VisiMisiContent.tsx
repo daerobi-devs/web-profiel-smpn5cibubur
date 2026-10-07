@@ -44,7 +44,7 @@ export default function VisiMisiContent({ settings }: VisiMisiContentProps) {
     {
       icon: Plant,
       title: 'Peduli Lingkungan',
-      desc: 'Membudayakan kepedulian kelestarian alam, pemilahan sampah, penghijauan kampus, dan komitmen Sekolah Adiwiyata berkelanjutan.',
+      desc: 'Membudayakan kepedulian kelestarian alam, pemilahan sampah, penghijauan sekolah, dan komitmen Sekolah Adiwiyata berkelanjutan.',
     },
   ];
 
@@ -98,7 +98,7 @@ export default function VisiMisiContent({ settings }: VisiMisiContentProps) {
     },
     {
       title: 'Ekosistem Sekolah Aman',
-      desc: 'Suasana kampus sekolah yang hijau, teduh, ramah anak, dan bebas dari segala bentuk perundungan (zero bullying).',
+      desc: 'Suasana lingkungan sekolah yang hijau, teduh, ramah anak, dan bebas dari segala bentuk perundungan (zero bullying).',
     },
   ];
 
@@ -115,7 +115,7 @@ export default function VisiMisiContent({ settings }: VisiMisiContentProps) {
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
             src="/assets/visi-misi-banner-bg.jpg"
-            alt="Panorama Kampus SMP Negeri 5 Cibeber di Pagi Hari"
+            alt="Panorama Lingkungan SMP Negeri 5 Cibeber di Pagi Hari"
             fill
             priority
             className="object-cover object-[center_35%]"

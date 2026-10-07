@@ -130,7 +130,7 @@ export default async function HomePage() {
   return (
     <div className="bg-[#F8FAFC] text-[#1E293B]">
       {/* =========================================================
-          1. HERO SECTION (INSTITUTIONAL PRESTIGE & FOTO ASLI KAMPUS)
+          1. HERO SECTION (INSTITUTIONAL PRESTIGE & FOTO ASLI SEKOLAH)
           ========================================================= */}
       <section className="relative overflow-hidden border-b border-slate-200/80 pt-16 pb-24 sm:pt-20 sm:pb-32 lg:pt-24 lg:pb-36 flex items-center justify-center">
         {/* Hero Background Slider Dinamis dari Supabase */}
@@ -403,7 +403,7 @@ export default async function HomePage() {
       )}
 
       {/* =========================================================
-          6. FASILITAS KAMPUS LENGKAP
+          6. FASILITAS SEKOLAH LENGKAP
           ========================================================= */}
       {facilities.length > 0 && (
         <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
@@ -422,7 +422,7 @@ export default async function HomePage() {
                   href="/fasilitas"
                   className="text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 transition-colors group"
                 >
-                  <span>Jelajahi Seluruh Fasilitas Kampus</span>
+                  <span>Jelajahi Seluruh Fasilitas Sekolah</span>
                   <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -475,7 +475,7 @@ export default async function HomePage() {
       <HomeEkskulShowcase items={ekskul} />
 
       {/* =========================================================
-          8. LOKASI & PETA KAMPUS SEKOLAH (GOOGLE MAPS & AKSESIBILITAS)
+          8. LOKASI & PETA SEKOLAH (GOOGLE MAPS & AKSESIBILITAS)
           ========================================================= */}
       <HomeLocationMap settings={settings} />
     </div>

@@ -71,7 +71,7 @@ export default async function ProfilPage() {
     },
     {
       title: 'Berwawasan Adiwiyata',
-      desc: 'Lingkungan kampus asri, bersih, hijau, dan menanamkan kepedulian kelestarian alam pegunungan Banten Selatan.',
+      desc: 'Lingkungan sekolah asri, bersih, hijau, dan menanamkan kepedulian kelestarian alam pegunungan Banten Selatan.',
     },
     {
       title: 'Literasi & TIK Digital',
@@ -267,7 +267,7 @@ export default async function ProfilPage() {
                 <span className="font-bold text-slate-800">Kurikulum Merdeka</span>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 md:col-span-2 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                <span className="text-slate-500 font-medium">Alamat Kampus</span>
+                <span className="text-slate-500 font-medium">Alamat Sekolah</span>
                 <span className="font-medium text-slate-800 sm:text-right">
                   {settings.school_address || 'Jl. Raya Cikotok-Pasirkuray Km.05, Warungbanten, Cibeber, Lebak, Banten 42394'}
                 </span>

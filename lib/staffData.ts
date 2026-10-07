@@ -73,7 +73,7 @@ export const defaultStaffList: StaffMember[] = [
     active: true,
     quote: 'Lingkungan belajar yang asri, nyaman, dan ramah anak menjadi ruang tumbuh terbaik bagi generasi pembaharu.',
     subject: 'Matematika & Geometri Terapan',
-    additionalTask: 'Koordinator Penataan Fasilitas Kampus & Sarpras Ramah Lingkungan',
+    additionalTask: 'Koordinator Penataan Fasilitas Sekolah & Sarpras Ramah Lingkungan',
     alumni: 'Universitas Pakuan Bogor',
     email: 'endangsupriatna@smpn5cibeber.sch.id',
   },

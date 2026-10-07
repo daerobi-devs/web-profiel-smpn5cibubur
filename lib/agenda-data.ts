@@ -66,7 +66,7 @@ export const sampleAgendas: AgendaItem[] = [
     monthBadge: 'JUL',
     dayBadge: '13',
     time: '07.00 - 13.00 WIB',
-    location: 'Kampus SMPN 5 Cibeber',
+    location: 'SMPN 5 Cibeber',
     participants: 'Peserta Didik Baru Kelas VII',
     description:
       'Pengenalan wawasan wiyata mandala, tata krama, metode belajar Kurikulum Merdeka, perkenalan ekstrakurikuler, dan penanaman pohon angkatan.',
@@ -153,7 +153,7 @@ export const sampleAgendas: AgendaItem[] = [
     location: 'Area TPS 3R & Kebun Sekolah',
     participants: 'Seluruh Guru, Staf, & Peserta Didik',
     description:
-      'Edukasi pembuatan pupuk kompos cair dari sisa dedaunan kampus dan penyuluhan pengurangan kemasan plastik sekali pakai di kantin sekolah.',
+      'Edukasi pembuatan pupuk kompos cair dari sisa dedaunan sekolah dan penyuluhan pengurangan kemasan plastik sekali pakai di kantin sekolah.',
     status: 'SELESAI',
   },
 ];

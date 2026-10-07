@@ -173,7 +173,7 @@ export default async function KontakPage() {
                       Peta Lokasi Resmi Sekolah
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                      Petunjuk navigasi dan rute langsung menuju kampus SMPN 5 Cibeber
+                      Petunjuk navigasi dan rute langsung menuju SMPN 5 Cibeber
                     </p>
                   </div>
                   <a

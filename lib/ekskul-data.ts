@@ -162,7 +162,7 @@ export const ekskulData: EkskulItem[] = [
     coach: 'Leni Marlina, S.Pd.',
     coachRole: 'Guru Seni Budaya & Pembina Sanggar',
     schedule: 'Setiap Sabtu Pagi, 08.00 – 10.30 WIB',
-    location: 'Ruang Sanggar Seni Budaya & Aula Kampus',
+    location: 'Ruang Sanggar Seni Budaya & Aula Sekolah',
     memberCount: '34 Siswa',
     achievements: [
       'Penyaji Terbaik Festival Lomba Seni Siswa Nasional (FLS2N) Sub-Rayon Cibeber',
@@ -178,7 +178,7 @@ export const ekskulData: EkskulItem[] = [
     category: 'LINGKUNGAN',
     categoryLabel: 'Adiwiyata & Konservasi',
     badge: 'Sekolah Hijau DLH',
-    motto: 'Kampus Asri, Lingkungan Lestari, Insan Berbudi',
+    motto: 'Sekolah Asri, Lingkungan Lestari, Insan Berbudi',
     description:
       'Gerakan aksi nyata penyelamatan lingkungan hidup: pengelolaan bank sampah mandiri, komposting pupuk organik, kebun hidroponik ramah anak, konservasi mata air sekolah, dan edukasi pengurangan emisi plastik.',
     coach: 'Hj. Siti Rahayu, S.Pd.',
@@ -191,7 +191,7 @@ export const ekskulData: EkskulItem[] = [
       'Penggagas Program Zero Waste & Bank Sampah Berkah SMPN 5 Cibeber',
     ],
     coverImage: '/assets/gedung-smpn5cibeber.jpg',
-    highlights: ['Pengolahan Kompos Organik', 'Taman Botani Sekolah', 'Bank Sampah Pilah', 'Duta Kampus Hijau'],
+    highlights: ['Pengolahan Kompos Organik', 'Taman Botani Sekolah', 'Bank Sampah Pilah', 'Duta Sekolah Hijau'],
   },
   {
     id: 'english-club',

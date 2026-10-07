@@ -26,7 +26,7 @@ export default async function FasilitasPage() {
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
             src="/assets/lapangan-smpn5cibeber.jpg"
-            alt="Sarana & Fasilitas Kampus SMPN 5 Cibeber"
+            alt="Sarana & Fasilitas Sekolah SMPN 5 Cibeber"
             fill
             priority
             className="object-cover object-[center_35%]"
@@ -39,7 +39,7 @@ export default async function FasilitasPage() {
         <div className="container-site relative z-10 text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-xs font-bold text-amber-300 shadow-sm">
             <Buildings size={16} weight="fill" />
-            <span>Sarana &amp; Prasarana Kampus</span>
+            <span>Sarana &amp; Prasarana Sekolah</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">

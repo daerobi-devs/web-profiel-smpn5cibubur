@@ -23,7 +23,7 @@ const DEFAULT_SLIDES: DynamicHeroSlide[] = [
   },
   {
     image_url: '/assets/lapangan-smpn5cibeber.jpg',
-    title: 'Lapangan Upacara & Panggung Kampus SMP Negeri 5 Cibeber',
+    title: 'Lapangan Upacara & Panggung Terbuka SMP Negeri 5 Cibeber',
     caption: 'Lapangan & Panggung',
   },
   {

@@ -92,7 +92,7 @@ export interface HeroSlideItem {
 export const FALLBACK_HERO_SLIDES: HeroSlideItem[] = [
   {
     id: 'slide-1',
-    title: 'Gedung Utama Kampus SMPN 5 Cibeber',
+    title: 'Gedung Utama SMPN 5 Cibeber',
     caption: 'Gerbang Utama dan Pintu Masuk SMP Negeri 5 Cibeber yang Bersih dan Asri',
     image_url: '/assets/gedung-smpn5cibeber.jpg',
     order_num: 1,

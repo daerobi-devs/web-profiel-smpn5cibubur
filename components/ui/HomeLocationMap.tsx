@@ -35,10 +35,10 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
           <div className="max-w-3xl mb-8 sm:mb-10">
             <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1 flex items-center gap-1.5">
               <Compass size={14} weight="bold" />
-              <span>Aksesibilitas &bull; Kunjungan Kampus &bull; Navigasi</span>
+              <span>Aksesibilitas &bull; Kunjungan Sekolah &bull; Navigasi</span>
             </div>
             <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
-              Lokasi &amp; Peta Kampus Sekolah
+              Lokasi &amp; Peta Sekolah
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
               Terletak di kawasan asri Warungbanten, Kecamatan Cibeber, Kabupaten Lebak yang sejuk, tenang, dan kondusif untuk mendukung fokus belajar putra-putri Anda.
@@ -46,7 +46,7 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
           </div>
         </ScrollFadeUp>
 
-        {/* 2-Column Grid: Map Embed + Campus Info Guide */}
+        {/* 2-Column Grid: Map Embed + School Info Guide */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
           {/* Kolom Kiri: Peta Google Maps Interaktif (7 Kolom) */}
           <ScrollFadeScale delay={0.1} duration={0.75} className="lg:col-span-7 flex flex-col">
@@ -77,7 +77,7 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
             <div className="p-5 sm:p-6 bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
               <h3 className="font-serif-academic font-bold text-base text-[#1E5631] pb-2.5 border-b border-slate-100 flex items-center gap-2">
                 <MapPin size={18} weight="fill" className="text-[#D97706]" />
-                <span>Alamat &amp; Akses Kampus</span>
+                <span>Alamat &amp; Akses Sekolah</span>
               </h3>
 
               <div className="space-y-3.5 text-xs text-slate-600">
