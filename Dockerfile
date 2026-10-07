@@ -4,7 +4,9 @@
 # ==============================================================================
 
 # Stage 1: Base Alpine Image
-FROM node:20-alpine AS base
+# Menggunakan Amazon ECR Public Mirror resmi (CloudFront CDN) untuk mencegah DNS/ISP timeout & rate-limit Docker Hub (registry-1.docker.io)
+ARG NODE_IMAGE=public.ecr.aws/docker/library/node:20-alpine
+FROM ${NODE_IMAGE} AS base
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 
