@@ -138,35 +138,31 @@ export default async function HomePage() {
 
         <div className="container-site relative z-10 text-center max-w-4xl mx-auto">
           {/* Centered School Logo */}
-          <ScrollFadeScale delay={0.1} duration={0.8}>
-            <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 mx-auto drop-shadow-[0_4px_16px_rgba(255,255,255,0.95)] transition-transform hover:scale-105 duration-300">
-              <Image
-                src="/assets/logo-smpn5cibeber.png"
-                alt="Logo Resmi SMPN 5 Cibeber"
-                fill
-                priority
-                className="object-contain"
-                sizes="(max-width: 768px) 130px, 160px"
-              />
-            </div>
-          </ScrollFadeScale>
+          <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 mx-auto drop-shadow-[0_4px_16px_rgba(255,255,255,0.95)] transition-transform hover:scale-105 duration-300">
+            <Image
+              src="/assets/logo-smpn5cibeber.png"
+              alt="Logo Resmi SMPN 5 Cibeber"
+              fill
+              priority
+              className="object-contain"
+              sizes="(max-width: 768px) 130px, 160px"
+            />
+          </div>
 
-          <ScrollFadeUp delay={0.2} duration={0.8} distance={20}>
-            {/* Big Bold Institutional Typography — Tebal & Tegas dengan Halo Putih Murni Anti-Samar */}
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-wider uppercase mt-4 leading-tight [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_20px_#fff,0_2px_8px_rgba(255,255,255,0.95)]">
-              {schoolName}
-            </h1>
+          {/* Big Bold Institutional Typography — Tebal & Tegas dengan Halo Putih Murni Anti-Samar */}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-wider uppercase mt-4 leading-tight [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_20px_#fff,0_2px_8px_rgba(255,255,255,0.95)]">
+            {schoolName}
+          </h1>
 
-            {/* Golden Academic Serif Tagline */}
-            <p className="font-serif-academic text-base sm:text-xl md:text-2xl font-black text-[#B45309] italic tracking-wide mt-1.5 sm:mt-2 [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_18px_#fff,0_2px_6px_rgba(255,255,255,0.95)]">
-              &ldquo;{schoolTagline}&rdquo;
-            </p>
+          {/* Golden Academic Serif Tagline */}
+          <p className="font-serif-academic text-base sm:text-xl md:text-2xl font-black text-[#B45309] italic tracking-wide mt-1.5 sm:mt-2 [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_18px_#fff,0_2px_6px_rgba(255,255,255,0.95)]">
+            &ldquo;{schoolTagline}&rdquo;
+          </p>
 
-            {/* Institutional Sub-description */}
-            <p className="text-xs sm:text-sm md:text-base text-slate-950 max-w-2xl mx-auto mt-3 leading-relaxed font-bold [text-shadow:0_0_3px_#fff,0_0_8px_#fff,0_0_14px_#fff,0_1px_6px_rgba(255,255,255,0.95)]">
-              {schoolSubdesc}
-            </p>
-          </ScrollFadeUp>
+          {/* Institutional Sub-description */}
+          <p className="text-xs sm:text-sm md:text-base text-slate-950 max-w-2xl mx-auto mt-3 leading-relaxed font-bold [text-shadow:0_0_3px_#fff,0_0_8px_#fff,0_0_14px_#fff,0_1px_6px_rgba(255,255,255,0.95)]">
+            {schoolSubdesc}
+          </p>
         </div>
       </section>
 
