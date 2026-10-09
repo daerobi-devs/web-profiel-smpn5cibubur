@@ -11,7 +11,7 @@ import {
   BookOpen,
 } from '@phosphor-icons/react/dist/ssr';
 import type { Metadata } from 'next';
-import { getStaffList } from '@/lib/supabaseData';
+import { getStaffList, getWebSettings } from '@/lib/supabaseData';
 import { TeacherDirectory } from '@/components/ui/TeacherDirectory';
 
 export const metadata: Metadata = {
@@ -21,14 +21,20 @@ export const metadata: Metadata = {
 };
 
 export default async function GuruPage() {
-  const staffList = await getStaffList();
+  const [staffList, settings] = await Promise.all([
+    getStaffList(),
+    getWebSettings()
+  ]);
+
+  const bannerImage = settings.banner_page_guru || '/assets/dewan-guru-smpn5cibeber.jpg';
+
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* Hero Banner Dewan Guru */}
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/dewan-guru-smpn5cibeber.jpg"
+            src={bannerImage}
             alt="Dewan Guru dan Tenaga Kependidikan SMPN 5 Cibeber"
             fill
             priority

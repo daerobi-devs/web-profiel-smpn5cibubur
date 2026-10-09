@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getActiveAchievements } from '@/lib/supabaseData';
+import { getActiveAchievements, getWebSettings } from '@/lib/supabaseData';
 import { Trophy } from '@phosphor-icons/react/dist/ssr';
 import PrestasiArticleList from '@/components/ui/PrestasiArticleList';
 import type { Metadata } from 'next';
@@ -11,7 +11,12 @@ export const metadata: Metadata = {
 };
 
 export default async function PrestasiPage() {
-  const rawAchievements = await getActiveAchievements();
+  const [rawAchievements, settings] = await Promise.all([
+    getActiveAchievements(),
+    getWebSettings()
+  ]);
+
+  const bannerImage = settings.banner_page_prestasi || '/assets/prestasi-siswa-smpn5cibeber.jpg';
 
   const achievements = rawAchievements.map((a) => ({
     id: a.id,
@@ -20,17 +25,18 @@ export default async function PrestasiPage() {
     level: a.level,
     year: a.year,
     imageUrl: a.image_url ?? null,
+    galleryImages: a.gallery_images ?? null,
   }));
 
   const years = Array.from(new Set(achievements.map((a) => a.year))).sort((a, b) => b - a);
 
   return (
     <div>
-      {/* Hero Banner Prestasi — Background Foto Tim Siswa Marching Band dengan Tint Hijau Lembut (100% Preserved) */}
+      {/* Hero Banner Prestasi — Background Foto Dinamis dengan Tint Hijau Almamater */}
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/prestasi-siswa-smpn5cibeber.jpg"
+            src={bannerImage}
             alt="Prestasi Siswa SMP Negeri 5 Cibeber"
             fill
             priority

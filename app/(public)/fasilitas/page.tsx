@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { getActiveFacilities } from '@/lib/supabaseData';
+import { getActiveFacilities, getWebSettings } from '@/lib/supabaseData';
 import { Buildings } from '@phosphor-icons/react/dist/ssr';
 import { getCategoryLabel } from '@/lib/utils';
 import type { Metadata } from 'next';
@@ -10,7 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default async function FasilitasPage() {
-  const rawFacilities = await getActiveFacilities();
+  const [rawFacilities, settings] = await Promise.all([
+    getActiveFacilities(),
+    getWebSettings()
+  ]);
+
+  const bannerImage = settings.banner_page_fasilitas || '/assets/lapangan-smpn5cibeber.jpg';
 
   const facilities = rawFacilities.map((f) => ({
     ...f,
@@ -21,11 +26,11 @@ export default async function FasilitasPage() {
 
   return (
     <div>
-      {/* Hero Banner Fasilitas — Background Foto Lapangan & Gedung dengan Tint Hijau Lembut */}
+      {/* Hero Banner Fasilitas — Background Foto Dinamis dengan Tint Hijau Almamater */}
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/lapangan-smpn5cibeber.jpg"
+            src={bannerImage}
             alt="Sarana & Fasilitas Sekolah SMPN 5 Cibeber"
             fill
             priority

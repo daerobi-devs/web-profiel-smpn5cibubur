@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   MagnifyingGlass,
   X,
@@ -9,7 +10,7 @@ import {
   User,
   Trophy,
   ArrowRight,
-  Sparkle,
+  Play,
 } from '@phosphor-icons/react';
 import { EkskulItem, ekskulCategories, ekskulCategoryLabels } from '@/lib/ekskul-data';
 
@@ -18,11 +19,9 @@ type EkskulListProps = {
   schoolWhatsapp?: string;
 };
 
-export default function EkskulList({ items, schoolWhatsapp = '6285281459726' }: EkskulListProps) {
+export default function EkskulList({ items }: EkskulListProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('SEMUA');
-
-  const cleanWa = schoolWhatsapp.replace(/[^0-9]/g, '');
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
@@ -123,10 +122,7 @@ export default function EkskulList({ items, schoolWhatsapp = '6285281459726' }: 
       {/* 3. Refined Editorial Cards Grid (3 Kolom Elegan) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
         {filteredItems.map((item) => {
-          const waMessage = encodeURIComponent(
-            `Halo Pembina/Admin SMPN 5 Cibeber, saya ingin bertanya seputar pendaftaran ekstrakurikuler ${item.name}.`
-          );
-          const waLink = `https://wa.me/${cleanWa}?text=${waMessage}`;
+          const hasVideo = Boolean(item.videoUrl || item.video_url);
 
           return (
             <div
@@ -134,8 +130,12 @@ export default function EkskulList({ items, schoolWhatsapp = '6285281459726' }: 
               className="card overflow-hidden bg-white border border-slate-200/90 rounded-2xl shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
             >
               <div>
-                {/* Foto Bersih — Tanpa Teks & Gradient Tebal yang Menutupi */}
-                <div className="relative aspect-16/10 w-full bg-slate-100 overflow-hidden">
+                {/* Cover Image — Clickable direct to profile */}
+                <Link
+                  href={`/ekstrakurikuler/${item.slug}`}
+                  className="relative block aspect-16/10 overflow-hidden bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1E5631]/40"
+                  aria-label={`Buka profil lengkap ${item.name}`}
+                >
                   <Image
                     src={item.coverImage}
                     alt={item.name}
@@ -143,20 +143,38 @@ export default function EkskulList({ items, schoolWhatsapp = '6285281459726' }: 
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                   />
-                  {/* Subtle Top-Left Category Badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md text-[11px] font-bold text-[#1E5631] border border-slate-200/80 shadow-2xs">
-                      {item.categoryLabel}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/15 pointer-events-none" />
+
+                  {/* Kategori Badge (Kiri Atas) */}
+                  <div className="absolute top-3 left-3 z-10">
+                    <span className="px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-md text-[11px] font-bold text-white tracking-wide border border-white/15 shadow-2xs">
+                      {item.categoryLabel || item.category}
                     </span>
                   </div>
-                </div>
+
+                  {/* Indikator Video Dokumentasi (Kanan Atas, jika ada video) */}
+                  {hasVideo && (
+                    <div className="absolute top-3 right-3 z-10">
+                      <span
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/55 backdrop-blur-md text-[11px] font-semibold text-white/95 border border-white/20 shadow-2xs"
+                        title="Tersedia video dokumentasi kegiatan"
+                      >
+                        <Play size={10} weight="fill" className="text-emerald-400" />
+                        <span>Video</span>
+                      </span>
+                    </div>
+                  )}
+                </Link>
 
                 {/* Body Content — Tipografi Tenang & Bernapas */}
                 <div className="p-5 space-y-3">
                   <div>
-                    <h3 className="font-serif-academic text-lg font-bold text-[#1E293B] group-hover:text-[#1E5631] transition-colors leading-snug">
+                    <Link
+                      href={`/ekstrakurikuler/${item.slug}`}
+                      className="font-serif-academic text-lg font-bold text-[#1E293B] group-hover:text-[#1E5631] transition-colors leading-snug block"
+                    >
                       {item.name}
-                    </h3>
+                    </Link>
                     <p className="text-xs text-amber-700 font-medium italic mt-1 line-clamp-1">
                       &ldquo;{item.motto}&rdquo;
                     </p>
@@ -166,7 +184,7 @@ export default function EkskulList({ items, schoolWhatsapp = '6285281459726' }: 
                     {item.description}
                   </p>
 
-                  {/* Metadata Ringkas & Elegan (Bukan Kotak-Kotak Grid) */}
+                  {/* Metadata Ringkas & Elegan */}
                   <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-500">
                     <div className="flex items-center gap-2 truncate">
                       <Clock size={13} weight="bold" className="text-slate-400 shrink-0" />
@@ -189,19 +207,14 @@ export default function EkskulList({ items, schoolWhatsapp = '6285281459726' }: 
               </div>
 
               {/* Footer Tindakan Bersih */}
-              <div className="px-5 pb-5 pt-1 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-slate-400">
-                  {item.badge}
-                </span>
-                <a
-                  href={waLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold text-[#1E5631] hover:text-[#143e22] inline-flex items-center gap-1 transition-colors group/link"
+              <div className="px-5 pb-5 pt-3 border-t border-slate-100/90">
+                <Link
+                  href={`/ekstrakurikuler/${item.slug}`}
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-50/70 hover:bg-[#1E5631] text-[#1E5631] hover:text-white text-xs font-bold border border-emerald-100/80 hover:border-[#1E5631] transition-all duration-200 shadow-2xs group/btn active:scale-[0.98]"
                 >
-                  <span>Tanya Pembina</span>
-                  <ArrowRight size={12} weight="bold" className="group-hover/link:translate-x-0.5 transition-transform" />
-                </a>
+                  <span>Lihat Profil Lengkap</span>
+                  <ArrowRight size={13} weight="bold" className="group-hover/btn:translate-x-1 transition-transform" />
+                </Link>
               </div>
             </div>
           );

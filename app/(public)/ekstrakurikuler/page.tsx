@@ -20,7 +20,7 @@ export default async function EkstrakurikulerPage() {
 
   const items: EkskulItem[] = rawEkskul.length > 0 ? rawEkskul.map((e) => ({
     id: e.id,
-    slug: e.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    slug: e.slug || e.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
     name: e.name,
     category: (e.category || 'KEPANDUAN') as any,
     categoryLabel: e.category_label || 'Ekskul',
@@ -34,6 +34,8 @@ export default async function EkstrakurikulerPage() {
     memberCount: '30+ Siswa',
     achievements: Array.isArray(e.achievements) ? e.achievements : [],
     coverImage: e.cover_image || '/assets/gedung-smpn5cibeber.jpg',
+    videoUrl: e.video_url || null,
+    galleryImages: Array.isArray(e.gallery_images) ? e.gallery_images : [],
     highlights: ['Aktif Berprestasi', 'Pembinaan Rutin'],
   })) : ekskulData;
 
@@ -43,7 +45,7 @@ export default async function EkstrakurikulerPage() {
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/ekskul-banner-bg.jpg"
+            src={settings.banner_page_ekskul || '/assets/ekskul-banner-bg.jpg'}
             alt="Ekstrakurikuler dan Pembinaan Siswa SMPN 5 Cibeber"
             fill
             priority

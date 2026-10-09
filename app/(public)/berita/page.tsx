@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { NewspaperClipping } from '@phosphor-icons/react/dist/ssr';
-import { getPublishedArticles } from '@/lib/supabaseData';
+import { getPublishedArticles, getWebSettings } from '@/lib/supabaseData';
 import ArticleSearchFilter, { ArticleItem } from '@/components/ui/ArticleSearchFilter';
 import type { Metadata } from 'next';
 
@@ -12,7 +12,12 @@ export const metadata: Metadata = {
 };
 
 export default async function BeritaPage() {
-  const rawArticles = await getPublishedArticles();
+  const [rawArticles, settings] = await Promise.all([
+    getPublishedArticles(),
+    getWebSettings()
+  ]);
+
+  const bannerImage = settings.banner_page_berita || '/assets/berita-banner-bg.jpg';
 
   const articles: ArticleItem[] = rawArticles.map((a) => ({
     id: a.id,
@@ -31,10 +36,10 @@ export default async function BeritaPage() {
           HERO BANNER INSTITUSIONAL BER-BACKGROUND EDITORIAL DESK
           ========================================================= */}
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/30">
-        {/* Background Foto Editorial Desk dengan Dark Forest Green Tint */}
+        {/* Background Foto Dinamis dengan Dark Forest Green Tint */}
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/berita-banner-bg.jpg"
+            src={bannerImage}
             alt="Meja Redaksi & Portal Berita SMP Negeri 5 Cibeber"
             fill
             priority

@@ -52,7 +52,7 @@ export default function AgendaList({
   };
 
   const handleCopyAgenda = (item: AgendaItem) => {
-    const text = `📅 ${item.title} — SMPN 5 Cibeber\n🗓️ Tanggal: ${item.dateStr} (${item.time})\n📍 Lokasi: ${item.location}\n👥 Peserta: ${item.participants}\n\n${item.description}\n\nInfo selengkapnya: https://ekosistem.daeroom.my.id/agenda`;
+    const text = `[AGENDA RESMI] ${item.title} — SMPN 5 Cibeber\nTanggal: ${item.dateStr} (${item.time})\nLokasi: ${item.location}\nSasaran: ${item.participants}\n\n${item.description}\n\nInfo selengkapnya: https://ekosistem.daeroom.my.id/agenda`;
     if (typeof navigator !== 'undefined') {
       navigator.clipboard.writeText(text);
       setCopiedId(item.id);
@@ -228,17 +228,21 @@ export default function AgendaList({
 
                   {/* Date Block + Title */}
                   <div className="flex flex-col sm:flex-row items-start gap-4 pt-2">
-                    {/* Big Apple-Style Calendar Date Box */}
-                    <div className="shrink-0 w-20 sm:w-24 rounded-2xl bg-gradient-to-b from-[#1E5631] to-[#143e22] text-white p-3 text-center shadow-md border border-emerald-700">
-                      <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-200 block">
-                        {leadAgenda.monthBadge}
-                      </span>
-                      <span className="text-3xl sm:text-4xl font-black leading-tight block my-0.5">
-                        {leadAgenda.dayBadge}
-                      </span>
-                      <span className="text-[11px] font-bold text-white/80 block">
-                        2026
-                      </span>
+                    {/* Modern Two-Tone Desk Calendar Card */}
+                    <div className="shrink-0 w-20 sm:w-24 rounded-2xl bg-white border border-slate-200/90 shadow-sm overflow-hidden flex flex-col items-center">
+                      <div className="w-full bg-[#1E5631] text-emerald-100 py-1.5 text-center border-b border-[#143e22]">
+                        <span className="text-xs font-black uppercase tracking-widest block leading-none">
+                          {leadAgenda.monthBadge}
+                        </span>
+                      </div>
+                      <div className="w-full py-2.5 px-2 bg-gradient-to-b from-white to-slate-50/70 text-center">
+                        <span className="text-3xl sm:text-4xl font-black text-slate-900 leading-tight block my-0.5 tracking-tight">
+                          {leadAgenda.dayBadge}
+                        </span>
+                        <span className="text-[10px] font-bold text-slate-400 block mt-0.5">
+                          2026
+                        </span>
+                      </div>
                     </div>
 
                     <div className="space-y-2 flex-1">
@@ -343,14 +347,18 @@ export default function AgendaList({
                           key={item.id}
                           className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 hover:border-emerald-300 hover:bg-emerald-50/20 transition-all flex gap-3.5 items-start"
                         >
-                          {/* Mini Date Box */}
-                          <div className="shrink-0 w-14 rounded-xl bg-white border border-slate-200 text-center p-2 shadow-2xs">
-                            <span className="text-[10px] font-extrabold uppercase text-[#1E5631] block">
-                              {item.monthBadge}
-                            </span>
-                            <span className="text-lg font-black text-slate-900 leading-none block my-0.5">
-                              {item.dayBadge}
-                            </span>
+                          {/* Modern Mini Calendar Widget */}
+                          <div className="shrink-0 w-13 rounded-xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden flex flex-col items-center">
+                            <div className="w-full bg-[#1E5631] text-emerald-100 py-0.5 text-center">
+                              <span className="text-[9px] font-black uppercase tracking-wider block leading-none">
+                                {item.monthBadge}
+                              </span>
+                            </div>
+                            <div className="w-full py-1 text-center bg-gradient-to-b from-white to-slate-50/70">
+                              <span className="text-base font-black text-slate-900 leading-none block tracking-tight">
+                                {item.dayBadge}
+                              </span>
+                            </div>
                           </div>
 
                           <div className="flex-1 min-w-0 space-y-1">
@@ -462,17 +470,21 @@ export default function AgendaList({
                     className="bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-300 hover:shadow-md transition-all p-5 sm:p-6 flex flex-col justify-between space-y-4"
                   >
                     <div className="flex items-start gap-4">
-                      {/* Date Box */}
-                      <div className="shrink-0 w-16 sm:w-18 rounded-xl bg-gradient-to-b from-[#1E5631] to-[#143e22] text-white p-2.5 text-center shadow-xs">
-                        <span className="text-[10px] font-extrabold uppercase text-emerald-200 block">
-                          {agenda.monthBadge}
-                        </span>
-                        <span className="text-2xl font-black leading-tight block my-0.5">
-                          {agenda.dayBadge}
-                        </span>
-                        <span className="text-[10px] font-bold text-white/80 block">
-                          2026
-                        </span>
+                      {/* Date Box - Modern Two-Tone Desk Calendar Card */}
+                      <div className="shrink-0 w-16 sm:w-18 rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden flex flex-col items-center">
+                        <div className="w-full bg-[#1E5631] text-emerald-100 py-1 text-center border-b border-[#143e22]">
+                          <span className="text-[10px] font-black uppercase tracking-widest block leading-none">
+                            {agenda.monthBadge}
+                          </span>
+                        </div>
+                        <div className="w-full py-2 px-1 bg-gradient-to-b from-white to-slate-50/70 text-center">
+                          <span className="text-2xl font-black text-slate-900 leading-none block tracking-tight">
+                            {agenda.dayBadge}
+                          </span>
+                          <span className="text-[9px] font-bold text-slate-400 mt-1 block">
+                            2026
+                          </span>
+                        </div>
                       </div>
 
                       <div className="flex-1 min-w-0 space-y-1.5">

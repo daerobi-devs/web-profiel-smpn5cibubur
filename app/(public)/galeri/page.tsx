@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Images } from '@phosphor-icons/react/dist/ssr';
-import { getActiveGalleries } from '@/lib/supabaseData';
+import { getActiveGalleries, getWebSettings } from '@/lib/supabaseData';
 import GalleryLightbox, { GalleryItem } from '@/components/ui/GalleryLightbox';
 import type { Metadata } from 'next';
 
@@ -11,17 +11,24 @@ export const metadata: Metadata = {
 };
 
 export default async function GaleriPage() {
-  const rawGalleries = await getActiveGalleries();
+  const [rawGalleries, settings] = await Promise.all([
+    getActiveGalleries(),
+    getWebSettings()
+  ]);
+
+  const bannerImage = settings.banner_page_galeri || '/assets/galeri-banner-bg.jpg';
 
   const galleries: GalleryItem[] = rawGalleries.map((g) => ({
     id: g.id,
     title: g.title,
     description: g.description ?? null,
     imageUrl: g.image_url,
+    videoUrl: g.video_url ?? null,
     category: g.category,
   }));
 
   const categoriesCount = new Set(galleries.map((g) => g.category)).size;
+  const videoCount = galleries.filter((g) => Boolean(g.videoUrl)).length;
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen text-[#1E293B]">
@@ -29,10 +36,10 @@ export default async function GaleriPage() {
           HERO BANNER INSTITUSIONAL BER-BACKGROUND PHOTO ARCHIVIST
           ========================================================= */}
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/30">
-        {/* Background Foto Meja Arsip Dokumentasi dengan Dark Forest Green Tint */}
+        {/* Background Foto Dinamis dengan Dark Forest Green Tint */}
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/galeri-banner-bg.jpg"
+            src={bannerImage}
             alt="Galeri & Dokumentasi Visual SMP Negeri 5 Cibeber"
             fill
             priority
@@ -73,13 +80,18 @@ export default async function GaleriPage() {
           {/* Quick Info Badges */}
           <div className="pt-2 flex flex-wrap justify-center gap-2.5 text-xs">
             <span className="px-3.5 py-1.5 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-white font-semibold shadow-2xs">
-              {galleries.length} Foto Dokumentasi
+              {galleries.length} Arsip Visual
             </span>
+            {videoCount > 0 && (
+              <span className="px-3.5 py-1.5 rounded-lg bg-white/15 backdrop-blur-md border border-rose-300/30 text-rose-200 font-semibold shadow-2xs">
+                {videoCount} Video Liputan
+              </span>
+            )}
             <span className="px-3.5 py-1.5 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-amber-300 font-semibold shadow-2xs">
               {categoriesCount} Album Kategori
             </span>
             <span className="px-3.5 py-1.5 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-emerald-200 font-semibold shadow-2xs">
-              Lightbox Full HD
+              Theater Lightbox
             </span>
           </div>
         </div>

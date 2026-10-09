@@ -18,7 +18,7 @@ export default async function KontakPage() {
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/gedung-smpn5cibeber.jpg"
+            src={settings.banner_page_kontak || '/assets/gedung-smpn5cibeber.jpg'}
             alt="Gedung SMP Negeri 5 Cibeber"
             fill
             priority

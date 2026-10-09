@@ -1,5 +1,5 @@
 /**
- * 🌐 Supabase Public Data Client for SMPN 5 Cibeber Web Profil
+ * Supabase Public Data Client for SMPN 5 Cibeber Web Profil
  * Terhubung ke Supabase Cloud PostgreSQL (Single Source of Truth)
  */
 
@@ -64,6 +64,17 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   maps_embed_url:
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.790938640733!2d106.3265556147708!3d-6.833301695061611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e42886c787be401%3A0x446d78d9b1073d6c!2sSMP%20Negeri%205%20Cibeber!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid',
   maps_url: 'https://maps.app.goo.gl/VfLAPVfajTQ4HNCGA',
+  // Hero Banners Halaman Web
+  banner_page_prestasi: '/assets/prestasi-siswa-smpn5cibeber.jpg',
+  banner_page_profil: '/assets/lapangan-smpn5cibeber.jpg',
+  banner_page_visimisi: '/assets/visi-misi-banner-bg.jpg',
+  banner_page_guru: '/assets/dewan-guru-smpn5cibeber.jpg',
+  banner_page_fasilitas: '/assets/lapangan-smpn5cibeber.jpg',
+  banner_page_ekskul: '/assets/ekskul-banner-bg.jpg',
+  banner_page_galeri: '/assets/galeri-banner-bg.jpg',
+  banner_page_berita: '/assets/berita-banner-bg.jpg',
+  banner_page_agenda: '/assets/agenda-banner-bg.jpg',
+  banner_page_kontak: '/assets/gedung-smpn5cibeber.jpg',
 };
 
 export async function getWebSettings(): Promise<Record<string, string>> {
@@ -166,15 +177,138 @@ export interface AchievementItem {
   level: string;
   year: number;
   image_url?: string | null;
+  gallery_images?: string[] | null;
   order_num: number;
   active: boolean;
 }
 
+export const DEFAULT_ACHIEVEMENTS: AchievementItem[] = [
+  {
+    id: 'futsal-2022',
+    title: 'Juara 1 Futsal Putra & Putri',
+    description: 'Grand Final Futsal Putri SMPN 5 Cibeber vs SMPN INK 2 Cisolok berakhir dengan kemenangan adu penalti, serta kemenangan Futsal Putra atas MTs Cisolok skor 9-2.',
+    level: 'KOTA',
+    year: 2022,
+    image_url: '/assets/lapangan-smpn5cibeber.jpg',
+    gallery_images: [
+      '/assets/lapangan-smpn5cibeber.jpg',
+      '/assets/prestasi-siswa-smpn5cibeber.jpg',
+      '/assets/dewan-guru-smpn5cibeber.jpg'
+    ],
+    order_num: 1,
+    active: true,
+  },
+  {
+    id: 'lcc-2024',
+    title: 'Juara 2 LCC PKn Tingkat Kabupaten',
+    description: 'Juara 2 Lomba Cerdas Cermat PKn tingkat Kabupaten Lebak yang menguji wawasan kebangsaan dan konstitusi.',
+    level: 'KOTA',
+    year: 2024,
+    image_url: '/assets/dewan-guru-smpn5cibeber.jpg',
+    gallery_images: [
+      '/assets/dewan-guru-smpn5cibeber.jpg',
+      '/assets/gedung-smpn5cibeber.jpg'
+    ],
+    order_num: 2,
+    active: true,
+  },
+  {
+    id: 'adiwiyata-2024',
+    title: 'Sekolah Adiwiyata Tingkat Kabupaten',
+    description: 'Penghargaan Sekolah Adiwiyata dari Dinas Lingkungan Hidup Kabupaten Lebak atas komitmen tata kelola sekolah hijau ramah lingkungan.',
+    level: 'KOTA',
+    year: 2024,
+    image_url: '/assets/gedung-smpn5cibeber.jpg',
+    gallery_images: [
+      '/assets/gedung-smpn5cibeber.jpg',
+      '/assets/lapangan-smpn5cibeber.jpg'
+    ],
+    order_num: 3,
+    active: true,
+  },
+  {
+    id: 'kir-2024',
+    title: 'Juara 3 Lomba Karya Ilmiah Remaja',
+    description: 'Juara 3 Lomba Karya Ilmiah Remaja (KIR) tingkat Provinsi Banten dengan inovasi penelitian ilmiah pelajar.',
+    level: 'PROVINSI',
+    year: 2024,
+    image_url: '/assets/dewan-guru-smpn5cibeber.jpg',
+    gallery_images: [
+      '/assets/dewan-guru-smpn5cibeber.jpg',
+      '/assets/prestasi-siswa-smpn5cibeber.jpg'
+    ],
+    order_num: 4,
+    active: true,
+  },
+  {
+    id: 'pramuka-2025',
+    title: 'Juara 1 Pramuka Jambore Kecamatan',
+    description: 'Juara 1 Jambore Pramuka Penggalang tingkat Kecamatan Cibeber dengan keunggulan ketangkasan, kepemimpinan, dan gotong royong.',
+    level: 'KECAMATAN',
+    year: 2025,
+    image_url: '/assets/gedung-smpn5cibeber.jpg',
+    gallery_images: [
+      '/assets/gedung-smpn5cibeber.jpg',
+      '/assets/lapangan-smpn5cibeber.jpg',
+      '/assets/prestasi-siswa-smpn5cibeber.jpg'
+    ],
+    order_num: 5,
+    active: true,
+  },
+  {
+    id: 'voli-2025',
+    title: 'Juara 2 Voli Putra POPDA Kabupaten',
+    description: 'Juara 2 Turnamen Bola Voli Putra ajang Pekan Olahraga Pelajar Daerah (POPDA) Kabupaten Lebak.',
+    level: 'KOTA',
+    year: 2025,
+    image_url: '/assets/lapangan-smpn5cibeber.jpg',
+    gallery_images: [
+      '/assets/lapangan-smpn5cibeber.jpg',
+      '/assets/dewan-guru-smpn5cibeber.jpg'
+    ],
+    order_num: 6,
+    active: true,
+  }
+];
+
 export async function getActiveAchievements(): Promise<AchievementItem[]> {
-  return fetchFromSupabase<AchievementItem[]>(
-    'achievements?active=eq.true&order=order_num.asc,year.desc&select=*',
-    []
-  );
+  try {
+    const [items, galleryRows] = await Promise.all([
+      fetchFromSupabase<AchievementItem[]>(
+        'achievements?active=eq.true&order=order_num.asc,year.desc&select=*',
+        DEFAULT_ACHIEVEMENTS
+      ),
+      fetchFromSupabase<{ value?: string }[]>(
+        'web_settings?key=eq.achievement_galleries&select=value',
+        []
+      )
+    ]);
+
+    let galleryMap: Record<string, string[]> = {};
+    if (galleryRows && galleryRows.length > 0 && galleryRows[0].value) {
+      try {
+        galleryMap = JSON.parse(galleryRows[0].value) || {};
+      } catch {}
+    }
+
+    const list = items && items.length > 0 ? items : DEFAULT_ACHIEVEMENTS;
+    return list.map((item) => {
+      let gImages = item.gallery_images;
+      if (!gImages || (Array.isArray(gImages) && gImages.length === 0)) {
+        if (galleryMap[item.id] && Array.isArray(galleryMap[item.id]) && galleryMap[item.id].length > 0) {
+          gImages = galleryMap[item.id];
+        } else if (item.image_url) {
+          gImages = [item.image_url];
+        }
+      }
+      return {
+        ...item,
+        gallery_images: gImages
+      };
+    });
+  } catch {
+    return DEFAULT_ACHIEVEMENTS;
+  }
 }
 
 // =============================================================================
@@ -205,16 +339,39 @@ export interface GalleryItem {
   title: string;
   description?: string | null;
   image_url: string;
+  video_url?: string | null;
   category: string;
   order_num: number;
   active: boolean;
 }
 
 export async function getActiveGalleries(): Promise<GalleryItem[]> {
-  return fetchFromSupabase<GalleryItem[]>(
-    'galleries?active=eq.true&order=order_num.asc,created_at.desc&select=*',
-    []
-  );
+  try {
+    const [items, videoRows] = await Promise.all([
+      fetchFromSupabase<GalleryItem[]>(
+        'galleries?active=eq.true&order=order_num.asc,created_at.desc&select=*',
+        []
+      ),
+      fetchFromSupabase<{ value?: string }[]>(
+        'web_settings?key=eq.gallery_videos&select=value',
+        []
+      )
+    ]);
+
+    let videoMap: Record<string, string> = {};
+    if (videoRows && videoRows.length > 0 && videoRows[0].value) {
+      try {
+        videoMap = JSON.parse(videoRows[0].value) || {};
+      } catch {}
+    }
+
+    return (items || []).map((item) => ({
+      ...item,
+      video_url: videoMap[item.id] || item.video_url || null
+    }));
+  } catch {
+    return [];
+  }
 }
 
 // =============================================================================
@@ -234,16 +391,80 @@ export interface EkskulItem {
   coach_phone?: string | null;
   badge?: string;
   cover_image?: string | null;
+  banner_image?: string | null;
+  bannerImage?: string | null;
+  video_url?: string | null;
+  gallery_images?: string[] | null;
   achievements?: string[] | any;
   order_num: number;
   active: boolean;
 }
 
 export async function getActiveEkskul(): Promise<EkskulItem[]> {
-  return fetchFromSupabase<EkskulItem[]>(
-    'ekskul?active=eq.true&order=order_num.asc,id.asc&select=*',
-    []
-  );
+  try {
+    const [items, bannerRows] = await Promise.all([
+      fetchFromSupabase<EkskulItem[]>(
+        'ekskul?active=eq.true&order=order_num.asc,id.asc&select=*',
+        []
+      ),
+      fetchFromSupabase<{ value?: string }[]>(
+        'web_settings?key=eq.ekskul_banners&select=value',
+        []
+      )
+    ]);
+
+    let bannerMap: Record<string, string> = {};
+    if (bannerRows && bannerRows.length > 0 && bannerRows[0].value) {
+      try {
+        bannerMap = JSON.parse(bannerRows[0].value) || {};
+      } catch {}
+    }
+
+    return items.map((item) => {
+      const banner = bannerMap[item.id] || item.cover_image;
+      return {
+        ...item,
+        banner_image: banner,
+        bannerImage: banner
+      };
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function getEkskulBySlug(slug: string): Promise<EkskulItem | null> {
+  try {
+    const [items, bannerRows] = await Promise.all([
+      fetchFromSupabase<EkskulItem[]>(
+        `ekskul?slug=eq.${encodeURIComponent(slug)}&active=eq.true&select=*`,
+        []
+      ),
+      fetchFromSupabase<{ value?: string }[]>(
+        'web_settings?key=eq.ekskul_banners&select=value',
+        []
+      )
+    ]);
+
+    if (!items || items.length === 0) return null;
+    const item = items[0];
+
+    let bannerMap: Record<string, string> = {};
+    if (bannerRows && bannerRows.length > 0 && bannerRows[0].value) {
+      try {
+        bannerMap = JSON.parse(bannerRows[0].value) || {};
+      } catch {}
+    }
+
+    const banner = bannerMap[item.id] || item.cover_image;
+    return {
+      ...item,
+      banner_image: banner,
+      bannerImage: banner
+    };
+  } catch {
+    return null;
+  }
 }
 
 // =============================================================================

@@ -32,10 +32,10 @@ export default async function AgendaPage() {
           HERO BANNER INSTITUSIONAL BER-BACKGROUND ACADEMIC PLANNER
           ========================================================= */}
       <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/30">
-        {/* Background Foto Meja Agenda & Kalender dengan Dark Forest Green Tint */}
+        {/* Background Foto Dinamis dengan Dark Forest Green Tint */}
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/agenda-banner-bg.jpg"
+            src={settings.banner_page_agenda || '/assets/agenda-banner-bg.jpg'}
             alt="Kalender Akademik & Agenda Kegiatan SMP Negeri 5 Cibeber"
             fill
             priority

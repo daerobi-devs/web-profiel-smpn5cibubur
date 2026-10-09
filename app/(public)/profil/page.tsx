@@ -85,7 +85,7 @@ export default async function ProfilPage() {
       <section className="relative overflow-hidden text-white py-16 md:py-22 border-b border-emerald-950/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/lapangan-smpn5cibeber.jpg"
+            src={settings.banner_page_profil || '/assets/lapangan-smpn5cibeber.jpg'}
             alt="Lapangan Upacara dan Panggung SMPN 5 Cibeber"
             fill
             priority

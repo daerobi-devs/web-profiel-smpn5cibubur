@@ -11,6 +11,7 @@ export interface AgendaItem {
   description: string;
   status: 'AKAN_DATANG' | 'BERLANGSUNG' | 'SELESAI';
   featured?: boolean;
+  video_url?: string | null;
 }
 
 export const sampleAgendas: AgendaItem[] = [

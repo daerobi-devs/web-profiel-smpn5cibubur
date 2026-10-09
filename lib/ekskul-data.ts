@@ -14,6 +14,12 @@ export type EkskulItem = {
   memberCount: string;
   achievements: string[];
   coverImage: string;
+  bannerImage?: string | null;
+  banner_image?: string | null;
+  videoUrl?: string | null;
+  video_url?: string | null;
+  galleryImages?: string[];
+  gallery_images?: string[] | null;
   highlights: string[];
 };
 

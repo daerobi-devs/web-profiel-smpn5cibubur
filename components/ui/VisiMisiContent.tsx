@@ -114,7 +114,7 @@ export default function VisiMisiContent({ settings }: VisiMisiContentProps) {
         {/* Background Foto Lembah Cibeber Saat Fajar dengan Dark Forest Green Tint (Super Ringan: 189KB) */}
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
-            src="/assets/visi-misi-banner-bg.jpg"
+            src={settings.banner_page_visimisi || '/assets/visi-misi-banner-bg.jpg'}
             alt="Panorama Lingkungan SMP Negeri 5 Cibeber di Pagi Hari"
             fill
             priority
