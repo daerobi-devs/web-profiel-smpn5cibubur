@@ -56,60 +56,65 @@ export default function HomeEkskulShowcase({ items }: HomeEkskulShowcaseProps) {
 
             return (
               <ScrollStaggerItem key={item.id} className="flex">
-                <div
-                  className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-slate-300 shadow-xs hover:shadow-md transition-all duration-300 w-full"
+                <Link
+                  href={`/ekstrakurikuler/${item.slug || item.id}`}
+                  className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-[#1E5631]/40 shadow-xs hover:shadow-lg transition-all duration-300 w-full cursor-pointer active:scale-[0.99]"
                 >
-                {/* Visual Cover Bersih */}
-                <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-900">
-                  <Image
-                    src={imgSrc}
-                    alt={item.name}
-                    fill
-                    className="object-cover group-hover:scale-104 transition-transform duration-500 ease-out"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80" />
+                  {/* Visual Cover Bersih */}
+                  <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-900">
+                    <Image
+                      src={imgSrc}
+                      alt={item.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80" />
 
-                  {/* Kategori Badge Minimalis di Pojok Kiri Atas */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-white/95 text-slate-800 shadow-sm backdrop-blur-xs">
-                      {catLabel}
-                    </span>
+                    {/* Kategori Badge Minimalis di Pojok Kiri Atas */}
+                    <div className="absolute top-3.5 left-3.5">
+                      <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-white/95 text-slate-800 shadow-sm backdrop-blur-xs">
+                        {catLabel}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Konten Teks Tenang & Bernapas */}
-                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div>
-                    <h3 className="font-serif-academic text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors line-clamp-1">
-                      {item.name}
-                    </h3>
+                  {/* Konten Teks Tenang & Bernapas */}
+                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                      <h3 className="font-serif-academic text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors line-clamp-1">
+                        {item.name}
+                      </h3>
 
-                    {item.motto && (
-                      <p className="text-xs text-amber-700 italic font-medium mt-1 line-clamp-1">
-                        &ldquo;{item.motto}&rdquo;
+                      {item.motto && (
+                        <p className="text-xs text-amber-700 italic font-medium mt-1 line-clamp-1">
+                          &ldquo;{item.motto}&rdquo;
+                        </p>
+                      )}
+
+                      <p className="text-xs text-slate-600 mt-2 line-clamp-2 leading-relaxed">
+                        {item.description}
                       </p>
-                    )}
-
-                    <p className="text-xs text-slate-600 mt-2 line-clamp-2 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {/* Metadata Bersih: Jadwal & Pembina */}
-                  <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-500">
-                    <div className="flex items-center gap-2">
-                      <Clock size={13} weight="bold" className="text-slate-400 shrink-0" />
-                      <span className="truncate">{scheduleText}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <User size={13} weight="bold" className="text-slate-400 shrink-0" />
-                      <span className="truncate">Pembina: {coachName}</span>
+
+                    {/* Metadata Bersih: Jadwal, Pembina, & Link Navigasi */}
+                    <div className="pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-500">
+                      <div className="flex items-center gap-2">
+                        <Clock size={13} weight="bold" className="text-slate-400 shrink-0" />
+                        <span className="truncate">{scheduleText}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <User size={13} weight="bold" className="text-slate-400 shrink-0" />
+                        <span className="truncate">Pembina: {coachName}</span>
+                      </div>
+                      <div className="pt-1 flex items-center gap-1.5 font-bold text-[#1E5631] group-hover:gap-2.5 transition-all">
+                        <span>Jelajahi Profil Ekskul</span>
+                        <ArrowRight size={13} weight="bold" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </ScrollStaggerItem>
+                </Link>
+              </ScrollStaggerItem>
             );
           })}
         </ScrollStaggerContainer>

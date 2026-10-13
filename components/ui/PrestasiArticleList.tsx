@@ -10,7 +10,6 @@ import {
   ShareNetwork,
   X,
   CheckCircle,
-  Medal,
   Images,
   CaretLeft,
   CaretRight,
@@ -126,6 +125,337 @@ function getAchievementPhotos(item: AchievementItem): string[] {
   }
 
   return list;
+}
+
+// =============================================================================
+// SUB-KOMPONEN: FEATURED ACHIEVEMENT CARD (DENGAN LIVE ROTATING IMAGE)
+// =============================================================================
+function FeaturedAchievementCard({
+  item,
+  onOpenLightbox,
+  onShare,
+}: {
+  item: AchievementItem;
+  onOpenLightbox: (item: AchievementItem, photoIndex: number) => void;
+  onShare: (item: AchievementItem) => void;
+}) {
+  const meta = getAchievementMeta(item);
+  const photos = getAchievementPhotos(item);
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-rotate live image tiap 3.6 detik jika foto >= 2 dan tidak sedang di-hover
+  useEffect(() => {
+    if (photos.length <= 1 || isHovered) return;
+    const timer = setInterval(() => {
+      setActivePhotoIndex((prev) => (prev + 1) % photos.length);
+    }, 3600);
+    return () => clearInterval(timer);
+  }, [photos.length, isHovered]);
+
+  return (
+    <article
+      id={item.id}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative overflow-hidden bg-white border border-slate-200/90 rounded-3xl shadow-2xs hover:shadow-md transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 group"
+    >
+      {/* Visual Cover Feature (Live Rotating Image) */}
+      <div
+        onClick={() => onOpenLightbox(item, activePhotoIndex)}
+        className="relative lg:col-span-5 min-h-[240px] sm:min-h-[300px] lg:min-h-[360px] bg-slate-900 overflow-hidden cursor-pointer"
+        title="Klik untuk membuka galeri foto dokumentasi"
+      >
+        {photos.map((src, idx) => (
+          <Image
+            key={`${src}-${idx}`}
+            src={src}
+            alt={`${item.title} - Foto ${idx + 1}`}
+            fill
+            priority={idx === 0}
+            sizes="(max-width: 1024px) 100vw, 42vw"
+            className={`object-cover transition-all duration-700 ease-in-out group-hover:scale-105 ${
+              idx === activePhotoIndex
+                ? 'opacity-100 scale-100'
+                : 'opacity-0 scale-105 pointer-events-none'
+            }`}
+          />
+        ))}
+        {/* Info Tahun & Tingkat di Bawah */}
+        <div className="absolute bottom-4 left-4 right-4 z-10 text-white flex items-center justify-between pointer-events-none">
+          <span className="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20">
+            {meta.levelLabel} • Tahun {item.year}
+          </span>
+          <span className="text-[11px] text-amber-300 font-semibold group-hover:underline flex items-center gap-1 bg-black/50 px-2.5 py-1 rounded-lg backdrop-blur-xs">
+            <span>Buka Foto</span>
+            <CaretRight size={12} weight="bold" />
+          </span>
+        </div>
+      </div>
+
+      {/* Konten Terbaca Langsung */}
+      <div className="lg:col-span-7 p-6 sm:p-8 lg:p-9 flex flex-col justify-between space-y-5">
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-bold tracking-wider uppercase text-emerald-800">
+              {meta.category}
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#1E5631] border border-emerald-100">
+              {meta.levelLabel}
+            </span>
+          </div>
+
+          <h2
+            onClick={() => onOpenLightbox(item, activePhotoIndex)}
+            className="text-2xl sm:text-3xl font-serif-academic font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors leading-snug cursor-pointer"
+          >
+            {item.title}
+          </h2>
+
+          {/* Uraian Lengkap */}
+          <div className="text-sm text-slate-600 leading-relaxed space-y-2.5">
+            {item.description ? (
+              item.description.split(/\r?\n/).map((par, idx) => (
+                <p key={idx} className="text-slate-600 leading-relaxed">
+                  {par}
+                </p>
+              ))
+            ) : (
+              <p className="text-slate-600 leading-relaxed">
+                Raihan prestasi membanggakan yang diraih oleh siswa-siswi SMPN 5 Cibeber melalui dedikasi belajar, sportivitas, dan bimbingan terarah dewan guru.
+              </p>
+            )}
+          </div>
+
+          {/* Thumbnail Strip Koleksi Foto (Jika > 1 Foto) */}
+          {photos.length > 1 && (
+            <div className="pt-2">
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                Koleksi Piagam &amp; Dokumentasi ({photos.length} Foto):
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {photos.map((pUrl, pIdx) => {
+                  const isActive = pIdx === activePhotoIndex;
+                  return (
+                    <button
+                      key={`${pUrl}-${pIdx}`}
+                      type="button"
+                      onClick={() => {
+                        if (isActive) {
+                          onOpenLightbox(item, pIdx);
+                        } else {
+                          setActivePhotoIndex(pIdx);
+                        }
+                      }}
+                      className={`relative h-12 w-16 sm:h-14 sm:w-20 rounded-xl overflow-hidden border-2 transition-all shadow-2xs group/thumb cursor-pointer ${
+                        isActive
+                          ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105'
+                          : 'border-slate-200 hover:border-[#1E5631] opacity-75 hover:opacity-100'
+                      }`}
+                      title={isActive ? `Buka foto ${pIdx + 1} layar penuh` : `Tampilkan foto ${pIdx + 1}`}
+                    >
+                      <Image
+                        src={pUrl}
+                        alt={`Foto ${pIdx + 1}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover/thumb:bg-transparent transition-colors" />
+                      <span
+                        className={`absolute bottom-1 right-1 text-[9px] font-bold px-1 rounded ${
+                          isActive
+                            ? 'bg-amber-500 text-slate-950 font-extrabold'
+                            : 'bg-black/70 text-white'
+                        }`}
+                      >
+                        #{pIdx + 1}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Bar Informasi & Validasi Sederhana */}
+        <div className="pt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 text-xs">
+          <div className="inline-flex items-center gap-1.5 text-slate-500 font-medium">
+            <CheckCircle size={15} weight="fill" className="text-emerald-600" />
+            <span>Dokumentasi Resmi Sekolah • {item.year}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onOpenLightbox(item, activePhotoIndex)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
+            >
+              <Images size={14} weight="bold" />
+              <span>Lihat Semua Foto ({photos.length})</span>
+            </button>
+
+            <button
+              onClick={() => onShare(item)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer"
+              title="Bagikan kabar prestasi ini"
+            >
+              <ShareNetwork size={15} />
+              <span>Bagikan</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+// =============================================================================
+// SUB-KOMPONEN: GRID CARD PRESTASI (DENGAN LIVE ROTATING IMAGE)
+// =============================================================================
+function AchievementGridCard({
+  item,
+  index,
+  onOpenLightbox,
+}: {
+  item: AchievementItem;
+  index: number;
+  onOpenLightbox: (item: AchievementItem, photoIndex: number) => void;
+}) {
+  const meta = getAchievementMeta(item);
+  const photos = getAchievementPhotos(item);
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-rotate live image dengan timing berjenjang (3.2s, 3.8s, 4.4s) agar organik
+  useEffect(() => {
+    if (photos.length <= 1 || isHovered) return;
+    const interval = 3200 + ((index % 3) * 600);
+    const timer = setInterval(() => {
+      setActivePhotoIndex((prev) => (prev + 1) % photos.length);
+    }, interval);
+    return () => clearInterval(timer);
+  }, [photos.length, isHovered, index]);
+
+  return (
+    <article
+      id={item.id}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group"
+    >
+      <div>
+        {/* Thumbnail Foto Sinematik (Live Rotating Image) */}
+        <div
+          onClick={() => onOpenLightbox(item, activePhotoIndex)}
+          className="relative aspect-16/10 w-full bg-slate-900 overflow-hidden cursor-pointer"
+          title="Klik untuk melihat foto dokumentasi layar penuh"
+        >
+          {photos.map((src, idx) => (
+            <Image
+              key={`${src}-${idx}`}
+              src={src}
+              alt={`${item.title} - Foto ${idx + 1}`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className={`object-cover transition-all duration-700 ease-in-out group-hover:scale-105 ${
+                idx === activePhotoIndex
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-105 pointer-events-none'
+              }`}
+            />
+          ))}
+          {/* Badge Tahun & Tingkat */}
+          <div className="absolute top-3 left-3 z-10 pointer-events-none">
+            <span className="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20">
+              {item.year} • {meta.levelLabel}
+            </span>
+          </div>
+        </div>
+
+        {/* Konten Kartu */}
+        <div className="p-5 space-y-3">
+          <div className="space-y-1.5">
+            <h4
+              onClick={() => onOpenLightbox(item, activePhotoIndex)}
+              className="text-base font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors leading-snug cursor-pointer"
+            >
+              {item.title}
+            </h4>
+
+            <div className="text-xs text-slate-600 leading-relaxed line-clamp-3">
+              {item.description ? (
+                <p>{item.description}</p>
+              ) : (
+                <p className="text-slate-400 italic">
+                  Prestasi resmi yang diraih dalam kejuaraan {meta.levelLabel.toLowerCase()}.
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Mini Thumbnail Strip (Jika > 1 Foto) */}
+          {photos.length > 1 && (
+            <div className="pt-2">
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                Dokumentasi ({photos.length} Foto):
+              </p>
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                {photos.map((pUrl, pIdx) => {
+                  const isActive = pIdx === activePhotoIndex;
+                  return (
+                    <button
+                      key={`${pUrl}-${pIdx}`}
+                      type="button"
+                      onClick={() => {
+                        if (isActive) {
+                          onOpenLightbox(item, pIdx);
+                        } else {
+                          setActivePhotoIndex(pIdx);
+                        }
+                      }}
+                      className={`relative h-9 w-12 rounded-lg overflow-hidden border transition-all shrink-0 cursor-pointer ${
+                        isActive
+                          ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105'
+                          : 'border-slate-200 hover:border-[#1E5631] opacity-70 hover:opacity-100'
+                      }`}
+                      title={isActive ? `Buka foto ${pIdx + 1} layar penuh` : `Tampilkan foto ${pIdx + 1}`}
+                    >
+                      <Image
+                        src={pUrl}
+                        alt={`Mini ${pIdx + 1}`}
+                        fill
+                        sizes="48px"
+                        className="object-cover"
+                      />
+                      {isActive && (
+                        <span className="absolute bottom-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-amber-400" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Footer Card Bersih */}
+      <div className="px-5 pb-5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2 text-[11px]">
+        <span className="text-slate-400 font-medium">
+          SMPN 5 Cibeber • {item.year}
+        </span>
+
+        <button
+          onClick={() => onOpenLightbox(item, activePhotoIndex)}
+          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
+        >
+          <Images size={12} weight="bold" />
+          <span>{photos.length > 1 ? `${photos.length} Foto` : 'Lihat'}</span>
+        </button>
+      </div>
+    </article>
+  );
 }
 
 export default function PrestasiArticleList({
@@ -353,167 +683,25 @@ export default function PrestasiArticleList({
           {/* ========================================================================= */}
           {/* 1. SOROTAN PRESTASI UTAMA (FEATURED SHOWCASE - LANGSUNG TERBACA UTUH)     */}
           {/* ========================================================================= */}
+          {/* ========================================================================= */}
+          {/* 1. SOROTAN PRESTASI UTAMA (FEATURED SHOWCASE DENGAN LIVE IMAGE)           */}
+          {/* ========================================================================= */}
           {featuredItem && (
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#1E5631]">
                 <Trophy size={16} weight="duotone" className="text-amber-500" />
                 <span>Sorotan Prestasi Utama</span>
               </div>
-
-              {(() => {
-                const meta = getAchievementMeta(featuredItem);
-                const photos = getAchievementPhotos(featuredItem);
-
-                return (
-                  <article
-                    id={featuredItem.id}
-                    className="relative overflow-hidden bg-white border border-slate-200/90 rounded-3xl shadow-2xs hover:shadow-md transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 group"
-                  >
-                    {/* Visual Cover Feature (Bisa Diklik Langsung untuk Buka Lightbox) */}
-                    <div
-                      onClick={() => openLightbox(featuredItem, 0)}
-                      className="relative lg:col-span-5 min-h-[220px] sm:min-h-[280px] lg:min-h-[340px] bg-slate-900 overflow-hidden cursor-pointer"
-                      title="Klik untuk membuka galeri foto dokumentasi"
-                    >
-                      <Image
-                        src={photos[0]}
-                        alt={featuredItem.title}
-                        fill
-                        priority
-                        sizes="(max-width: 1024px) 100vw, 42vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                      {/* Pill Status Bersih di Foto */}
-                      <div className="absolute top-4 left-4 flex items-center gap-2 z-10">
-                        <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-amber-300 text-xs font-bold border border-white/20">
-                          {meta.rankLabel}
-                        </span>
-                      </div>
-
-                      {/* Indikator Multi-Foto Kanan Atas */}
-                      {photos.length > 1 && (
-                        <div className="absolute top-4 right-4 z-10">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold border border-white/20 shadow-xs">
-                            <Images size={13} weight="bold" className="text-amber-300" />
-                            <span>{photos.length} Foto</span>
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="absolute bottom-4 left-4 right-4 z-10 text-white flex items-center justify-between">
-                        <span className="text-xs text-slate-300 font-medium">
-                          {meta.levelLabel} • Tahun {featuredItem.year}
-                        </span>
-                        <span className="text-[11px] text-amber-300 font-semibold group-hover:underline flex items-center gap-1">
-                          <span>Buka Foto</span>
-                          <CaretRight size={12} weight="bold" />
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Konten Terbaca Langsung */}
-                    <div className="lg:col-span-7 p-6 sm:p-8 lg:p-9 flex flex-col justify-between space-y-5">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-bold tracking-wider uppercase text-emerald-800">
-                            {meta.category}
-                          </span>
-                          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#1E5631] border border-emerald-100">
-                            {meta.levelLabel}
-                          </span>
-                        </div>
-
-                        <h2
-                          onClick={() => openLightbox(featuredItem, 0)}
-                          className="text-2xl sm:text-3xl font-serif-academic font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors leading-snug cursor-pointer"
-                        >
-                          {featuredItem.title}
-                        </h2>
-
-                        {/* Uraian Lengkap Langsung Terbaca Elegan */}
-                        <div className="text-sm text-slate-600 leading-relaxed space-y-2.5">
-                          {featuredItem.description ? (
-                            featuredItem.description.split(/\r?\n/).map((par, idx) => (
-                              <p key={idx} className="text-slate-600 leading-relaxed">
-                                {par}
-                              </p>
-                            ))
-                          ) : (
-                            <p className="text-slate-600 leading-relaxed">
-                              Raihan prestasi membanggakan yang diraih oleh siswa-siswi SMPN 5 Cibeber melalui dedikasi belajar, sportivitas, dan bimbingan terarah dewan guru.
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Thumbnail Strip Koleksi Foto (Jika > 1 Foto) */}
-                        {photos.length > 1 && (
-                          <div className="pt-2">
-                            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
-                              Koleksi Piagam &amp; Dokumentasi ({photos.length} Foto):
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {photos.map((pUrl, pIdx) => (
-                                <button
-                                  key={pIdx}
-                                  onClick={() => openLightbox(featuredItem, pIdx)}
-                                  className="relative h-12 w-16 sm:h-14 sm:w-20 rounded-xl overflow-hidden border-2 border-slate-200 hover:border-[#1E5631] transition-all hover:scale-105 shadow-2xs group/thumb cursor-pointer"
-                                  title={`Buka foto ${pIdx + 1}`}
-                                >
-                                  <Image
-                                    src={pUrl}
-                                    alt={`Foto ${pIdx + 1}`}
-                                    fill
-                                    sizes="80px"
-                                    className="object-cover"
-                                  />
-                                  <div className="absolute inset-0 bg-black/20 group-hover/thumb:bg-transparent transition-colors" />
-                                  <span className="absolute bottom-1 right-1 text-[9px] font-bold px-1 rounded bg-black/70 text-white">
-                                    #{pIdx + 1}
-                                  </span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Bar Informasi & Validasi Sederhana */}
-                      <div className="pt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 text-xs">
-                        <div className="inline-flex items-center gap-1.5 text-slate-500 font-medium">
-                          <CheckCircle size={15} weight="fill" className="text-emerald-600" />
-                          <span>Dokumentasi Resmi Sekolah • {featuredItem.year}</span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => openLightbox(featuredItem, 0)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
-                          >
-                            <Images size={14} weight="bold" />
-                            <span>Lihat Semua Foto ({photos.length})</span>
-                          </button>
-
-                          <button
-                            onClick={() => handleShare(featuredItem)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer"
-                            title="Bagikan kabar prestasi ini"
-                          >
-                            <ShareNetwork size={15} />
-                            <span>Bagikan</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })()}
+              <FeaturedAchievementCard
+                item={featuredItem}
+                onOpenLightbox={openLightbox}
+                onShare={handleShare}
+              />
             </div>
           )}
 
           {/* ========================================================================= */}
-          {/* 2. KATALOG PRESTASI SISWA (GRID KARTU ELEGAN - LANGSUNG TERBACA)           */}
+          {/* 2. KATALOG PRESTASI SISWA (GRID KARTU DENGAN LIVE ROTATING IMAGE)          */}
           {/* ========================================================================= */}
           {remainingArticles.length > 0 && (
             <div className="space-y-6">
@@ -530,126 +718,14 @@ export default function PrestasiArticleList({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {remainingArticles.map((item) => {
-                  const meta = getAchievementMeta(item);
-                  const photos = getAchievementPhotos(item);
-
-                  return (
-                    <article
-                      key={item.id}
-                      id={item.id}
-                      className="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between group"
-                    >
-                      <div>
-                        {/* Thumbnail Foto Sinematik (Click to open Lightbox) */}
-                        <div
-                          onClick={() => openLightbox(item, 0)}
-                          className="relative aspect-16/10 w-full bg-slate-900 overflow-hidden cursor-pointer"
-                          title="Klik untuk melihat foto dokumentasi"
-                        >
-                          <Image
-                            src={photos[0]}
-                            alt={item.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-
-                          {/* Badge Tahun & Tingkat */}
-                          <div className="absolute top-3 left-3 z-10">
-                            <span className="px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20">
-                              {item.year} • {meta.levelLabel}
-                            </span>
-                          </div>
-
-                          {/* Indikator Jumlah Foto di Kanan Atas */}
-                          {photos.length > 1 && (
-                            <div className="absolute top-3 right-3 z-10">
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20 shadow-xs">
-                                <Images size={12} weight="bold" className="text-amber-300" />
-                                <span>{photos.length} Foto</span>
-                              </span>
-                            </div>
-                          )}
-
-                          {/* Rank di Bawah Foto */}
-                          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white z-10">
-                            <span className="text-xs font-bold text-amber-300 drop-shadow-xs flex items-center gap-1">
-                              <Medal size={14} weight="fill" className="text-amber-400" />
-                              <span>{meta.rankLabel}</span>
-                            </span>
-                            <span className="text-[10px] text-slate-300 bg-black/50 px-2 py-0.5 rounded backdrop-blur-xs">
-                              {meta.category}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Konten Kartu */}
-                        <div className="p-5 space-y-3">
-                          <div className="space-y-1.5">
-                            <h4
-                              onClick={() => openLightbox(item, 0)}
-                              className="text-base font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors leading-snug cursor-pointer"
-                            >
-                              {item.title}
-                            </h4>
-
-                            <div className="text-xs text-slate-600 leading-relaxed line-clamp-3">
-                              {item.description ? (
-                                <p>{item.description}</p>
-                              ) : (
-                                <p className="text-slate-400 italic">
-                                  Prestasi resmi yang diraih dalam kejuaraan {meta.levelLabel.toLowerCase()}.
-                                </p>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Mini Thumbnail Strip (Jika > 1 Foto) */}
-                          {photos.length > 1 && (
-                            <div className="pt-2 flex items-center gap-1.5 overflow-x-auto pb-1">
-                              {photos.map((pUrl, pIdx) => (
-                                <button
-                                  key={pIdx}
-                                  onClick={() => openLightbox(item, pIdx)}
-                                  className="relative h-9 w-12 rounded-lg overflow-hidden border border-slate-200 hover:border-[#1E5631] transition-all shrink-0 cursor-pointer"
-                                  title={`Foto ${pIdx + 1}`}
-                                >
-                                  <Image
-                                    src={pUrl}
-                                    alt={`Mini ${pIdx + 1}`}
-                                    fill
-                                    sizes="48px"
-                                    className="object-cover"
-                                  />
-                                </button>
-                              ))}
-                              <span className="text-[10px] text-slate-400 ml-1 shrink-0 font-medium">
-                                +{photos.length} total
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Footer Card Bersih */}
-                      <div className="px-5 pb-5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2 text-[11px]">
-                        <span className="text-slate-400 font-medium">
-                          SMPN 5 Cibeber • {item.year}
-                        </span>
-
-                        <button
-                          onClick={() => openLightbox(item, 0)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
-                        >
-                          <Images size={12} weight="bold" />
-                          <span>{photos.length > 1 ? `${photos.length} Foto` : 'Lihat'}</span>
-                        </button>
-                      </div>
-                    </article>
-                  );
-                })}
+                {remainingArticles.map((item, idx) => (
+                  <AchievementGridCard
+                    key={item.id}
+                    item={item}
+                    index={idx}
+                    onOpenLightbox={openLightbox}
+                  />
+                ))}
               </div>
             </div>
           )}

@@ -65,7 +65,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.790938640733!2d106.3265556147708!3d-6.833301695061611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e42886c787be401%3A0x446d78d9b1073d6c!2sSMP%20Negeri%205%20Cibeber!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid',
   maps_url: 'https://maps.app.goo.gl/VfLAPVfajTQ4HNCGA',
   // Hero Banners Halaman Web
-  banner_page_prestasi: '/assets/prestasi-siswa-smpn5cibeber.jpg',
+  banner_page_prestasi: '/assets/piala-prestasi-smpn5cibeber.jpg',
   banner_page_profil: '/assets/lapangan-smpn5cibeber.jpg',
   banner_page_visimisi: '/assets/visi-misi-banner-bg.jpg',
   banner_page_guru: '/assets/dewan-guru-smpn5cibeber.jpg',

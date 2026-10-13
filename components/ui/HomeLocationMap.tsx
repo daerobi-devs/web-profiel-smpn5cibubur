@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   MapPin,
@@ -15,6 +16,7 @@ interface HomeLocationMapProps {
 }
 
 export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps) {
+  const [mapInteractive, setMapInteractive] = useState(false);
   const address =
     settings.school_address ||
     'Jl. Raya Cikotok-Pasirkuray Km.05, Warungbanten, Kec. Cibeber, Kabupaten Lebak, Provinsi Banten 42394';
@@ -60,14 +62,30 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Peta Lokasi Resmi SMPN 5 Cibeber"
-                className="w-full h-full min-h-[320px]"
+                className={`w-full h-full min-h-[320px] ${
+                  mapInteractive ? 'pointer-events-auto' : 'pointer-events-none lg:pointer-events-auto'
+                }`}
               />
 
               {/* Badge Mengambang di Sudut Peta */}
-              <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-md text-xs font-bold text-slate-800 flex items-center gap-1.5 pointer-events-none">
+              <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-md text-xs font-bold text-slate-800 flex items-center gap-1.5 pointer-events-none z-10">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span>SMPN 5 Cibeber &bull; Warungbanten</span>
               </div>
+
+              {/* Mobile Gesture Guard Overlay (Cegah Scroll Trap) */}
+              {!mapInteractive && (
+                <div className="lg:hidden absolute inset-0 z-10 flex items-center justify-center bg-slate-900/10 backdrop-blur-[1px]">
+                  <button
+                    type="button"
+                    onClick={() => setMapInteractive(true)}
+                    className="px-4 py-2 rounded-full bg-white text-slate-800 text-xs font-bold shadow-lg border border-slate-200/80 flex items-center gap-1.5 active:scale-95 transition-transform cursor-pointer"
+                  >
+                    <Compass size={15} weight="bold" className="text-[#1E5631]" />
+                    <span>Ketuk untuk Geser Peta</span>
+                  </button>
+                </div>
+              )}
             </div>
           </ScrollFadeScale>
 

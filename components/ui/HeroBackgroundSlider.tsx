@@ -57,6 +57,15 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
       */}
       {activeSlides.map((slide, index) => {
         const isActive = current === index;
+        const imgUrl = (slide.image_url || '').toLowerCase();
+        const objectPosition = imgUrl.includes('gedung')
+          ? 'object-[center_28%]'
+          : imgUrl.includes('lapangan')
+          ? 'object-[center_35%]'
+          : imgUrl.includes('prestasi')
+          ? 'object-[center_35%]'
+          : 'object-center';
+
         return (
           <div
             key={slide.image_url + index}
@@ -69,7 +78,7 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
               alt={slide.title}
               fill
               priority={index === 0}
-              className={`object-cover object-center transition-transform duration-[4500ms] ease-out ${
+              className={`object-cover ${objectPosition} transition-transform duration-[4500ms] ease-out ${
                 isActive ? 'scale-100' : 'scale-103'
               }`}
               sizes="100vw"
@@ -78,7 +87,13 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
         );
       })}
 
-      {/* Foto tampil 100% alami, jernih, dan sinematik */}
+      {/* 
+        Siluet & Tint Hijau Khas SMPN 5 Cibeber:
+        Memberikan nuansa hijau institusional yang elegan dan adiwiyata,
+        menjaga foto tetap tajam & jernih sekaligus memberikan kontras tinggi bagi tipografi putih.
+      */}
+      <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-[#0b2414]/55 via-[#164325]/38 to-[#071a0e]/70" />
+      <div className="absolute inset-0 z-20 pointer-events-none bg-radial from-transparent via-[#1E5631]/20 to-[#06150b]/55" />
     </div>
   );
 }

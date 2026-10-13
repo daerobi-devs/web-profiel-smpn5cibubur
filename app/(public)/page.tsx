@@ -132,13 +132,13 @@ export default async function HomePage() {
       {/* =========================================================
           1. HERO SECTION (INSTITUTIONAL PRESTIGE & FOTO ASLI SEKOLAH)
           ========================================================= */}
-      <section className="relative overflow-hidden border-b border-slate-200/80 pt-16 pb-24 sm:pt-20 sm:pb-32 lg:pt-24 lg:pb-36 flex items-center justify-center">
+      <section className="relative overflow-hidden border-b border-slate-200/80 min-h-[72vh] sm:min-h-[78vh] lg:min-h-[84vh] py-20 sm:py-28 lg:py-36 flex items-center justify-center">
         {/* Hero Background Slider Dinamis dari Supabase */}
         <HeroBackgroundSlider slides={heroSlides} />
 
         <div className="container-site relative z-10 text-center max-w-4xl mx-auto">
           {/* Centered School Logo */}
-          <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 mx-auto drop-shadow-[0_4px_16px_rgba(255,255,255,0.95)] transition-transform hover:scale-105 duration-300">
+          <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 mx-auto drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)] transition-transform hover:scale-105 duration-300">
             <Image
               src="/assets/logo-smpn5cibeber.png"
               alt="Logo Resmi SMPN 5 Cibeber"
@@ -149,18 +149,18 @@ export default async function HomePage() {
             />
           </div>
 
-          {/* Big Bold Institutional Typography — Tebal & Tegas dengan Halo Putih Murni Anti-Samar */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] tracking-wider uppercase mt-4 leading-tight [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_20px_#fff,0_2px_8px_rgba(255,255,255,0.95)]">
+          {/* Big Bold Institutional Typography — Putih Bersih, Tegas & Berwibawa */}
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-wider uppercase mt-5 leading-tight drop-shadow-[0_3px_14px_rgba(0,0,0,0.7)]">
             {schoolName}
           </h1>
 
           {/* Golden Academic Serif Tagline */}
-          <p className="font-serif-academic text-base sm:text-xl md:text-2xl font-black text-[#B45309] italic tracking-wide mt-1.5 sm:mt-2 [text-shadow:0_0_3px_#fff,0_0_10px_#fff,0_0_18px_#fff,0_2px_6px_rgba(255,255,255,0.95)]">
+          <p className="font-serif-academic text-base sm:text-xl md:text-2xl font-bold text-amber-300 italic tracking-wide mt-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
             &ldquo;{schoolTagline}&rdquo;
           </p>
 
           {/* Institutional Sub-description */}
-          <p className="text-xs sm:text-sm md:text-base text-slate-950 max-w-2xl mx-auto mt-3 leading-relaxed font-bold [text-shadow:0_0_3px_#fff,0_0_8px_#fff,0_0_14px_#fff,0_1px_6px_rgba(255,255,255,0.95)]">
+          <p className="text-[13px] sm:text-sm md:text-base text-emerald-50/95 max-w-2xl mx-auto mt-3.5 leading-relaxed font-medium drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] px-2 sm:px-0">
             {schoolSubdesc}
           </p>
         </div>
@@ -379,17 +379,17 @@ export default async function HomePage() {
           ========================================================= */}
       {achievements.length > 0 && (
         <section className="relative overflow-hidden section-padding border-y border-emerald-950/30">
-          {/* Background Foto Asli Tim Marching Band SMPN 5 Cibeber */}
+          {/* Background Foto Asli Koleksi Piala & Piagam Prestasi SMPN 5 Cibeber */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/assets/prestasi-siswa-smpn5cibeber.jpg"
-              alt="Tim Marching Band dan Siswa Berprestasi SMPN 5 Cibeber"
+              src="/assets/piala-prestasi-smpn5cibeber.jpg"
+              alt="Koleksi Piala Kejuaraan dan Piagam Prestasi Siswa SMPN 5 Cibeber"
               fill
-              className="object-cover object-[center_40%]"
+              className="object-cover object-[center_50%]"
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/78 via-[#1E5631]/65 to-[#143e22]/88" />
-            <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/20 to-emerald-950/55" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/82 via-[#164325]/72 to-[#143e22]/90" />
+            <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/20 to-emerald-950/60" />
           </div>
 
           <div className="container-site relative z-10">

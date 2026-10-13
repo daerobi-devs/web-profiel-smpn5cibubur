@@ -196,9 +196,9 @@ export default function Navbar({ settings }: NavbarProps) {
         </div>
       </div>
 
-      {/* 2. MAIN STICKY NAVIGATION BAR */}
+      {/* 2. MAIN NAVIGATION BAR — FIXED ON MOBILE, STICKY ON DESKTOP */}
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 xl:sticky xl:top-0 transition-all duration-300 ${
           scrolled
             ? 'bg-[#1E5631]/95 backdrop-blur-md border-b border-[#164325] shadow-md shadow-emerald-950/20'
             : 'bg-[#1E5631] border-b border-[#164325]'
@@ -591,16 +591,16 @@ export default function Navbar({ settings }: NavbarProps) {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => setMobileOpen(false)}
-                className="fixed inset-0 top-[60px] sm:top-[68px] z-30 bg-[#164325]/45 backdrop-blur-xs xl:hidden"
+                className="fixed inset-0 top-[68px] sm:top-[80px] z-40 bg-[#164325]/50 backdrop-blur-xs xl:hidden"
               />
 
-              {/* Drawer Content */}
+              {/* Drawer Content — Selalu Terlihat di Layar Ponsel di Posisi Scroll Manapun */}
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute top-full left-0 right-0 z-40 bg-white border-b border-slate-200 shadow-2xl xl:hidden max-h-[calc(100dvh-4.5rem)] overflow-y-auto"
+                className="fixed top-[68px] sm:top-[80px] left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-2xl xl:hidden max-h-[calc(100dvh-4.25rem)] sm:max-h-[calc(100dvh-5rem)] overflow-y-auto"
               >
                 <div className="container-site py-4 space-y-4">
                   {/* PPDB Hero Card on Mobile (Kondisional Saklar Supabase) */}
@@ -900,6 +900,9 @@ export default function Navbar({ settings }: NavbarProps) {
           )}
         </AnimatePresence>
       </header>
+
+      {/* Spacer Kompensasi Header Fixed pada Layar Mobile & Tablet */}
+      <div className="h-[68px] sm:h-[80px] xl:hidden shrink-0" aria-hidden="true" />
     </>
   );
 }
