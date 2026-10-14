@@ -17,11 +17,12 @@ import {
   PhoneCall,
   LockSimple,
   ArrowRight,
-  MapPin,
-  Clock,
-  Phone,
   Sparkle,
   CaretDown,
+  SignIn,
+  YoutubeLogo,
+  WhatsappLogo,
+  InstagramLogo,
 } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -146,9 +147,11 @@ export default function Navbar({ settings }: NavbarProps) {
   const activeHref = activeNavLinks.find((l) => isActive(l.href))?.href ?? (currentPath === '/' ? '/' : null);
 
   const phone = settings?.school_phone || '0852-8145-9726';
-  const whatsapp = settings?.school_whatsapp || '0852-8145-9726';
+  const rawWa = settings?.school_whatsapp || '085281459726';
+  const waNumber = rawWa.replace(/[^0-9]/g, '').replace(/^0/, '62');
+  const youtubeUrl = settings?.school_youtube || 'https://www.youtube.com/@SMPNegeri5Cibeber';
+  const instagramUrl = settings?.school_instagram || 'https://instagram.com/smpn5cibeber';
   const ppdbYear = settings?.ppdb_year || '2026/2027';
-  const accreditation = settings?.school_accreditation || 'B';
   const adminUrl =
     process.env.NEXT_PUBLIC_ADMIN_PORTAL_URL ||
     process.env.NEXT_PUBLIC_APP_URL ||
@@ -160,36 +163,54 @@ export default function Navbar({ settings }: NavbarProps) {
       <div className="bg-[#143d22] text-emerald-100/90 text-[11px] sm:text-xs border-b border-emerald-900/60 hidden md:block">
         <div className="container-site">
           <div className="flex items-center justify-between h-9">
-            {/* Left: Lokasi, Jam Belajar, Telepon Resmi */}
-            <div className="flex items-center gap-5">
-              <span className="flex items-center gap-1.5 text-emerald-200/90">
-                <MapPin size={13} weight="fill" className="text-amber-400" />
-                <span>Kecamatan Cibeber, Kab. Lebak, Banten</span>
-              </span>
-              <span className="flex items-center gap-1.5 text-emerald-200/90">
-                <Clock size={13} weight="bold" className="text-emerald-300" />
-                <span>Senin – Jumat: 07.00 – 15.30 WIB</span>
+            {/* Left: Saluran Media Sosial Resmi */}
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-emerald-200/80 mr-1 hidden lg:inline font-medium">
+                Kanal Resmi:
               </span>
               <a
-                href={`tel:${phone.replace(/[^0-9]/g, '')}`}
-                className="flex items-center gap-1.5 text-emerald-200 hover:text-white transition-colors"
+                href={youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube Resmi SMP Negeri 5 Cibeber"
+                title="YouTube Resmi @SMPNegeri5Cibeber"
+                className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/10 hover:bg-[#FF0000] text-emerald-100 hover:text-white transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95"
               >
-                <Phone size={13} weight="fill" className="text-emerald-300" />
-                <span>{phone}</span>
+                <YoutubeLogo size={14} weight="fill" />
+              </a>
+              <a
+                href={`https://wa.me/${waNumber}?text=Halo%20SMPN%205%20Cibeber,%20saya%20ingin%20bertanya%20informasi%20sekolah.`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp Resmi SMP Negeri 5 Cibeber"
+                title="WhatsApp Resmi: 0852-8145-9726"
+                className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/10 hover:bg-[#25D366] text-emerald-100 hover:text-white transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95"
+              >
+                <WhatsappLogo size={14} weight="fill" />
+              </a>
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram Resmi SMP Negeri 5 Cibeber"
+                title="Instagram Resmi SMP Negeri 5 Cibeber"
+                className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/10 hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] text-emerald-100 hover:text-white transition-all duration-200 shadow-2xs hover:scale-110 active:scale-95"
+              >
+                <InstagramLogo size={14} weight="fill" />
               </a>
             </div>
 
-            {/* Right: Akses Pengelola Sekolah */}
-            <div className="flex items-center gap-4">
+            {/* Right: Akses Masuk Portal Akademik */}
+            <div className="flex items-center">
               <a
                 href={adminUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-emerald-200/90 hover:text-white transition-colors"
-                title="Pusat Kendali Portal Akademik & Superadmin"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 hover:bg-emerald-500/25 text-white text-[11px] font-medium border border-white/20 hover:border-emerald-400/40 shadow-2xs hover:shadow-xs active:scale-95 transition-all group"
+                title="Pusat Kendali Portal Akademik"
               >
-                <LockSimple size={12} weight="bold" className="text-amber-400" />
-                <span>Portal Akademik (Admin)</span>
+                <SignIn size={12} weight="bold" className="text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+                <span>Masuk Portal Akademik</span>
               </a>
             </div>
           </div>
@@ -200,8 +221,8 @@ export default function Navbar({ settings }: NavbarProps) {
       <header
         className={`fixed top-0 left-0 right-0 z-50 xl:sticky xl:top-0 transition-all duration-300 ${
           scrolled
-            ? 'bg-[#1E5631]/95 backdrop-blur-md border-b border-[#164325] shadow-md shadow-emerald-950/20'
-            : 'bg-[#1E5631] border-b border-[#164325]'
+            ? 'bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-md shadow-slate-900/5'
+            : 'bg-white border-b border-slate-200/80'
         }`}
       >
         <div className="container-site">
@@ -215,8 +236,8 @@ export default function Navbar({ settings }: NavbarProps) {
                 setSelectedPath('/');
               }}
             >
-              {/* Logo Tanpa Background Putih — Berdiri Bebas dengan Siluet Cahaya Halus */}
-              <div className="relative w-9 h-11 sm:w-11 sm:h-13 shrink-0 drop-shadow-[0_2px_10px_rgba(255,255,255,0.5)] group-hover:scale-105 transition-transform duration-200">
+              {/* Logo Tanpa Background Putih — Bersih & Natural di Atas Navbar Putih */}
+              <div className="relative w-9 h-11 sm:w-11 sm:h-13 shrink-0 drop-shadow-xs group-hover:scale-105 transition-transform duration-200">
                 <Image
                   src="/assets/logo-smpn5cibeber.png"
                   alt="Logo Resmi SMPN 5 Cibeber"
@@ -227,10 +248,10 @@ export default function Navbar({ settings }: NavbarProps) {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-base sm:text-lg lg:text-xl font-extrabold text-white tracking-tight leading-tight whitespace-nowrap">
+                <span className="text-base sm:text-lg lg:text-xl font-extrabold text-slate-900 group-hover:text-[#1E5631] transition-colors tracking-tight leading-tight whitespace-nowrap">
                   SMP NEGERI 5 CIBEBER
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-emerald-200/90 leading-none mt-1">
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.16em] uppercase text-[#1E5631] leading-none mt-1">
                   Cibeber &bull; Lebak, Banten
                 </span>
               </div>
@@ -268,15 +289,15 @@ export default function Navbar({ settings }: NavbarProps) {
                             }}
                             className={`relative flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-[13px] font-semibold tracking-wide whitespace-nowrap select-none transition-colors duration-150 z-10 cursor-pointer ${
                               isSelected
-                                ? 'text-white font-bold'
-                                : 'text-white/80 hover:text-white hover:bg-white/10'
+                                ? 'text-[#1E5631] font-bold'
+                                : 'text-slate-600 hover:text-[#1E5631] hover:bg-slate-100/70'
                             }`}
                           >
                             {/* iPhone / Apple Liquid Sliding Pill Indicator (Pindah Saat Dipencet) */}
                             {isSelected && (
                               <motion.div
                                 layoutId="navbar-active-pill"
-                                className="absolute inset-0 rounded-xl -z-10 bg-white/25 border border-white/40 shadow-sm shadow-emerald-950/20 backdrop-blur-md"
+                                className="absolute inset-0 rounded-xl -z-10 bg-[#1E5631]/10 border border-[#1E5631]/20 shadow-2xs backdrop-blur-xs"
                                 transition={{
                                   type: 'spring',
                                   stiffness: 420,
@@ -290,7 +311,7 @@ export default function Navbar({ settings }: NavbarProps) {
                               size={12}
                               weight="bold"
                               className={`relative z-10 transition-transform duration-200 ${
-                                profilOpen ? 'rotate-180 text-white' : 'text-emerald-200/80'
+                                profilOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
                               }`}
                             />
                           </Link>
@@ -366,15 +387,15 @@ export default function Navbar({ settings }: NavbarProps) {
                             }}
                             className={`relative flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-[13px] font-semibold tracking-wide whitespace-nowrap select-none transition-colors duration-150 z-10 cursor-pointer ${
                               isSelected
-                                ? 'text-white font-bold'
-                                : 'text-white/80 hover:text-white hover:bg-white/10'
+                                ? 'text-[#1E5631] font-bold'
+                                : 'text-slate-600 hover:text-[#1E5631] hover:bg-slate-100/70'
                             }`}
                           >
                             {/* iPhone / Apple Liquid Sliding Pill Indicator */}
                             {isSelected && (
                               <motion.div
                                 layoutId="navbar-active-pill"
-                                className="absolute inset-0 rounded-xl -z-10 bg-white/25 border border-white/40 shadow-sm shadow-emerald-950/20 backdrop-blur-md"
+                                className="absolute inset-0 rounded-xl -z-10 bg-[#1E5631]/10 border border-[#1E5631]/20 shadow-2xs backdrop-blur-xs"
                                 transition={{
                                   type: 'spring',
                                   stiffness: 420,
@@ -388,7 +409,7 @@ export default function Navbar({ settings }: NavbarProps) {
                               size={12}
                               weight="bold"
                               className={`relative z-10 transition-transform duration-200 ${
-                                kesiswaanOpen ? 'rotate-180 text-white' : 'text-emerald-200/80'
+                                kesiswaanOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
                               }`}
                             />
                           </Link>
@@ -455,15 +476,15 @@ export default function Navbar({ settings }: NavbarProps) {
                             }}
                             className={`relative flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-[13px] font-semibold tracking-wide whitespace-nowrap select-none transition-colors duration-150 z-10 cursor-pointer ${
                               isSelected
-                                ? 'text-white font-bold'
-                                : 'text-white/80 hover:text-white hover:bg-white/10'
+                                ? 'text-[#1E5631] font-bold'
+                                : 'text-slate-600 hover:text-[#1E5631] hover:bg-slate-100/70'
                             }`}
                           >
                             {/* iPhone / Apple Liquid Sliding Pill Indicator */}
                             {isSelected && (
                               <motion.div
                                 layoutId="navbar-active-pill"
-                                className="absolute inset-0 rounded-xl -z-10 bg-white/25 border border-white/40 shadow-sm shadow-emerald-950/20 backdrop-blur-md"
+                                className="absolute inset-0 rounded-xl -z-10 bg-[#1E5631]/10 border border-[#1E5631]/20 shadow-2xs backdrop-blur-xs"
                                 transition={{
                                   type: 'spring',
                                   stiffness: 420,
@@ -477,7 +498,7 @@ export default function Navbar({ settings }: NavbarProps) {
                               size={12}
                               weight="bold"
                               className={`relative z-10 transition-transform duration-200 ${
-                                beritaOpen ? 'rotate-180 text-white' : 'text-emerald-200/80'
+                                beritaOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
                               }`}
                             />
                           </Link>
@@ -540,15 +561,15 @@ export default function Navbar({ settings }: NavbarProps) {
                         onClick={() => setSelectedPath(link.href)}
                         className={`relative block px-3.5 py-1.5 rounded-xl text-[13px] font-semibold tracking-wide whitespace-nowrap select-none transition-colors duration-150 z-10 ${
                           isSelected
-                            ? 'text-white font-bold'
-                            : 'text-white/80 hover:text-white hover:bg-white/10'
+                            ? 'text-[#1E5631] font-bold'
+                            : 'text-slate-600 hover:text-[#1E5631] hover:bg-slate-100/70'
                         }`}
                       >
                         {/* iPhone / Apple Liquid Sliding Pill Indicator (Pindah Saat Dipencet) */}
                         {isSelected && (
                           <motion.div
                             layoutId="navbar-active-pill"
-                            className="absolute inset-0 rounded-xl -z-10 bg-white/25 border border-white/40 shadow-sm shadow-emerald-950/20 backdrop-blur-md"
+                            className="absolute inset-0 rounded-xl -z-10 bg-[#1E5631]/10 border border-[#1E5631]/20 shadow-2xs backdrop-blur-xs"
                             transition={{
                               type: 'spring',
                               stiffness: 420,
@@ -569,7 +590,7 @@ export default function Navbar({ settings }: NavbarProps) {
             <div className="flex items-center shrink-0">
               {/* Mobile Hamburger Button */}
               <button
-                className="xl:hidden p-2 sm:p-2.5 rounded-xl text-white hover:bg-white/10 transition-all duration-200 active:scale-90"
+                className="xl:hidden p-2 sm:p-2.5 rounded-xl text-slate-800 hover:text-[#1E5631] bg-slate-100/90 hover:bg-slate-200/80 border border-slate-200/90 transition-all duration-200 active:scale-90"
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Menu navigasi"
                 aria-expanded={mobileOpen}
