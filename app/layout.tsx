@@ -55,8 +55,11 @@ export const metadata: Metadata = {
   creator: 'SMP Negeri 5 Cibeber',
   publisher: 'SMP Negeri 5 Cibeber',
   icons: {
-    icon: '/assets/logo-smpn5cibeber.png',
-    shortcut: '/assets/logo-smpn5cibeber.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/assets/logo-smpn5cibeber.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
     apple: '/assets/logo-smpn5cibeber.png',
   },
   openGraph: {
