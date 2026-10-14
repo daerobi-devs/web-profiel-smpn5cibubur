@@ -39,9 +39,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const title = `${ekskul.name} — SMP Negeri 5 Cibeber`;
+  const description = ekskul.description?.slice(0, 160) || `Profil lengkap kegiatan ekstrakurikuler ${ekskul.name} di SMP Negeri 5 Cibeber.`;
+  const anyItem = ekskul as any;
+  const rawCover = anyItem.coverImage || anyItem.cover_image || anyItem.bannerImage || anyItem.banner_image;
+  const fullCoverUrl = rawCover
+    ? (rawCover.startsWith('http') ? rawCover : `https://smpn5cibeber.sch.id${rawCover}`)
+    : 'https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png';
+  const ekskulUrl = `https://smpn5cibeber.sch.id/ekstrakurikuler/${ekskul.slug}`;
+
   return {
-    title: `${ekskul.name} — Profil Ekstrakurikuler SMPN 5 Cibeber`,
-    description: ekskul.description?.slice(0, 160) || `Profil lengkap kegiatan ekstrakurikuler ${ekskul.name} di SMP Negeri 5 Cibeber.`,
+    title,
+    description,
+    alternates: {
+      canonical: ekskulUrl,
+    },
+    openGraph: {
+      type: 'article',
+      locale: 'id_ID',
+      url: ekskulUrl,
+      siteName: 'SMP Negeri 5 Cibeber',
+      title: ekskul.name,
+      description,
+      images: [
+        {
+          url: fullCoverUrl,
+          width: 1200,
+          height: 630,
+          alt: ekskul.name,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: ekskul.name,
+      description,
+      images: [fullCoverUrl],
+    },
   };
 }
 

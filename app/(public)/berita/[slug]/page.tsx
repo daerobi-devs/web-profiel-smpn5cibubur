@@ -12,9 +12,45 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
   if (!article) return { title: 'Berita Tidak Ditemukan — SMPN 5 Cibeber' };
+
+  const title = `${article.title} — SMP Negeri 5 Cibeber`;
+  const cleanDescription = (article.excerpt || article.content || '').replace(/<[^>]*>?/gm, '').slice(0, 160).trim();
+  const rawImage = article.image_url;
+  const fullImageUrl = rawImage
+    ? (rawImage.startsWith('http') ? rawImage : `https://smpn5cibeber.sch.id${rawImage}`)
+    : 'https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png';
+  const articleUrl = `https://smpn5cibeber.sch.id/berita/${article.slug}`;
+
   return {
-    title: `${article.title} — SMPN 5 Cibeber`,
-    description: article.excerpt || undefined,
+    title,
+    description: cleanDescription,
+    alternates: {
+      canonical: articleUrl,
+    },
+    openGraph: {
+      type: 'article',
+      locale: 'id_ID',
+      url: articleUrl,
+      siteName: 'SMP Negeri 5 Cibeber',
+      title: article.title,
+      description: cleanDescription,
+      publishedTime: article.published_at || article.created_at,
+      authors: [article.author || 'SMP Negeri 5 Cibeber'],
+      images: [
+        {
+          url: fullImageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: cleanDescription,
+      images: [fullImageUrl],
+    },
   };
 }
 

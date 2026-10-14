@@ -69,19 +69,19 @@ export const metadata: Metadata = {
       'Portal informasi resmi SMP Negeri 5 Cibeber, Kab. Lebak, Banten. Membina budi pekerti, keunggulan akademik, kelestarian lingkungan hidup, dan penguasaan teknologi.',
     images: [
       {
-        url: '/assets/gedung-smpn5cibeber.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Gedung Resmi SMP Negeri 5 Cibeber',
+        url: 'https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png',
+        width: 512,
+        height: 512,
+        alt: 'Logo Resmi SMP Negeri 5 Cibeber',
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'SMP Negeri 5 Cibeber — The Inspiring School of Cibeber',
     description:
       'Portal informasi resmi SMP Negeri 5 Cibeber, Kab. Lebak, Banten. Membina budi pekerti, keunggulan akademik, kelestarian lingkungan hidup, dan penguasaan teknologi.',
-    images: ['/assets/gedung-smpn5cibeber.jpg'],
+    images: ['https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png'],
   },
   robots: {
     index: true,
