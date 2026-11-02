@@ -2,11 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  ArrowRight,
-  Clock,
-  User,
-} from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 import { ekskulData } from '@/lib/ekskul-data';
 import { ScrollFadeUp, ScrollStaggerContainer, ScrollStaggerItem } from '@/components/ui/motion';
 
@@ -15,39 +11,36 @@ interface HomeEkskulShowcaseProps {
 }
 
 export default function HomeEkskulShowcase({ items }: HomeEkskulShowcaseProps) {
-  // Ambil 3 ekskul unggulan dari props Supabase atau fallback lokal
+  // Ambil 3 ekskul unggulan dari props Supabase atau fallback lokal (Alur CMS tetap 100% utuh)
   const sourceData = items && items.length > 0 ? items : ekskulData;
   const featuredEkskul = sourceData.slice(0, 3);
 
   return (
-    <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC] border-t border-slate-200/80">
+    <section className="relative overflow-hidden section-padding bg-white border-t border-slate-200/80">
       <div className="container-site relative z-10">
-        {/* Section Header */}
-        <ScrollFadeUp delay={0.05} duration={0.7}>
+        {/* Section Header Tanpa Eyebrow Berulang */}
+        <ScrollFadeUp delay={0.05} duration={0.6}>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-4">
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#1E5631] mb-1">
-                <span>Bakat &bull; Karakter &bull; Prestasi Siswa</span>
-              </div>
-              <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
-                Ekstrakurikuler &amp; Pembinaan Bakat Siswa
+              <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
+                Ekstrakurikuler &amp; Pembinaan Bakat
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mt-1.5 leading-relaxed">
-                Membentuk generasi pembelajar yang berjiwa pemimpin, menjunjung tinggi sportivitas, mencintai seni budaya Sunda, dan berwawasan lingkungan hidup.
+              <p className="text-xs sm:text-sm text-slate-600 max-w-xl mt-2 leading-relaxed">
+                Kegiatan rutin mingguan untuk melatih kemandirian, kepanduan Pramuka, olahraga, dan pelestarian seni tradisi siswa.
               </p>
             </div>
             <Link
               href="/ekstrakurikuler"
               className="shrink-0 text-xs sm:text-sm font-bold text-[#1E5631] hover:text-[#164325] inline-flex items-center gap-1.5 transition-colors group"
             >
-              <span>Lihat Seluruh {sourceData.length} Ekstrakurikuler</span>
-              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+              <span>Seluruh {sourceData.length} Kegiatan Ekskul</span>
+              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         </ScrollFadeUp>
 
-        {/* 3 Grid Card Minimalis & Elegan */}
-        <ScrollStaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8" stagger={0.12} delay={0.1}>
+        {/* 3 Kolom Bersih: Tanpa Badge di Atas Foto & Tanpa Quote Motto Buatan AI */}
+        <ScrollStaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7" stagger={0.08} delay={0.05}>
           {featuredEkskul.map((item) => {
             const imgSrc = item.cover_image || item.image || '/assets/gedung-smpn5cibeber.jpg';
             const catLabel = item.category_label || item.category || 'Ekstrakurikuler';
@@ -58,59 +51,49 @@ export default function HomeEkskulShowcase({ items }: HomeEkskulShowcaseProps) {
               <ScrollStaggerItem key={item.id} className="flex">
                 <Link
                   href={`/ekstrakurikuler/${item.slug || item.id}`}
-                  className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-[#1E5631]/40 shadow-xs hover:shadow-lg transition-all duration-300 w-full cursor-pointer active:scale-[0.99]"
+                  className="group flex flex-col bg-[#F8FAFC] rounded-xl overflow-hidden border border-slate-200/90 hover:border-slate-300 transition-colors duration-200 w-full"
                 >
-                  {/* Visual Cover Bersih */}
-                  <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-900">
+                  {/* Visual Cover Murni Tanpa Overlay Gelap atau Floating Pill */}
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 border-b border-slate-200/70">
                     <Image
                       src={imgSrc}
                       alt={item.name}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80" />
-
-                    {/* Kategori Badge Minimalis di Pojok Kiri Atas */}
-                    <div className="absolute top-3.5 left-3.5">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-white/95 text-slate-800 shadow-sm backdrop-blur-xs">
-                        {catLabel}
-                      </span>
-                    </div>
                   </div>
 
-                  {/* Konten Teks Tenang & Bernapas */}
-                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+                  {/* Konten Teks Ringkas & Fungsional */}
+                  <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                     <div>
-                      <h3 className="font-serif-academic text-lg sm:text-xl font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors line-clamp-1">
+                      <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500 mb-1.5">
+                        <span className="text-[#1E5631] font-bold uppercase tracking-wider">
+                          {catLabel}
+                        </span>
+                        <span>&middot;</span>
+                        <span className="truncate">{scheduleText}</span>
+                      </div>
+
+                      <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors leading-snug">
                         {item.name}
                       </h3>
 
-                      {item.motto && (
-                        <p className="text-xs text-amber-700 italic font-medium mt-1 line-clamp-1">
-                          &ldquo;{item.motto}&rdquo;
-                        </p>
-                      )}
-
-                      <p className="text-xs text-slate-600 mt-2 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
                         {item.description}
                       </p>
                     </div>
 
-                    {/* Metadata Bersih: Jadwal, Pembina, & Link Navigasi */}
-                    <div className="pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-500">
-                      <div className="flex items-center gap-2">
-                        <Clock size={13} weight="bold" className="text-slate-400 shrink-0" />
-                        <span className="truncate">{scheduleText}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <User size={13} weight="bold" className="text-slate-400 shrink-0" />
-                        <span className="truncate">Pembina: {coachName}</span>
-                      </div>
-                      <div className="pt-1 flex items-center gap-1.5 font-bold text-[#1E5631] group-hover:gap-2.5 transition-all">
-                        <span>Jelajahi Profil Ekskul</span>
-                        <ArrowRight size={13} weight="bold" />
-                      </div>
+                    {/* Footer Pembina Sebaris */}
+                    <div className="pt-3 border-t border-slate-200/80 flex items-center justify-between gap-2 text-xs">
+                      <span className="text-slate-500 truncate">
+                        Pembina: <strong className="font-semibold text-slate-700">{coachName}</strong>
+                      </span>
+                      <ArrowRight
+                        size={14}
+                        weight="bold"
+                        className="text-slate-400 group-hover:text-[#1E5631] group-hover:translate-x-0.5 transition-all shrink-0"
+                      />
                     </div>
                   </div>
                 </Link>

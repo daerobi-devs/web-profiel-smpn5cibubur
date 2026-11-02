@@ -42,19 +42,13 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
 
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % activeSlides.length);
-    }, 4500);
+    }, 5200);
 
     return () => clearInterval(timer);
   }, [activeSlides.length]);
 
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden bg-slate-900">
-      {/* 
-        Zero-Flash Seamless Crossfade:
-        Semua foto tetap terpasang (mounted) di DOM secara permanen.
-        Foto aktif berada di layer zIndex 10 dengan transisi opacity 900ms.
-        TIDAK ADA jeda kosong, dan TIDAK ADA kedipan putih sama sekali!
-      */}
+    <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden bg-slate-950">
       {activeSlides.map((slide, index) => {
         const isActive = current === index;
         const imgUrl = (slide.image_url || '').toLowerCase();
@@ -69,7 +63,7 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
         return (
           <div
             key={slide.image_url + index}
-            className={`absolute inset-0 transition-opacity duration-900 ease-in-out ${
+            className={`absolute inset-0 transition-opacity duration-1000 ease-out ${
               isActive ? 'opacity-100 z-10' : 'opacity-0 z-5'
             }`}
           >
@@ -78,22 +72,15 @@ export default function HeroBackgroundSlider({ slides }: HeroBackgroundSliderPro
               alt={slide.title}
               fill
               priority={index === 0}
-              className={`object-cover ${objectPosition} transition-transform duration-[4500ms] ease-out ${
-                isActive ? 'scale-100' : 'scale-103'
-              }`}
+              className={`object-cover ${objectPosition}`}
               sizes="100vw"
             />
           </div>
         );
       })}
 
-      {/* 
-        Siluet & Tint Hijau Khas SMPN 5 Cibeber:
-        Memberikan nuansa hijau institusional yang elegan dan adiwiyata,
-        menjaga foto tetap tajam & jernih sekaligus memberikan kontras tinggi bagi tipografi putih.
-      */}
-      <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-[#0b2414]/55 via-[#164325]/38 to-[#071a0e]/70" />
-      <div className="absolute inset-0 z-20 pointer-events-none bg-radial from-transparent via-[#1E5631]/20 to-[#06150b]/55" />
+      {/* Scrim Fotografi Natural: menjaga warna asli foto sekolah tetap jernih tanpa membuat latar belakang keruh */}
+      <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-slate-950/60 via-slate-950/42 to-[#091e10]/80" />
     </div>
   );
 }

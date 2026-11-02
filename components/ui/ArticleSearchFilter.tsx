@@ -4,18 +4,16 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  MagnifyingGlass,
   X,
-  CalendarBlank,
-  User,
   ArrowRight,
   Newspaper,
   Funnel,
 } from '@phosphor-icons/react';
 import { formatDateShort } from '@/lib/utils';
-import { motion, AnimatePresence } from 'motion/react';
 import NewsSidebar, { type CategoryCountItem } from './NewsSidebar';
-import { ScrollFadeUp } from './motion';
+import { getArticleCategory, getArticleCover } from '@/lib/articleUtils';
+
+export { getArticleCategory, getArticleCover } from '@/lib/articleUtils';
 
 export type ArticleItem = {
   id: string;
@@ -33,15 +31,10 @@ type ArticleSearchFilterProps = {
   articles: ArticleItem[];
 };
 
-// Helper functions imported from shared lib/articleUtils
-export { getArticleCategory, getArticleCover } from '@/lib/articleUtils';
-import { getArticleCategory, getArticleCover } from '@/lib/articleUtils';
-
 export default function ArticleSearchFilter({ articles }: ArticleSearchFilterProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('SEMUA');
 
-  // Menghitung jumlah per kategori untuk Sidebar
   const categoriesList: CategoryCountItem[] = useMemo(() => {
     const counts: Record<string, number> = {
       'Semua Berita': articles.length,
@@ -67,7 +60,6 @@ export default function ArticleSearchFilter({ articles }: ArticleSearchFilterPro
       .map(([name, count]) => ({ name, count }));
   }, [articles]);
 
-  // Filtered List
   const filtered = useMemo(() => {
     return articles.filter((a) => {
       const cat = getArticleCategory(a.title, a.slug);
@@ -101,12 +93,11 @@ export default function ArticleSearchFilter({ articles }: ArticleSearchFilterPro
           KOLOM KIRI: GRID 2-KOLOM KARTU BERITA (8 KOLOM)
           ========================================================= */}
       <section className="lg:col-span-8 space-y-6">
-        {/* Status Filter / Active Indicator Bar */}
         {(selectedCategory !== 'SEMUA' && selectedCategory !== 'Semua Berita') ||
         searchQuery ? (
-          <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-slate-200/90 flex flex-wrap items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
-              <Funnel size={14} weight="bold" className="text-[#D97706]" />
+              <Funnel size={14} weight="bold" className="text-[#1E5631]" />
               <span className="text-slate-600">
                 Menampilkan{' '}
                 <strong className="text-slate-900">{filtered.length}</strong>{' '}
@@ -125,7 +116,7 @@ export default function ArticleSearchFilter({ articles }: ArticleSearchFilterPro
                   <span>
                     {' '}
                     dengan kata kunci{' '}
-                    <span className="font-bold text-[#D97706]">
+                    <span className="font-bold text-[#B45309]">
                       &quot;{searchQuery}&quot;
                     </span>
                   </span>
@@ -147,16 +138,14 @@ export default function ArticleSearchFilter({ articles }: ArticleSearchFilterPro
           </div>
         ) : null}
 
-        {/* Empty State */}
         {filtered.length === 0 ? (
-          <div className="card text-center py-16 px-6 bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl shadow-xs space-y-3">
-            <Newspaper size={48} className="mx-auto text-slate-300" />
-            <h3 className="font-serif-academic font-bold text-slate-800 text-lg">
+          <div className="text-center py-16 px-6 bg-white border border-slate-200/90 rounded-2xl space-y-3">
+            <Newspaper size={44} className="mx-auto text-slate-300" />
+            <h3 className="font-bold text-slate-800 text-base">
               Tidak Ada Warta yang Sesuai
             </h3>
             <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
-              Tidak ditemukan artikel untuk kata kunci atau kategori yang
-              dipilih. Silakan coba kata kunci lain.
+              Tidak ditemukan artikel untuk kata kunci atau kategori yang dipilih. Silakan coba kata kunci lain.
             </p>
             <div className="pt-2">
               <button
@@ -165,14 +154,13 @@ export default function ArticleSearchFilter({ articles }: ArticleSearchFilterPro
                   setSelectedCategory('SEMUA');
                   setSearchQuery('');
                 }}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E5631] text-white text-xs font-bold shadow-xs hover:bg-[#164325] transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E5631] text-white text-xs font-bold hover:bg-[#164325] transition-all cursor-pointer"
               >
                 Tampilkan Semua Berita
               </button>
             </div>
           </div>
         ) : (
-          /* Grid 2 Kolom Kartu Berita (Sesuai Foto Referensi) */
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {filtered.map((article) => {
               const coverUrl = getArticleCover(article);
@@ -180,49 +168,43 @@ export default function ArticleSearchFilter({ articles }: ArticleSearchFilterPro
               const pubDate = article.publishedAt
                 ? new Date(article.publishedAt)
                 : new Date(article.createdAt);
-              const authorName = article.author || 'Administrator';
+              const authorName = article.author || 'Humas SMPN 5 Cibeber';
 
               return (
                 <article
                   key={article.id}
-                  className="group flex flex-col bg-white rounded-2xl border border-slate-200/90 hover:border-slate-300 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  className="group flex flex-col bg-white rounded-2xl border border-slate-200/90 hover:border-[#1E5631]/40 overflow-hidden shadow-xs hover:shadow-md transition-all duration-300"
                 >
-                  {/* Foto Sampul dengan Badge Kategori di Pojok Kiri Atas */}
+                  {/* Foto Sampul Bersih Tanpa Floating Pill di Atas Foto */}
                   <Link
                     href={`/berita/${article.slug}`}
-                    className="relative aspect-16/10 w-full bg-slate-100 overflow-hidden block"
+                    className="relative aspect-16/10 w-full bg-slate-100 overflow-hidden block border-b border-slate-100"
                   >
                     <Image
                       src={coverUrl}
                       alt={article.title}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
-
-                    {/* Badge Kategori Biru/Hijau seperti di Foto */}
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase bg-[#1E5631] text-white shadow-xs backdrop-blur-xs">
-                        {category}
-                      </span>
-                    </div>
                   </Link>
 
                   {/* Isi Konten Kartu */}
                   <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                     <div className="space-y-2">
-                      {/* Baris Metadata: Tanggal | Penulis */}
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400">
-                        <CalendarBlank size={13} className="text-slate-400 shrink-0" />
-                        <span>{formatDateShort(pubDate)}</span>
-                        <span className="text-slate-300">&bull;</span>
-                        <User size={13} className="text-slate-400 shrink-0" />
+                      {/* Baris Metadata Terstruktur: Kategori · Tanggal · Penulis */}
+                      <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-slate-500">
+                        <span className="font-bold uppercase tracking-wider text-[#1E5631]">
+                          {category}
+                        </span>
+                        <span className="text-slate-300">&middot;</span>
+                        <time className="tabular-nums">{formatDateShort(pubDate)}</time>
+                        <span className="text-slate-300">&middot;</span>
                         <span className="truncate">{authorName}</span>
                       </div>
 
-                      {/* Judul Berita Tebal & Tegas (Biru/Hijau Tua) */}
-                      <h2 className="font-serif-academic text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors leading-snug line-clamp-2">
+                      {/* Judul Berita Sans-Serif Bold */}
+                      <h2 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors leading-snug line-clamp-2">
                         <Link href={`/berita/${article.slug}`}>
                           {article.title}
                         </Link>
@@ -230,19 +212,19 @@ export default function ArticleSearchFilter({ articles }: ArticleSearchFilterPro
 
                       {/* Ringkasan Singkat (Excerpt) */}
                       {article.excerpt && (
-                        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                        <p className="text-xs sm:text-[13px] text-slate-600 line-clamp-2 leading-relaxed">
                           {article.excerpt}
                         </p>
                       )}
                     </div>
 
-                    {/* Tombol Aksi di Bawah Kartu: Baca Selengkapnya → */}
+                    {/* Tombol Aksi di Bawah Kartu */}
                     <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                       <Link
                         href={`/berita/${article.slug}`}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-[#D97706] hover:text-[#B45309] transition-all group-hover:gap-2"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E5631] hover:text-[#164325] transition-all group-hover:gap-2"
                       >
-                        <span>Baca Selengkapnya</span>
+                        <span>Baca Artikel</span>
                         <ArrowRight size={13} weight="bold" />
                       </Link>
                     </div>

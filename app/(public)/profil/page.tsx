@@ -1,278 +1,215 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  ShieldCheck,
-  HourglassHigh,
-  Target,
-  Users,
-  ArrowRight,
-  Sparkle,
-  CheckCircle,
-  Building,
-  GraduationCap,
-  MapPin,
-  Clock,
-  Phone,
-  Envelope,
-} from '@phosphor-icons/react/dist/ssr';
+import { ArrowRight } from '@phosphor-icons/react/dist/ssr';
 import type { Metadata } from 'next';
 import { getWebSettings } from '@/lib/supabaseData';
 
 export const metadata: Metadata = {
-  title: 'Profil Lengkap Lembaga | SMPN 5 Cibeber',
+  title: 'Profil Satuan Pendidikan | SMP Negeri 5 Cibeber',
   description:
-    'Profil resmi SMP Negeri 5 Cibeber: sejarah pendirian, visi misi, arah kebijakan pendidikan, direktori dewan guru, dan data pokok satuan pendidikan.',
+    'Profil resmi SMP Negeri 5 Cibeber: identitas pokok satuan pendidikan, sejarah pendirian, visi misi, serta direktori dewan guru dan tenaga kependidikan.',
 };
 
 export default async function ProfilPage() {
   const settings = await getWebSettings();
 
-  const portalCards = [
+  const schoolName = settings.school_name || 'SMP Negeri 5 Cibeber';
+  const npsn = settings.school_npsn || '20607865';
+  const accreditation = settings.school_accreditation || 'B';
+  const address =
+    settings.school_address ||
+    'Jl. Raya Cikotok-Pasirkuray Km.05, Warungbanten, Kec. Cibeber, Kabupaten Lebak, Provinsi Banten 42394';
+  const email = settings.school_email || 'smpnlimacibeber@yahoo.com';
+  const phone = settings.school_phone || '0852-8145-9726';
+  const headmaster = settings.headmaster_name || 'Adang Restuwardani, S.Pd';
+
+  const portalSections = [
     {
-      title: 'Sejarah Sekolah',
-      subtitle: 'Jejak Langkah & Kiprah',
-      desc: 'Mengenal perjalanan dedikasi para tokoh masyarakat dan pemerintah mendirikan sarana belajar mandiri di Warungbanten hingga era modern.',
+      num: '01',
+      title: 'Sejarah Pendirian',
+      desc: 'Catatan pendirian sekolah sejak tahun 2004 di Desa Warungbanten hingga perkembangan sarana pembelajaran saat ini.',
       image: '/assets/gedung-smpn5cibeber.jpg',
       href: '/profil/sejarah',
-      cta: 'Baca Sejarah Lengkap',
-      badge: 'Jejak Langkah',
-      icon: HourglassHigh,
+      cta: 'Baca Sejarah Sekolah',
     },
     {
-      title: 'Visi & Misi',
-      subtitle: 'Cita-Cita & Arah Kebijakan',
-      desc: 'Landasan filosofis, 4 pilar insan pembelajar unggul, serta 6 misi strategis pembentukan karakter berakhlak mulia dan terampil digital.',
+      num: '02',
+      title: 'Visi, Misi & Tujuan',
+      desc: 'Rumusan visi satuan pendidikan, enam misi penyelenggaraan pembelajaran, dan sasaran pembinaan peserta didik.',
       image: '/assets/lapangan-smpn5cibeber.jpg',
       href: '/profil/visi-misi',
-      cta: 'Pelajari Visi & Misi',
-      badge: 'Landasan Resmi',
-      icon: Target,
+      cta: 'Lihat Visi & Misi',
     },
     {
-      title: 'Dewan Guru & Staf',
-      subtitle: 'Pendidik Profesional',
-      desc: 'Direktori lengkap 12+ pendidik dan tenaga kependidikan berkualifikasi S1/S2 yang membimbing dan mendampingi potensi siswa.',
+      num: '03',
+      title: 'Dewan Guru & Tenaga Kependidikan',
+      desc: 'Daftar kepala sekolah, wakil kepala sekolah, guru mata pelajaran, serta staf tata usaha SMP Negeri 5 Cibeber.',
       image: '/assets/dewan-guru-smpn5cibeber.jpg',
       href: '/profil/guru',
-      cta: 'Lihat Direktori Guru',
-      badge: 'Tenaga Pendidik',
-      icon: Users,
+      cta: 'Buka Direktori Guru',
     },
   ];
 
-  const highlights = [
-    {
-      title: 'Akreditasi B (Baik)',
-      desc: 'Diakui resmi oleh Badan Akreditasi Nasional Sekolah/Madrasah (BAN-S/M) dengan standar mutu pendidikan teruji.',
-    },
-    {
-      title: 'Kurikulum Merdeka',
-      desc: 'Pembelajaran aktif yang berpusat pada minat bakat anak dan penguatan karakter Profil Pelajar Pancasila.',
-    },
-    {
-      title: 'Berwawasan Adiwiyata',
-      desc: 'Lingkungan sekolah asri, bersih, hijau, dan menanamkan kepedulian kelestarian alam pegunungan Banten Selatan.',
-    },
-    {
-      title: 'Literasi & TIK Digital',
-      desc: 'Dilengkapi laboratorium komputer dan sistem absensi serta e-learning terpadu untuk kesiapan era teknologi.',
-    },
+  const identityRows = [
+    { label: 'Nama Satuan Pendidikan', value: schoolName },
+    { label: 'Nomor Pokok Sekolah Nasional (NPSN)', value: npsn, mono: true },
+    { label: 'Jenjang Pendidikan', value: 'Sekolah Menengah Pertama (SMP)' },
+    { label: 'Status Satuan Pendidikan', value: 'Negeri (Pemerintah Kabupaten Lebak)' },
+    { label: 'Peringkat Akreditasi', value: `Terakreditasi ${accreditation} (BAN-S/M)` },
+    { label: 'Tahun Berdiri / Operasional', value: '2004', mono: true },
+    { label: 'Kurikulum yang Digunakan', value: 'Kurikulum Merdeka' },
+    { label: 'Kepala Sekolah', value: headmaster },
+    { label: 'Alamat Lengkap', value: address },
+    { label: 'Kontak Resmi', value: `${phone} · ${email}` },
   ];
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-      {/* Hero Banner Profil — Background Foto Lapangan & Panggung Sekolah */}
-      <section className="relative overflow-hidden text-white py-16 md:py-22 border-b border-emerald-950/20">
-        <div className="absolute inset-0 z-0 pointer-events-none select-none">
+    <div className="bg-[#F8FAFC] min-h-screen text-[#1E293B]">
+      {/* Header Halaman Editorial Rata Kiri (Tanpa Glass Pill Berulang) */}
+      <section className="relative overflow-hidden text-white py-14 sm:py-20 border-b border-slate-200">
+        <div className="absolute inset-0 z-0 pointer-events-none select-none bg-slate-950">
           <Image
             src={settings.banner_page_profil || '/assets/lapangan-smpn5cibeber.jpg'}
-            alt="Lapangan Upacara dan Panggung SMPN 5 Cibeber"
+            alt="Lingkungan SMP Negeri 5 Cibeber"
             fill
             priority
             className="object-cover object-[center_35%]"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/78 via-[#1E5631]/68 to-[#143e22]/88" />
-          <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/25 to-emerald-950/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/65 via-slate-950/50 to-[#091e10]/85" />
         </div>
 
-        <div className="container-site relative z-10 text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-xs font-bold text-amber-300 shadow-sm">
-            <ShieldCheck size={16} weight="fill" />
-            <span>Pusat Informasi Lembaga</span>
-          </div>
+        <div className="container-site relative z-10 max-w-6xl mx-auto">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-300 mb-3">
+            <Link href="/" className="hover:text-white transition-colors">
+              Beranda
+            </Link>
+            <span>/</span>
+            <span className="text-white font-semibold">Profil Sekolah</span>
+          </nav>
 
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
-            Profil SMPN 5 Cibeber
+          <h1 className="font-serif-academic text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+            Profil Satuan Pendidikan
           </h1>
 
-          <p className="text-sm sm:text-base text-emerald-50 max-w-2xl mx-auto font-medium drop-shadow-sm leading-relaxed">
-            Mengenal lebih dekat sejarah pendirian, visi misi, arah pendidikan, serta jajaran pendidik berdedikasi di SMP Negeri 5 Cibeber, Kabupaten Lebak, Banten.
+          <p className="text-xs sm:text-sm md:text-base text-slate-200 max-w-2xl mt-2.5 leading-relaxed">
+            Informasi kelembagaan, data pokok sekolah, sejarah pendirian, visi misi, serta susunan tenaga pendidik di SMP Negeri 5 Cibeber.
           </p>
+        </div>
+      </section>
 
-          <div className="pt-2 flex flex-wrap justify-center gap-3 text-xs">
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 font-mono text-white font-semibold shadow-xs">
-              NPSN: {settings.school_npsn ?? '20607865'}
-            </span>
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/25 backdrop-blur-md text-white border border-white/35 font-bold shadow-xs">
-              Akreditasi: {settings.school_accreditation ?? 'B'} (BAN-S/M)
-            </span>
+      {/* Seksi 1: Ikhtisar Lembaga & Tabel Data Pokok Satuan Pendidikan */}
+      <section className="section-padding border-b border-slate-200/80 bg-white">
+        <div className="container-site max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* Kolom Kiri: Pengantar Kelembagaan (5 Kolom) */}
+            <div className="lg:col-span-5 space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#1E5631]">
+                Identitas Kelembagaan
+              </p>
+              <h2 className="font-serif-academic text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                Satuan Pendidikan Menengah Pertama di Kecamatan Cibeber
+              </h2>
+              <div className="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed pt-1">
+                <p>
+                  {schoolName} merupakan sekolah menengah pertama negeri di bawah naungan Dinas Pendidikan Kabupaten Lebak, Provinsi Banten. Berlokasi di jalur utama Jl. Raya Cikotok–Pasirkuray KM 05, Desa Warungbanten, sekolah ini melayani peserta didik dari berbagai desa di wilayah Kecamatan Cibeber.
+                </p>
+                <p>
+                  Sejak beroperasi pada tahun 2004, {schoolName} menyelenggarakan pendidikan formal jenjang SMP yang memadukan penguatan karakter peserta didik, pembinaan akademik melalui Kurikulum Merdeka, serta kegiatan ekstrakurikuler kepanduan, olahraga, dan kesenian daerah.
+                </p>
+              </div>
+            </div>
+
+            {/* Kolom Kanan: Tabel Buku Induk / Data Pokok Sekolah (7 Kolom) */}
+            <div className="lg:col-span-7">
+              <div className="bg-[#F8FAFC] rounded-xl border border-slate-200/90 overflow-hidden">
+                <div className="px-5 py-4 bg-slate-100/80 border-b border-slate-200/90 flex items-center justify-between">
+                  <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">
+                    Data Pokok Satuan Pendidikan
+                  </h3>
+                  <span className="text-[11px] font-mono font-semibold text-slate-500 tabular-nums">
+                    NPSN {npsn}
+                  </span>
+                </div>
+
+                <dl className="divide-y divide-slate-200/80 text-xs sm:text-sm">
+                  {identityRows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="px-5 py-3.5 grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 items-baseline"
+                    >
+                      <dt className="sm:col-span-5 text-xs font-medium text-slate-500">
+                        {row.label}
+                      </dt>
+                      <dd
+                        className={`sm:col-span-7 font-semibold text-slate-900 ${
+                          row.mono ? 'font-mono tabular-nums' : ''
+                        }`}
+                      >
+                        {row.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 3 Portal Halaman Utama (Sejarah, Visi Misi, Dewan Guru) */}
-      <section className="section-padding">
-        <div className="container-site max-w-6xl mx-auto space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#1E5631]">
-              Pilar Informasi Lembaga
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E293B] tracking-tight">
-              Eksplorasi Profil Sekolah
+      {/* Seksi 2: Rubrik Profil Lembaga (Open Editorial Columns Tanpa Tombol Blok Penuh) */}
+      <section className="section-padding bg-[#F8FAFC]">
+        <div className="container-site max-w-6xl mx-auto space-y-8 sm:space-y-10">
+          <div className="max-w-xl">
+            <h2 className="font-serif-academic text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+              Rubrik Informasi Profil
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Pilih rubrik informasi di bawah untuk melihat rincian mendalam mengenai sejarah, visi misi, maupun direktori dewan guru kami.
+            <p className="text-xs sm:text-sm text-slate-600 mt-1.5">
+              Telusuri halaman berikut untuk membaca rincian sejarah sekolah, rumusan visi dan misi, serta daftar tenaga pendidik.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {portalCards.map((card, idx) => {
-              const Icon = card.icon;
-              return (
-                <div
-                  key={idx}
-                  className="rounded-3xl bg-white border border-slate-200/80 shadow-md shadow-slate-900/5 hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between overflow-hidden group"
-                >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            {portalSections.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group flex flex-col bg-white rounded-xl border border-slate-200/90 hover:border-slate-300 overflow-hidden transition-colors duration-200"
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 border-b border-slate-200/70">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover group-hover:scale-103 transition-transform duration-500"
+                  />
+                </div>
+
+                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-5">
                   <div>
-                    {/* Gambar Banner Kartu */}
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
-                      <Image
-                        src={card.image}
-                        alt={card.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-emerald-950/20 to-transparent" />
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-[#1E5631] text-[11px] font-bold shadow-xs">
-                          {card.badge}
-                        </span>
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4 text-white">
-                        <p className="text-xs text-emerald-200 font-semibold">
-                          {card.subtitle}
-                        </p>
-                        <h3 className="text-lg font-extrabold leading-tight">
-                          {card.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Deskripsi */}
-                    <div className="p-6 space-y-3">
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        {card.desc}
-                      </p>
-                    </div>
+                    <span className="text-[11px] font-mono font-semibold text-slate-400 tabular-nums">
+                      BAGIAN {item.num}
+                    </span>
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors mt-1 leading-snug">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
 
-                  {/* Tombol Aksi */}
-                  <div className="p-6 pt-0">
-                    <Link
-                      href={card.href}
-                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#1E5631] text-white hover:bg-emerald-800 text-xs font-bold transition-all shadow-xs group-hover:shadow-md"
-                    >
-                      <span>{card.cta}</span>
-                      <ArrowRight size={14} weight="bold" className="transition-transform group-hover:translate-x-1" />
-                    </Link>
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1E5631]">
+                    <span>{item.cta}</span>
+                    <ArrowRight
+                      size={14}
+                      weight="bold"
+                      className="group-hover:translate-x-0.5 transition-transform"
+                    />
                   </div>
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Sekilas 4 Nilai Keunggulan Sekolah */}
-          <div className="p-8 sm:p-12 rounded-3xl bg-white border border-slate-200/80 shadow-md shadow-slate-900/5 space-y-8">
-            <div className="text-center max-w-xl mx-auto space-y-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-[#1E5631] text-xs font-bold">
-                <Sparkle size={14} weight="fill" />
-                Standar &amp; Keunggulan
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1E5631] tracking-tight">
-                Komitmen Mutu Pembelajaran
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {highlights.map((h, i) => (
-                <div
-                  key={i}
-                  className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70 hover:border-emerald-300 hover:bg-emerald-50/20 transition-all space-y-2"
-                >
-                  <div className="h-9 w-9 rounded-xl bg-emerald-100 text-[#1E5631] flex items-center justify-center font-bold text-sm shadow-xs">
-                    0{i + 1}
-                  </div>
-                  <h4 className="text-sm font-bold text-slate-800">
-                    {h.title}
-                  </h4>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    {h.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Data Pokok Satuan Pendidikan (Tabel Identitas Resmi) */}
-          <div className="p-8 sm:p-12 rounded-3xl bg-white border border-slate-200/80 shadow-md shadow-slate-900/5 space-y-6">
-            <div className="flex items-center gap-3 border-b border-slate-200/70 pb-4">
-              <div className="h-10 w-10 rounded-xl bg-emerald-100 text-[#1E5631] flex items-center justify-center shrink-0 shadow-xs">
-                <Building size={22} weight="duotone" />
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-[#1E5631]">
-                  Identitas Legalitas Resmi
-                </p>
-                <h3 className="text-xl font-extrabold text-[#1E293B]">
-                  Data Pokok Satuan Pendidikan
-                </h3>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Nama Resmi Sekolah</span>
-                <span className="font-bold text-slate-800">{settings.school_name || 'SMP Negeri 5 Cibeber'}</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Nomor Pokok Sekolah Nasional (NPSN)</span>
-                <span className="font-mono font-bold text-slate-800">{settings.school_npsn || '20607865'}</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Bentuk Pendidikan</span>
-                <span className="font-bold text-slate-800">Sekolah Menengah Pertama (SMP)</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Status Sekolah</span>
-                <span className="font-bold text-emerald-800">Negeri (Pemerintah Daerah)</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Status Akreditasi</span>
-                <span className="font-bold text-emerald-800">{settings.school_accreditation || 'B'} (BAN-S/M)</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex justify-between items-center">
-                <span className="text-slate-500 font-medium">Kurikulum Operasional</span>
-                <span className="font-bold text-slate-800">Kurikulum Merdeka</span>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 md:col-span-2 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                <span className="text-slate-500 font-medium">Alamat Sekolah</span>
-                <span className="font-medium text-slate-800 sm:text-right">
-                  {settings.school_address || 'Jl. Raya Cikotok-Pasirkuray Km.05, Warungbanten, Cibeber, Lebak, Banten 42394'}
-                </span>
-              </div>
-            </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

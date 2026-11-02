@@ -1,10 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import {
-  MapPin,
-  Clock,
   WhatsappLogo,
   NavigationArrow,
   Compass,
@@ -30,29 +27,25 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
   const mapsLink = settings.maps_url || 'https://maps.app.goo.gl/VfLAPVfajTQ4HNCGA';
 
   return (
-    <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-[#F1F5F9]/60 to-[#F8FAFC] border-t border-slate-200/80">
+    <section className="relative overflow-hidden section-padding bg-[#F8FAFC] border-t border-slate-200/80">
       <div className="container-site relative z-10">
-        {/* Section Header */}
-        <ScrollFadeUp delay={0.05} duration={0.7}>
-          <div className="max-w-3xl mb-8 sm:mb-10">
-            <div className="text-xs font-bold uppercase tracking-wider text-[#D97706] mb-1 flex items-center gap-1.5">
-              <Compass size={14} weight="bold" />
-              <span>Aksesibilitas &bull; Kunjungan Sekolah &bull; Navigasi</span>
-            </div>
-            <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1E5631] tracking-tight">
-              Lokasi &amp; Peta Sekolah
+        {/* Section Header Tanpa Eyebrow Berulang */}
+        <ScrollFadeUp delay={0.05} duration={0.6}>
+          <div className="max-w-2xl mb-8 sm:mb-10">
+            <h2 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
+              Lokasi &amp; Akses Sekolah
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
-              Terletak di kawasan asri Warungbanten, Kecamatan Cibeber, Kabupaten Lebak yang sejuk, tenang, dan kondusif untuk mendukung fokus belajar putra-putri Anda.
+            <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              Terletak di jalur utama Desa Warungbanten, Kecamatan Cibeber, Kabupaten Lebak.
             </p>
           </div>
         </ScrollFadeUp>
 
-        {/* 2-Column Grid: Map Embed + School Info Guide */}
+        {/* 2-Column Architectural Split */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
-          {/* Kolom Kiri: Peta Google Maps Interaktif (7 Kolom) */}
-          <ScrollFadeScale delay={0.1} duration={0.75} className="lg:col-span-7 flex flex-col">
-            <div className="relative w-full h-[320px] sm:h-[380px] lg:h-full min-h-[320px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm bg-slate-100 group">
+          {/* Kolom Kiri: Peta Google Maps Interaktif Tanpa Floating Badge Berkedip (7 Kolom) */}
+          <ScrollFadeScale delay={0.08} duration={0.65} className="lg:col-span-7 flex flex-col">
+            <div className="relative w-full h-[320px] sm:h-[360px] lg:h-full min-h-[320px] rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
               <iframe
                 src={mapsEmbed}
                 width="100%"
@@ -67,19 +60,13 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
                 }`}
               />
 
-              {/* Badge Mengambang di Sudut Peta */}
-              <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-md text-xs font-bold text-slate-800 flex items-center gap-1.5 pointer-events-none z-10">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>SMPN 5 Cibeber &bull; Warungbanten</span>
-              </div>
-
-              {/* Mobile Gesture Guard Overlay (Cegah Scroll Trap) */}
+              {/* Mobile Gesture Guard Overlay (Cegah Scroll Trap di Layar Sentuh) */}
               {!mapInteractive && (
-                <div className="lg:hidden absolute inset-0 z-10 flex items-center justify-center bg-slate-900/10 backdrop-blur-[1px]">
+                <div className="lg:hidden absolute inset-0 z-10 flex items-center justify-center bg-slate-900/10">
                   <button
                     type="button"
                     onClick={() => setMapInteractive(true)}
-                    className="px-4 py-2 rounded-full bg-white text-slate-800 text-xs font-bold shadow-lg border border-slate-200/80 flex items-center gap-1.5 active:scale-95 transition-transform cursor-pointer"
+                    className="px-4 py-2 rounded-lg bg-white text-slate-800 text-xs font-bold shadow-md border border-slate-200 flex items-center gap-1.5 active:scale-95 transition-transform cursor-pointer"
                   >
                     <Compass size={15} weight="bold" className="text-[#1E5631]" />
                     <span>Ketuk untuk Geser Peta</span>
@@ -89,64 +76,45 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
             </div>
           </ScrollFadeScale>
 
-          {/* Kolom Kanan: Panduan Kunjungan & Informasi Akses (5 Kolom) */}
-          <ScrollFadeUp delay={0.18} duration={0.75} className="lg:col-span-5 flex flex-col justify-between space-y-4">
-            {/* Card Informasi Alamat & Akses */}
-            <div className="p-5 sm:p-6 bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
-              <h3 className="font-serif-academic font-bold text-base text-[#1E5631] pb-2.5 border-b border-slate-100 flex items-center gap-2">
-                <MapPin size={18} weight="fill" className="text-[#D97706]" />
-                <span>Alamat &amp; Akses Sekolah</span>
-              </h3>
+          {/* Kolom Kanan: Informasi Alamat & Rute Tanpa Mengulang Kotak Jam TU Footer (5 Kolom) */}
+          <ScrollFadeUp delay={0.14} duration={0.65} className="lg:col-span-5 flex flex-col justify-between bg-white rounded-xl border border-slate-200 p-6 sm:p-7">
+            <div className="space-y-5">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                  Alamat Satuan Pendidikan
+                </p>
+                <p className="text-sm sm:text-base font-bold text-slate-900 mt-1 leading-snug">
+                  {address}
+                </p>
+              </div>
 
-              <div className="space-y-3.5 text-xs text-slate-600">
-                {/* Alamat Fisik */}
+              <div className="pt-4 border-t border-slate-100 space-y-3 text-xs text-slate-600">
                 <div>
-                  <p className="font-bold text-slate-800 uppercase tracking-wider text-[10px] text-slate-400 mb-0.5">
-                    Alamat Lengkap
-                  </p>
-                  <p className="leading-relaxed font-medium text-slate-700">
-                    {address}
+                  <p className="font-semibold text-slate-800">Patokan &amp; Akses Jalan</p>
+                  <p className="mt-0.5 leading-relaxed text-slate-600">
+                    Berada di poros Jl. Raya Cikotok–Pasirkuray KM 05, Desa Warungbanten. Dapat dijangkau kendaraan roda dua maupun roda empat.
                   </p>
                 </div>
 
-                {/* Akses Transportasi */}
                 <div>
-                  <p className="font-bold text-slate-800 uppercase tracking-wider text-[10px] text-slate-400 mb-0.5">
-                    Konektivitas &amp; Akses
+                  <p className="font-semibold text-slate-800">Wilayah Administratif</p>
+                  <p className="mt-0.5 leading-relaxed text-slate-600">
+                    Desa Warungbanten, Kecamatan Cibeber, Kabupaten Lebak, Provinsi Banten (Kode Pos 42394).
                   </p>
-                  <p className="leading-relaxed">
-                    Terletak di jalur utama Jl. Raya Cikotok-Pasirkuray KM 05. Dapat diakses dengan mudah oleh kendaraan roda dua maupun roda empat dengan area parkir sekolah yang aman.
-                  </p>
-                </div>
-
-                {/* Jam Kerja TU */}
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
-                  <p className="font-bold text-slate-800 text-xs flex items-center gap-1.5">
-                    <Clock size={13} weight="bold" className="text-emerald-700" />
-                    <span>Jam Layanan Tamu &amp; Tata Usaha:</span>
-                  </p>
-                  <div className="flex justify-between text-[11px] text-slate-600">
-                    <span>Senin – Kamis</span>
-                    <span className="font-semibold text-slate-900">07.30 – 15.00 WIB</span>
-                  </div>
-                  <div className="flex justify-between text-[11px] text-slate-600">
-                    <span>Jumat</span>
-                    <span className="font-semibold text-slate-900">07.30 – 11.30 WIB</span>
-                  </div>
                 </div>
               </div>
             </div>
 
             {/* Tombol Aksi Kunjungan */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="pt-6 mt-6 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <a
                 href={mapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E5631] hover:bg-[#164325] text-white text-xs font-bold shadow-xs active:scale-95 transition-all text-center"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#1E5631] hover:bg-[#164325] text-white text-xs font-bold active:scale-[0.99] transition-colors text-center"
               >
-                <NavigationArrow size={15} weight="bold" />
-                <span>Buka Rute Maps</span>
+                <NavigationArrow size={14} weight="bold" />
+                <span>Petunjuk Arah Maps</span>
               </a>
 
               {whatsapp && (
@@ -154,10 +122,10 @@ export default function HomeLocationMap({ settings = {} }: HomeLocationMapProps)
                   href={`https://wa.me/${cleanWa}?text=Halo%20SMPN%205%20Cibeber,%20saya%20ingin%20menanyakan%20arah%20dan%20informasi%20kunjungan%20ke%20sekolah.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#D97706] hover:bg-[#B45309] text-white text-xs font-bold shadow-xs active:scale-95 transition-all text-center"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-800 text-xs font-bold active:scale-[0.99] transition-colors text-center"
                 >
-                  <WhatsappLogo size={16} weight="fill" />
-                  <span>Chat Info Sekolah</span>
+                  <WhatsappLogo size={15} weight="fill" className="text-[#1E5631]" />
+                  <span>Hubungi Tata Usaha</span>
                 </a>
               )}
             </div>

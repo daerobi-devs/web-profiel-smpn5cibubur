@@ -6,13 +6,10 @@ import {
   Clock,
   MapPin,
   Users,
-  CheckCircle,
   Tag,
   MagnifyingGlass,
   ArrowRight,
   DownloadSimple,
-  CaretRight,
-  BookmarkSimple,
   CalendarPlus,
   ShareNetwork,
   Check,
@@ -30,7 +27,7 @@ const categoryColors: Record<string, { bg: string; text: string; border: string 
 };
 
 export default function AgendaList({
-  initialAgendas
+  initialAgendas,
 }: {
   initialAgendas?: AgendaItem[] | null;
 }) {
@@ -43,7 +40,7 @@ export default function AgendaList({
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const createGoogleCalendarUrl = (item: AgendaItem) => {
-    const title = encodeURIComponent(`${item.title} — SMPN 5 Cibeber`);
+    const title = encodeURIComponent(`${item.title} | SMPN 5 Cibeber`);
     const details = encodeURIComponent(
       `${item.description}\n\nWaktu: ${item.time}\nSasaran: ${item.participants}\nTempat: ${item.location}\nPenyelenggara: SMP Negeri 5 Cibeber`
     );
@@ -52,7 +49,7 @@ export default function AgendaList({
   };
 
   const handleCopyAgenda = (item: AgendaItem) => {
-    const text = `[AGENDA RESMI] ${item.title} — SMPN 5 Cibeber\nTanggal: ${item.dateStr} (${item.time})\nLokasi: ${item.location}\nSasaran: ${item.participants}\n\n${item.description}\n\nInfo selengkapnya: https://ekosistem.daeroom.my.id/agenda`;
+    const text = `[AGENDA RESMI] ${item.title} | SMPN 5 Cibeber\nTanggal: ${item.dateStr} (${item.time})\nLokasi: ${item.location}\nSasaran: ${item.participants}\n\n${item.description}\n\nInfo selengkapnya: https://smpn5cibeber.sch.id/agenda`;
     if (typeof navigator !== 'undefined') {
       navigator.clipboard.writeText(text);
       setCopiedId(item.id);
@@ -71,7 +68,6 @@ export default function AgendaList({
 
   const filteredAgendas = useMemo(() => {
     return allAgendas.filter((agenda) => {
-      // Category / Status Filter
       if (selectedFilter === 'AKAN_DATANG' && agenda.status !== 'AKAN_DATANG') return false;
       if (selectedFilter === 'SELESAI' && agenda.status !== 'SELESAI') return false;
       if (
@@ -83,7 +79,6 @@ export default function AgendaList({
         return false;
       }
 
-      // Search Query
       if (searchQuery.trim() !== '') {
         const q = searchQuery.toLowerCase();
         const matchTitle = agenda.title.toLowerCase().includes(q);
@@ -91,14 +86,14 @@ export default function AgendaList({
         const matchLoc = agenda.location.toLowerCase().includes(q);
         const matchCategory = agenda.category.toLowerCase().includes(q);
         const matchParticipants = agenda.participants.toLowerCase().includes(q);
-        if (!matchTitle && !matchDesc && !matchLoc && !matchCategory && !matchParticipants) return false;
+        if (!matchTitle && !matchDesc && !matchLoc && !matchCategory && !matchParticipants)
+          return false;
       }
 
       return true;
     });
   }, [allAgendas, selectedFilter, searchQuery]);
 
-  // Featured Top Agenda (ketika tidak ada search query & filter SEMUA)
   const isDefaultView = searchQuery.trim() === '' && selectedFilter === 'SEMUA';
   const leadAgenda = isDefaultView && allAgendas.length > 0 ? allAgendas[0] : null;
   const queueAgendas = isDefaultView && allAgendas.length > 1 ? allAgendas.slice(1, 3) : [];
@@ -107,21 +102,19 @@ export default function AgendaList({
   return (
     <div className="space-y-8">
       {/* =========================================================
-          1. HEADER & SEARCH TOOLBAR (SAMA POLA DENGAN BERITA)
+          1. HEADER & SEARCH TOOLBAR
           ========================================================= */}
-      <div className="p-6 sm:p-7 rounded-3xl bg-white border border-slate-200/80 shadow-sm space-y-5">
-        {/* Baris Atas: Judul di Kiri, Kolom Pencarian di Kanan */}
+      <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-xs space-y-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#D97706]">
-              Pencarian &amp; Filter Jadwal
-            </span>
-            <h2 className="font-serif-academic text-xl sm:text-2xl lg:text-3xl font-black text-[#1E5631] tracking-tight mt-0.5">
+            <h2 className="font-serif-academic text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               Daftar Kalender Kegiatan
             </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Filter jadwal berdasarkan kategori kegiatan atau status pelaksanaan
+            </p>
           </div>
 
-          {/* Kolom Pencarian di Atas Kanan */}
           <div className="relative w-full md:w-80 shrink-0">
             <MagnifyingGlass
               size={17}
@@ -132,7 +125,7 @@ export default function AgendaList({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Cari kegiatan, asesmen, atau lokasi..."
-              className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#1E5631]/20 focus:border-[#1E5631] focus:bg-white shadow-2xs transition-all"
+              className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#1E5631]/20 focus:border-[#1E5631] focus:bg-white transition-all"
             />
             {searchQuery && (
               <button
@@ -147,7 +140,6 @@ export default function AgendaList({
           </div>
         </div>
 
-        {/* Baris Bawah: Tabs Kategori Filter Horizontal */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
           <div className="flex flex-wrap items-center gap-1.5">
             {filterButtons.map((btn) => {
@@ -157,9 +149,9 @@ export default function AgendaList({
                   key={btn.key}
                   type="button"
                   onClick={() => setSelectedFilter(btn.key)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                     isSelected
-                      ? 'bg-[#1E5631] text-white shadow-xs'
+                      ? 'bg-[#1E5631] text-white'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
                   }`}
                 >
@@ -170,7 +162,7 @@ export default function AgendaList({
           </div>
 
           <div className="flex items-center gap-3 text-xs">
-            <span className="text-slate-500 font-semibold">
+            <span className="text-slate-500 font-semibold tabular-nums">
               {filteredAgendas.length} Jadwal Terdata
             </span>
             {(selectedFilter !== 'SEMUA' || searchQuery) && (
@@ -190,63 +182,59 @@ export default function AgendaList({
       </div>
 
       {/* =========================================================
-          2. FEATURED EVENT SHOWCASE (AGENDA UTAMA & JADWAL MENDATANG)
-          Model Mirip Berita Utama tapi Berkarakteristik Kalender
+          2. FEATURED EVENT SHOWCASE
           ========================================================= */}
       {isDefaultView && leadAgenda && (
         <section className="space-y-4">
           <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-            <h2 className="text-xs font-black uppercase tracking-widest text-[#1E5631]">
-              Sorotan Agenda &amp; Jadwal Terdekat
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+              Agenda Terdekat
             </h2>
-            <span className="text-[11px] text-slate-500 font-semibold">
-              Kalender Resmi Lembaga
+            <span className="text-xs text-slate-500 font-medium">
+              Tahun Pelajaran 2026/2027
             </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             {/* Lead Event Card (7 Kolom) */}
             <div className="lg:col-span-7">
-              <div className="rounded-3xl bg-white border border-emerald-300/80 ring-1 ring-emerald-500/20 shadow-md p-6 sm:p-7 flex flex-col justify-between h-full space-y-6">
+              <div className="rounded-2xl bg-white border border-slate-200/90 shadow-xs p-6 sm:p-7 flex flex-col justify-between h-full space-y-6">
                 <div className="space-y-4">
-                  {/* Top Badges & Live Status */}
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full bg-[#1E5631] text-white text-xs font-black uppercase tracking-wider shadow-xs">
+                      <span className="px-2.5 py-1 rounded-md bg-[#1E5631] text-white text-[11px] font-bold uppercase tracking-wider">
                         Agenda Utama
                       </span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-300/60">
-                        <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-[#1E5631] text-xs font-bold border border-emerald-200">
                         Akan Datang
                       </span>
                     </div>
 
-                    <span className="text-xs font-mono text-slate-500 font-semibold">
-                      Tahun Ajaran 2025/2026
+                    <span className="text-xs text-slate-500 font-medium tabular-nums">
+                      TP 2026/2027
                     </span>
                   </div>
 
                   {/* Date Block + Title */}
-                  <div className="flex flex-col sm:flex-row items-start gap-4 pt-2">
-                    {/* Modern Two-Tone Desk Calendar Card */}
-                    <div className="shrink-0 w-20 sm:w-24 rounded-2xl bg-white border border-slate-200/90 shadow-sm overflow-hidden flex flex-col items-center">
-                      <div className="w-full bg-[#1E5631] text-emerald-100 py-1.5 text-center border-b border-[#143e22]">
-                        <span className="text-xs font-black uppercase tracking-widest block leading-none">
+                  <div className="flex flex-col sm:flex-row items-start gap-4 pt-1">
+                    <div className="shrink-0 w-20 sm:w-22 rounded-xl bg-white border border-slate-200/90 overflow-hidden flex flex-col items-center">
+                      <div className="w-full bg-[#1E5631] text-white py-1.5 text-center">
+                        <span className="text-[11px] font-bold uppercase tracking-wider block leading-none">
                           {leadAgenda.monthBadge}
                         </span>
                       </div>
-                      <div className="w-full py-2.5 px-2 bg-gradient-to-b from-white to-slate-50/70 text-center">
-                        <span className="text-3xl sm:text-4xl font-black text-slate-900 leading-tight block my-0.5 tracking-tight">
+                      <div className="w-full py-2.5 px-2 bg-slate-50/60 text-center">
+                        <span className="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight block tabular-nums">
                           {leadAgenda.dayBadge}
                         </span>
-                        <span className="text-[10px] font-bold text-slate-400 block mt-0.5">
+                        <span className="text-[10px] font-semibold text-slate-500 block mt-0.5 tabular-nums">
                           2026
                         </span>
                       </div>
                     </div>
 
                     <div className="space-y-2 flex-1">
-                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 leading-snug">
                         {leadAgenda.title}
                       </h3>
                       <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -262,7 +250,7 @@ export default function AgendaList({
                     <Clock size={18} weight="duotone" className="text-[#1E5631] shrink-0" />
                     <div>
                       <p className="text-[10px] text-slate-400 font-bold uppercase">Waktu</p>
-                      <p className="font-bold text-slate-800">{leadAgenda.time}</p>
+                      <p className="font-bold text-slate-800 tabular-nums">{leadAgenda.time}</p>
                     </div>
                   </div>
 
@@ -291,13 +279,13 @@ export default function AgendaList({
                   </div>
                 </div>
 
-                {/* Tombol Aksi Agenda Utama: Simpan Kalender & Bagikan */}
+                {/* Tombol Aksi Agenda Utama */}
                 <div className="flex flex-wrap items-center gap-2.5 pt-4 border-t border-slate-100">
                   <a
                     href={createGoogleCalendarUrl(leadAgenda)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E5631] hover:bg-[#164325] text-white text-xs font-bold transition-all shadow-xs active:scale-95"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E5631] hover:bg-[#164325] text-white text-xs font-bold transition-all"
                   >
                     <CalendarPlus size={15} weight="bold" />
                     <span>Simpan ke Google Calendar</span>
@@ -307,17 +295,17 @@ export default function AgendaList({
                   <button
                     type="button"
                     onClick={() => handleCopyAgenda(leadAgenda)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
                   >
                     {copiedId === leadAgenda.id ? (
                       <>
                         <Check size={15} weight="bold" className="text-emerald-600" />
-                        <span className="text-emerald-700">Tersalin ke Clipboard!</span>
+                        <span className="text-emerald-700">Tersalin</span>
                       </>
                     ) : (
                       <>
                         <ShareNetwork size={15} weight="bold" />
-                        <span>Bagikan Rincian</span>
+                        <span>Salin Rincian</span>
                       </>
                     )}
                   </button>
@@ -327,14 +315,14 @@ export default function AgendaList({
 
             {/* Upcoming Queue Card (5 Kolom) */}
             <div className="lg:col-span-5 flex flex-col justify-between">
-              <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm h-full flex flex-col justify-between space-y-4">
+              <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-xs h-full flex flex-col justify-between space-y-4">
                 <div>
                   <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
                     <CalendarBlank size={16} weight="bold" className="text-[#1E5631]" />
                     <span>Jadwal Mendatang Lainnya</span>
                   </h3>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3.5">
                     {queueAgendas.map((item) => {
                       const catTheme = categoryColors[item.category] || {
                         bg: 'bg-slate-50',
@@ -345,17 +333,16 @@ export default function AgendaList({
                       return (
                         <div
                           key={item.id}
-                          className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 hover:border-emerald-300 hover:bg-emerald-50/20 transition-all flex gap-3.5 items-start"
+                          className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 flex gap-3.5 items-start"
                         >
-                          {/* Modern Mini Calendar Widget */}
-                          <div className="shrink-0 w-13 rounded-xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden flex flex-col items-center">
-                            <div className="w-full bg-[#1E5631] text-emerald-100 py-0.5 text-center">
-                              <span className="text-[9px] font-black uppercase tracking-wider block leading-none">
+                          <div className="shrink-0 w-13 rounded-lg bg-white border border-slate-200/90 overflow-hidden flex flex-col items-center">
+                            <div className="w-full bg-[#1E5631] text-white py-0.5 text-center">
+                              <span className="text-[9px] font-bold uppercase tracking-wider block leading-none">
                                 {item.monthBadge}
                               </span>
                             </div>
-                            <div className="w-full py-1 text-center bg-gradient-to-b from-white to-slate-50/70">
-                              <span className="text-base font-black text-slate-900 leading-none block tracking-tight">
+                            <div className="w-full py-1 text-center bg-white">
+                              <span className="text-base font-bold text-slate-900 leading-none block tabular-nums">
                                 {item.dayBadge}
                               </span>
                             </div>
@@ -363,10 +350,12 @@ export default function AgendaList({
 
                           <div className="flex-1 min-w-0 space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${catTheme.bg} ${catTheme.text}`}>
+                              <span
+                                className={`px-2 py-0.5 rounded text-[10px] font-bold ${catTheme.bg} ${catTheme.text}`}
+                              >
                                 {item.category}
                               </span>
-                              <span className="text-[11px] text-slate-400 font-medium truncate">
+                              <span className="text-[11px] text-slate-500 font-medium truncate tabular-nums">
                                 {item.dateStr}
                               </span>
                             </div>
@@ -422,20 +411,20 @@ export default function AgendaList({
       <section className="space-y-4">
         {isDefaultView && (
           <div className="border-b border-slate-200 pb-2">
-            <h2 className="text-xs font-black uppercase tracking-widest text-[#1E5631]">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800">
               Seluruh Jadwal &amp; Agenda Sekolah
             </h2>
           </div>
         )}
 
         {filteredAgendas.length === 0 ? (
-          <div className="bg-white rounded-3xl p-12 sm:p-16 text-center border border-dashed border-slate-300 space-y-3">
+          <div className="bg-white rounded-2xl p-12 sm:p-16 text-center border border-slate-200/90 space-y-3">
             <CalendarBlank size={44} className="text-slate-300 mx-auto" />
             <h3 className="text-base font-bold text-slate-800">
               Tidak Ada Agenda Ditemukan
             </h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
-              Tidak ada kegiatan yang sesuai dengan kata kunci atau filter yang Anda pilih. Silakan gunakan kata kunci pencarian yang lain.
+              Tidak ada kegiatan yang sesuai dengan kata kunci atau filter yang Anda pilih.
             </p>
             <button
               type="button"
@@ -463,25 +452,24 @@ export default function AgendaList({
                   <motion.div
                     key={agenda.id}
                     layout
-                    initial={{ opacity: 0, y: 14 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.22, delay: idx * 0.03 }}
-                    className="bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-300 hover:shadow-md transition-all p-5 sm:p-6 flex flex-col justify-between space-y-4"
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.2, delay: idx * 0.02 }}
+                    className="bg-white rounded-2xl border border-slate-200/90 hover:border-[#1E5631]/40 transition-all p-5 sm:p-6 flex flex-col justify-between space-y-4"
                   >
                     <div className="flex items-start gap-4">
-                      {/* Date Box - Modern Two-Tone Desk Calendar Card */}
-                      <div className="shrink-0 w-16 sm:w-18 rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden flex flex-col items-center">
-                        <div className="w-full bg-[#1E5631] text-emerald-100 py-1 text-center border-b border-[#143e22]">
-                          <span className="text-[10px] font-black uppercase tracking-widest block leading-none">
+                      <div className="shrink-0 w-16 sm:w-18 rounded-xl bg-white border border-slate-200/90 overflow-hidden flex flex-col items-center">
+                        <div className="w-full bg-[#1E5631] text-white py-1 text-center">
+                          <span className="text-[10px] font-bold uppercase tracking-wider block leading-none">
                             {agenda.monthBadge}
                           </span>
                         </div>
-                        <div className="w-full py-2 px-1 bg-gradient-to-b from-white to-slate-50/70 text-center">
-                          <span className="text-2xl font-black text-slate-900 leading-none block tracking-tight">
+                        <div className="w-full py-2 px-1 bg-slate-50/60 text-center">
+                          <span className="text-xl font-bold text-slate-900 leading-none block tabular-nums">
                             {agenda.dayBadge}
                           </span>
-                          <span className="text-[9px] font-bold text-slate-400 mt-1 block">
+                          <span className="text-[9px] font-semibold text-slate-500 mt-1 block tabular-nums">
                             2026
                           </span>
                         </div>
@@ -489,17 +477,23 @@ export default function AgendaList({
 
                       <div className="flex-1 min-w-0 space-y-1.5">
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${catTheme.bg} ${catTheme.text} ${catTheme.border}`}>
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold border ${catTheme.bg} ${catTheme.text} ${catTheme.border}`}
+                          >
                             {agenda.category}
                           </span>
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            isUpcoming ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-600'
-                          }`}>
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              isUpcoming
+                                ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                : 'bg-slate-100 text-slate-600'
+                            }`}
+                          >
                             {isUpcoming ? 'Akan Datang' : 'Terlaksana'}
                           </span>
                         </div>
 
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 leading-snug line-clamp-2">
+                        <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug line-clamp-2">
                           {agenda.title}
                         </h3>
 
@@ -509,10 +503,9 @@ export default function AgendaList({
                       </div>
                     </div>
 
-                    {/* Metadata Footer */}
                     <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
                       <div className="flex flex-wrap items-center gap-3">
-                        <div className="flex items-center gap-1 text-[11px]">
+                        <div className="flex items-center gap-1 text-[11px] tabular-nums">
                           <Clock size={14} className="text-[#1E5631] shrink-0" />
                           <span>{agenda.time}</span>
                         </div>
@@ -528,7 +521,7 @@ export default function AgendaList({
                           target="_blank"
                           rel="noopener noreferrer"
                           title="Simpan ke Google Calendar"
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white text-[11px] font-bold transition-colors shadow-2xs"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-[#1E5631] text-[#1E5631] hover:text-white text-[11px] font-bold transition-colors"
                         >
                           <CalendarPlus size={13} weight="bold" />
                           <span className="hidden sm:inline">Kalender</span>
@@ -556,26 +549,26 @@ export default function AgendaList({
       </section>
 
       {/* Info Dokumen Kalender Resmi Kurikulum */}
-      <div className="rounded-3xl bg-gradient-to-r from-emerald-950 via-[#1E5631] to-[#143e22] text-white p-6 sm:p-8 shadow-md border border-emerald-800">
+      <div className="rounded-2xl bg-[#1E5631] text-white p-6 sm:p-8 border border-[#164325]">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
-            <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-amber-300">
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-300">
               <DownloadSimple size={15} weight="bold" />
-              <span>Dokumen Resmi Kurikulum</span>
+              <span>Dokumen Kurikulum</span>
             </span>
-            <h4 className="text-lg sm:text-xl font-black">
-              Kalender Pendidikan SMPN 5 Cibeber TP 2026/2027
+            <h4 className="font-serif-academic text-lg sm:text-xl font-bold">
+              Kalender Pendidikan SMP Negeri 5 Cibeber TP 2026/2027
             </h4>
-            <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed">
-              Jadwal kegiatan dapat mengalami penyesuaian mengikuti arahan Dinas Pendidikan Kabupaten Lebak. Hubungi bagian kurikulum untuk informasi teknis.
+            <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">
+              Jadwal kegiatan dapat menyesuaikan arahan Dinas Pendidikan Kabupaten Lebak. Hubungi bagian kurikulum atau tata usaha untuk informasi teknis.
             </p>
           </div>
-          <div className="shrink-0 flex flex-wrap gap-2.5">
+          <div className="shrink-0">
             <a
               href="/kontak"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#1E5631] text-xs font-extrabold hover:bg-emerald-50 transition-colors shadow-xs"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#1E5631] text-xs font-bold hover:bg-emerald-50 transition-colors"
             >
-              <span>Hubungi Humas Sekolah</span>
+              <span>Hubungi Tata Usaha</span>
               <ArrowRight size={14} weight="bold" />
             </a>
           </div>

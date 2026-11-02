@@ -7,10 +7,9 @@ import {
   MagnifyingGlass,
   CaretRight,
   InstagramLogo,
-  Tag,
   CalendarBlank,
   ArrowRight,
-  FolderSimple,
+  ArrowUpRight,
 } from '@phosphor-icons/react';
 
 export interface CategoryCountItem {
@@ -86,11 +85,10 @@ export default function NewsSidebar({
           WIDGET 1: PENCARIAN BERITA
           ========================================================= */}
       <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs">
-        <div className="pb-3 mb-4 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="font-serif-academic font-bold text-base text-[#1E5631] tracking-tight">
+        <div className="pb-3 mb-4 border-b border-slate-100">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
             Pencarian Berita
           </h3>
-          <span className="w-8 h-1 bg-[#D97706] rounded-full" />
         </div>
 
         <form onSubmit={handleSearchSubmit} className="relative flex items-center">
@@ -105,14 +103,14 @@ export default function NewsSidebar({
               }
             }}
             placeholder="Masukkan kata kunci..."
-            className="w-full pl-3.5 pr-12 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E5631]/20 focus:border-[#1E5631] transition-all"
+            className="w-full pl-3.5 pr-11 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-slate-800 text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1E5631]/20 focus:border-[#1E5631] transition-all"
           />
           <button
             type="submit"
             aria-label="Cari Berita"
-            className="absolute right-1 top-1 bottom-1 px-3 rounded-lg bg-[#D97706] hover:bg-[#B45309] text-white flex items-center justify-center transition-colors cursor-pointer shadow-xs active:scale-95"
+            className="absolute right-1 top-1 bottom-1 px-3 rounded-lg bg-[#1E5631] hover:bg-[#164325] text-white flex items-center justify-center transition-colors cursor-pointer"
           >
-            <MagnifyingGlass size={15} weight="bold" />
+            <MagnifyingGlass size={14} weight="bold" />
           </button>
         </form>
       </div>
@@ -121,11 +119,10 @@ export default function NewsSidebar({
           WIDGET 2: KATEGORI DENGAN JUMLAH ARTIKEL
           ========================================================= */}
       <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs">
-        <div className="pb-3 mb-3 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="font-serif-academic font-bold text-base text-[#1E5631] tracking-tight">
-            Kategori
+        <div className="pb-3 mb-3 border-b border-slate-100">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            Indeks Kategori
           </h3>
-          <span className="w-8 h-1 bg-[#D97706] rounded-full" />
         </div>
 
         <ul className="divide-y divide-slate-100 text-xs">
@@ -136,26 +133,26 @@ export default function NewsSidebar({
                 <button
                   type="button"
                   onClick={() => handleCategoryClick(cat.name)}
-                  className={`w-full py-2.5 px-1.5 flex items-center justify-between rounded-lg transition-colors text-left group cursor-pointer ${
+                  className={`w-full py-2.5 px-2 flex items-center justify-between rounded-lg transition-colors text-left group cursor-pointer ${
                     isSelected
-                      ? 'bg-emerald-50 text-[#1E5631] font-bold'
+                      ? 'bg-[#eaf4ed] text-[#1E5631] font-bold'
                       : 'text-slate-700 hover:text-[#1E5631] hover:bg-slate-50'
                   }`}
                 >
                   <span className="flex items-center gap-2 truncate pr-2">
                     <CaretRight
-                      size={13}
+                      size={12}
                       weight="bold"
                       className={`shrink-0 transition-transform ${
                         isSelected
-                          ? 'text-[#D97706] translate-x-0.5'
-                          : 'text-slate-400 group-hover:text-[#D97706] group-hover:translate-x-0.5'
+                          ? 'text-[#1E5631] translate-x-0.5'
+                          : 'text-slate-400 group-hover:text-[#1E5631] group-hover:translate-x-0.5'
                       }`}
                     />
                     <span className="truncate">{cat.name}</span>
                   </span>
                   <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold tabular-nums shrink-0 ${
+                    className={`px-2 py-0.5 rounded-md text-[10px] font-bold tabular-nums shrink-0 ${
                       isSelected
                         ? 'bg-[#1E5631] text-white'
                         : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'
@@ -171,14 +168,13 @@ export default function NewsSidebar({
       </div>
 
       {/* =========================================================
-          WIDGET 3: TAGS POPULER
+          WIDGET 3: TOPIK POPULER
           ========================================================= */}
       <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs">
-        <div className="pb-3 mb-4 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="font-serif-academic font-bold text-base text-[#1E5631] tracking-tight">
-            Tags Populer
+        <div className="pb-3 mb-3.5 border-b border-slate-100">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            Topik Pencarian
           </h3>
-          <span className="w-8 h-1 bg-[#D97706] rounded-full" />
         </div>
 
         <div className="flex flex-wrap gap-1.5">
@@ -187,70 +183,66 @@ export default function NewsSidebar({
               key={tag}
               type="button"
               onClick={() => handleTagClick(tag)}
-              className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-[#1E5631] hover:text-white text-slate-600 text-[11px] font-medium transition-all active:scale-95 cursor-pointer border border-slate-200/60"
+              className="px-2.5 py-1 rounded-lg bg-slate-50 hover:bg-[#1E5631] hover:text-white text-slate-600 text-[11px] font-medium transition-all cursor-pointer border border-slate-200/80"
             >
-              #{tag}
+              {tag}
             </button>
           ))}
         </div>
       </div>
 
       {/* =========================================================
-          WIDGET 4: INSTAGRAM UTAMA (KANAL RESMI SEKOLAH)
+          WIDGET 4: KANAL INSTAGRAM RESMI
           ========================================================= */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs text-center space-y-3">
-        <div className="pb-3 border-b border-slate-100 flex items-center justify-between text-left">
-          <h3 className="font-serif-academic font-bold text-base text-[#1E5631] tracking-tight flex items-center gap-2">
-            <InstagramLogo size={18} weight="fill" className="text-pink-600" />
-            <span>Instagram Utama</span>
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs space-y-3">
+        <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            Media Sosial Resmi
           </h3>
-          <span className="w-8 h-1 bg-[#D97706] rounded-full" />
+          <InstagramLogo size={16} weight="bold" className="text-slate-500" />
         </div>
 
-        <div className="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 space-y-2.5">
-          <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 flex items-center justify-center text-white shadow-md">
-            <InstagramLogo size={24} weight="bold" />
-          </div>
-
+        <div className="space-y-3">
           <div>
-            <p className="font-bold text-slate-900 text-xs sm:text-sm">
-              @smpn5cibeber_official
+            <p className="font-bold text-slate-900 text-sm">
+              @smpn5cibeber
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-              Ikuti galeri aktivitas instan &amp; kabar terkini di Instagram
+            <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+              Dokumentasi kegiatan harian dan pengumuman singkat SMP Negeri 5 Cibeber di Instagram.
             </p>
           </div>
 
           <a
-            href="https://www.instagram.com"
+            href="https://instagram.com/smpn5cibeber"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg bg-gradient-to-r from-[#e1306c] to-[#fd1d1d] hover:opacity-95 text-white text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+            className="inline-flex items-center justify-between w-full py-2.5 px-3.5 rounded-xl bg-slate-900 hover:bg-[#1E5631] text-white text-xs font-bold transition-colors"
           >
-            <span>Ikuti Kami</span>
+            <span>Kunjungi @smpn5cibeber</span>
+            <ArrowUpRight size={14} weight="bold" />
           </a>
         </div>
       </div>
 
       {/* =========================================================
-          WIDGET 5: AGENDA SEKOLAH TERDEKAT (PELENGKAP)
+          WIDGET 5: KALENDER PENDIDIKAN
           ========================================================= */}
-      <div className="p-5 rounded-2xl bg-gradient-to-br from-[#1E5631] to-[#164325] text-white shadow-md space-y-3">
-        <div className="flex items-center gap-2 text-amber-300 text-xs font-bold uppercase tracking-wider">
-          <CalendarBlank size={15} weight="bold" />
-          <span>Kalender Pendidikan</span>
+      <div className="p-5 rounded-2xl bg-[#1E5631] text-white space-y-2.5">
+        <div className="flex items-center gap-2 text-amber-300 text-[11px] font-bold uppercase tracking-wider">
+          <CalendarBlank size={14} weight="bold" />
+          <span>Kalender Akademik</span>
         </div>
-        <h4 className="font-serif-academic font-bold text-base text-white leading-snug">
-          Jadwal Kegiatan &amp; Agenda Resmi Sekolah
+        <h4 className="font-bold text-sm sm:text-base text-white leading-snug">
+          Jadwal Kegiatan &amp; Agenda Sekolah
         </h4>
-        <p className="text-xs text-emerald-100/80 leading-relaxed">
-          Pantau seluruh agenda ujian, MPLS, porseni, dan peringatan hari besar di SMPN 5 Cibeber.
+        <p className="text-xs text-emerald-100/85 leading-relaxed">
+          Pantau jadwal asesmen kurikulum, MPLS, rapat wali murid, dan kegiatan kesiswaan.
         </p>
         <Link
           href="/agenda"
           className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:text-white pt-1 group"
         >
-          <span>Lihat Agenda Lengkap</span>
+          <span>Lihat Agenda Sekolah</span>
           <ArrowRight size={13} weight="bold" className="group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>

@@ -1,7 +1,7 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import MegaMendungPattern from '@/components/ui/MegaMendungPattern';
 import {
-  GraduationCap,
   Phone,
   Envelope,
   MapPin,
@@ -37,8 +37,7 @@ export default function Footer({ settings = {} }: FooterProps) {
 
   return (
     <footer className="relative overflow-hidden bg-[#1E5631] text-emerald-100/90 border-t border-[#164325]">
-      {/* Siluet Batik Mega Mendung Warna Putih Khas Jawa Barat */}
-      <MegaMendungPattern variant="white" opacity="opacity-[0.16]" />
+      <MegaMendungPattern variant="white" opacity="opacity-[0.07]" />
 
       {/* Top Banner / Trust bar */}
       <div className="relative z-10 border-b border-[#164325] bg-[#164325]/70 py-2.5 sm:py-3">
@@ -48,30 +47,36 @@ export default function Footer({ settings = {} }: FooterProps) {
               <ShieldCheck size={14} weight="fill" className="text-amber-300" />
               Terakreditasi {accreditation} (BAN-S/M)
             </span>
-            <span className="text-emerald-200/90 font-mono text-[11px]">NPSN: {npsn}</span>
+            <span className="text-emerald-200/90 font-mono text-[11px] tabular-nums">NPSN: {npsn}</span>
           </div>
 
           <p className="text-emerald-100/80 text-center sm:text-right text-[11px] font-medium">
-            Mendidik Generasi Beriman, Berprestasi, dan Berkarakter Mulia
+            Dinas Pendidikan Kabupaten Lebak &middot; Provinsi Banten
           </p>
         </div>
       </div>
 
-      <div className="container-site relative z-10 py-7 sm:py-8 lg:py-8">
+      <div className="container-site relative z-10 py-8 sm:py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {/* Col 1: Identity */}
+          {/* Col 1: Identity dengan Logo Resmi Sekolah (Bukan Ikon GraduationCap Generik) */}
           <div className="space-y-3 lg:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <div className="h-9 w-9 rounded-xl bg-white shadow-md flex items-center justify-center shrink-0">
-                <GraduationCap size={20} weight="fill" className="text-[#1E5631]" />
+            <div className="flex items-center gap-3">
+              <div className="relative h-10 w-9 shrink-0">
+                <Image
+                  src="/assets/logo-smpn5cibeber.png"
+                  alt="Logo SMPN 5 Cibeber"
+                  fill
+                  sizes="40px"
+                  className="object-contain"
+                />
               </div>
               <div>
                 <p className="font-extrabold text-white text-sm tracking-tight">{schoolName}</p>
-                <p className="text-[11px] text-emerald-200/90">Kab. Lebak, Banten</p>
+                <p className="text-[11px] text-emerald-200/90">Kec. Cibeber, Kab. Lebak</p>
               </div>
             </div>
             <p className="text-xs text-emerald-100/80 leading-relaxed">
-              Lembaga pendidikan tingkat menengah pertama negeri di Cibeber yang berfokus pada budi pekerti, keunggulan akademik, dan cinta kelestarian lingkungan.
+              Satuan pendidikan menengah pertama negeri di Desa Warungbanten yang berfokus pada budi pekerti, mutu akademik, dan kepedulian lingkungan.
             </p>
             {whatsapp && (
               <a
@@ -86,12 +91,12 @@ export default function Footer({ settings = {} }: FooterProps) {
             )}
           </div>
 
-          {/* Col 2: Navigation Links (2 Kolom Sejajar agar Ramping) */}
+          {/* Col 2: Navigation Links */}
           <div className="lg:col-span-1">
-            <p className="text-xs font-bold uppercase tracking-wider text-white mb-2.5 flex items-center gap-1.5">
-              <span>Navigasi Cepat</span>
+            <p className="text-xs font-bold uppercase tracking-wider text-white mb-2.5">
+              Navigasi Halaman
             </p>
-            <ul className="grid grid-cols-2 gap-x-2 gap-y-1 text-xs">
+            <ul className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs">
               {[
                 { href: '/', label: 'Beranda' },
                 { href: '/profil', label: 'Profil' },
@@ -109,11 +114,10 @@ export default function Footer({ settings = {} }: FooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-emerald-100/80 hover:text-white transition-colors flex items-center gap-1 py-0.5 truncate"
+                    className="text-emerald-100/80 hover:text-white transition-colors block py-0.5 truncate"
                     title={link.label}
                   >
-                    <span className="text-amber-400 text-[10px]">&rsaquo;</span>
-                    <span className="truncate">{link.label}</span>
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -124,41 +128,40 @@ export default function Footer({ settings = {} }: FooterProps) {
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-white mb-2.5 flex items-center gap-1.5">
               <Clock size={14} weight="bold" />
-              <span>Jam Operasional</span>
+              <span>Jam Layanan TU</span>
             </p>
             <div className="space-y-2 text-xs text-emerald-100/90">
-              <div className="p-2.5 rounded-xl bg-[#164325]/80 border border-white/10 space-y-1 text-[11px]">
-                <p className="text-white font-semibold text-xs mb-1">Pelayanan Tata Usaha (TU):</p>
+              <div className="p-3 rounded-xl bg-[#164325]/80 border border-white/10 space-y-1.5 text-[11px] tabular-nums">
                 <div className="flex justify-between text-emerald-200/90">
-                  <span>Senin – Kamis</span>
-                  <span className="font-mono text-white">07.30 – 15.00</span>
+                  <span>Senin &ndash; Kamis</span>
+                  <span className="font-mono text-white">07.30 &ndash; 15.00</span>
                 </div>
                 <div className="flex justify-between text-emerald-200/90">
                   <span>Jumat</span>
-                  <span className="font-mono text-white">07.30 – 11.30</span>
+                  <span className="font-mono text-white">07.30 &ndash; 11.30</span>
                 </div>
-                <div className="flex justify-between text-emerald-300/80 pt-0.5 border-t border-white/10">
-                  <span>Sabtu – Minggu</span>
-                  <span>Libur / Tutup</span>
+                <div className="flex justify-between text-emerald-300/80 pt-1 border-t border-white/10">
+                  <span>Sabtu &ndash; Minggu</span>
+                  <span>Libur</span>
                 </div>
               </div>
-              <p className="text-[10px] text-emerald-200/70 leading-tight">
-                Pertanyaan di luar jam kerja dapat dikirim via WhatsApp sekolah.
+              <p className="text-[11px] text-emerald-200/70 leading-tight">
+                Layanan informasi di luar jam kerja dilayani melalui pesan WhatsApp.
               </p>
             </div>
           </div>
 
           {/* Col 4: Informasi Kontak & Lokasi */}
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-white mb-2.5">Kontak & Lokasi</p>
-            <ul className="space-y-2 text-xs">
+            <p className="text-xs font-bold uppercase tracking-wider text-white mb-2.5">Kontak &amp; Alamat</p>
+            <ul className="space-y-2.5 text-xs">
               <li className="flex items-start gap-2 text-emerald-100/90">
                 <MapPin size={15} className="shrink-0 mt-0.5 text-amber-300" />
                 <span className="leading-snug text-[11px]">{shortAddress}</span>
               </li>
               <li className="flex items-center gap-2 text-emerald-100/90">
                 <Phone size={15} className="shrink-0 text-emerald-300" />
-                <a href={`tel:${phone}`} className="hover:text-white transition-colors text-[11px]">
+                <a href={`tel:${phone}`} className="hover:text-white transition-colors text-[11px] tabular-nums">
                   {phone}
                 </a>
               </li>
@@ -173,7 +176,7 @@ export default function Footer({ settings = {} }: FooterProps) {
         </div>
 
         {/* Bottom copyright & admin access */}
-        <div className="border-t border-[#164325] mt-6 pt-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-emerald-200/80">
+        <div className="border-t border-[#164325] mt-7 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-emerald-200/80">
           <p className="text-center sm:text-left text-[11px]">
             &copy; {year} {schoolName}. Hak cipta dilindungi undang-undang.
           </p>

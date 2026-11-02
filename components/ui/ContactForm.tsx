@@ -11,7 +11,7 @@ export default function ContactForm({ whatsappNumber = '6285281459726' }: Contac
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [role, setRole] = useState('Orang Tua Siswa');
-  const [subject, setSubject] = useState('Informasi PPDB 2025/2026');
+  const [subject, setSubject] = useState('Informasi PPDB 2026/2027');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -21,38 +21,36 @@ export default function ContactForm({ whatsappNumber = '6285281459726' }: Contac
     e.preventDefault();
     if (!name || !message) return;
 
-    // Format template WhatsApp
     const waText = encodeURIComponent(
       `*Pesan Kontak Website SMPN 5 Cibeber*\n\n` +
-      `*Nama:* ${name}\n` +
-      `*No. Kontak:* ${phone || '-'}\n` +
-      `*Status/Peran:* ${role}\n` +
-      `*Subjek:* ${subject}\n\n` +
-      `*Pesan:*\n${message}`
+        `*Nama:* ${name}\n` +
+        `*No. Kontak:* ${phone || '-'}\n` +
+        `*Status/Peran:* ${role}\n` +
+        `*Subjek:* ${subject}\n\n` +
+        `*Pesan:*\n${message}`
     );
 
-    // Buka WhatsApp di tab baru
     window.open(`https://wa.me/${cleanWa}?text=${waText}`, '_blank');
     setSubmitted(true);
   };
 
   return (
-    <div className="card p-6 sm:p-8 bg-white border border-slate-200 rounded-2xl shadow-xs">
-      <h3 className="text-lg font-bold text-[#1E5631] mb-1">
-        Kirim Pesan ke Pihak Sekolah
+    <div className="p-6 sm:p-8 bg-white border border-slate-200/90 rounded-2xl shadow-xs">
+      <h3 className="font-serif-academic text-lg sm:text-xl font-bold text-slate-900 mb-1">
+        Kirim Pesan ke Tata Usaha Sekolah
       </h3>
-      <p className="text-xs sm:text-sm text-[#1E293B]/80 mb-6 leading-relaxed">
-        Punya pertanyaan seputar PPDB, administrasi, atau kegiatan sekolah? Silakan isi formulir di bawah ini untuk terhubung langsung dengan pihak tata usaha/panitia.
+      <p className="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
+        Silakan isi formulir di bawah ini untuk terhubung langsung dengan staf tata usaha atau panitia PPDB melalui WhatsApp resmi sekolah.
       </p>
 
       {submitted ? (
-        <div className="p-6 rounded-xl bg-[#1E5631]/5 border border-[#1E5631]/20 text-center space-y-3">
-          <CheckCircle size={44} weight="fill" className="text-[#1E5631] mx-auto" />
+        <div className="p-6 rounded-xl bg-[#eaf4ed] border border-[#1E5631]/20 text-center space-y-3">
+          <CheckCircle size={40} weight="fill" className="text-[#1E5631] mx-auto" />
           <h4 className="text-base font-bold text-[#1E5631]">
-            Pesan Siap Dikirim!
+            Pesan Siap Dikirim
           </h4>
-          <p className="text-xs sm:text-sm text-[#1E293B] max-w-md mx-auto">
-            Halaman WhatsApp telah dibuka untuk meneruskan pesan Anda. Panitia akan merespon pertanyaan Anda secepatnya pada jam kerja.
+          <p className="text-xs sm:text-sm text-slate-700 max-w-md mx-auto">
+            Halaman WhatsApp telah dibuka untuk meneruskan pesan Anda. Staf kami akan merespons pada jam kerja pelayanan.
           </p>
           <button
             onClick={() => {
@@ -74,7 +72,7 @@ export default function ContactForm({ whatsappNumber = '6285281459726' }: Contac
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Contoh: Budi Santoso"
+                placeholder="Masukkan nama lengkap Anda"
                 className="input"
               />
             </div>
@@ -102,21 +100,21 @@ export default function ContactForm({ whatsappNumber = '6285281459726' }: Contac
                 <option value="Orang Tua Siswa">Orang Tua / Wali Siswa</option>
                 <option value="Calon Siswa Baru">Calon Siswa Baru</option>
                 <option value="Alumni">Alumni</option>
-                <option value="Masyarakat Umum">Masyarakat Umum / Mitra</option>
+                <option value="Masyarakat Umum">Masyarakat Umum / Instansi</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label className="label">Subjek Pertanyaan</label>
+              <label className="label">Keperluan Informasi</label>
               <select
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 className="input"
               >
-                <option value="Informasi PPDB 2025/2026">Informasi PPDB 2025/2026</option>
-                <option value="Legalisir & Berkas Ijazah">Legalisir & Berkas Ijazah</option>
+                <option value="Informasi PPDB 2026/2027">Informasi PPDB 2026/2027</option>
+                <option value="Legalisir & Berkas Ijazah">Legalisir &amp; Berkas Ijazah</option>
                 <option value="Mutasi / Pindah Masuk">Mutasi / Pindah Masuk</option>
-                <option value="Pengaduan & Saran">Pengaduan & Saran</option>
+                <option value="Pengaduan & Saran">Pengaduan &amp; Saran</option>
                 <option value="Lainnya">Lainnya</option>
               </select>
             </div>
@@ -129,18 +127,18 @@ export default function ContactForm({ whatsappNumber = '6285281459726' }: Contac
               rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Tuliskan pertanyaan atau informasi yang ingin Anda tanyakan secara jelas..."
+              placeholder="Tuliskan pertanyaan atau rincian keperluan Anda..."
               className="input resize-none"
             />
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2 bg-[#1E5631] hover:bg-[#164325] text-white shadow-md active:scale-95 transition-all duration-200"
+            className="w-full py-3 px-5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 bg-[#1E5631] hover:bg-[#164325] text-white transition-colors cursor-pointer"
           >
-            <WhatsappLogo size={20} weight="fill" className="text-white" />
+            <WhatsappLogo size={18} weight="fill" className="text-white" />
             <span>Kirim Pesan via WhatsApp Resmi</span>
-            <PaperPlaneTilt size={16} weight="bold" />
+            <PaperPlaneTilt size={15} weight="bold" />
           </button>
         </form>
       )}

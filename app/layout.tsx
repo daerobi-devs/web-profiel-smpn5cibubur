@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://smpn5cibeber.sch.id'),
   title: {
-    default: 'SMP Negeri 5 Cibeber — Sekolah Berkarakter & Unggul di Lebak Banten',
+    default: 'SMP Negeri 5 Cibeber | Satuan Pendidikan Negeri Kab. Lebak Banten',
     template: '%s | SMP Negeri 5 Cibeber',
   },
   description:
@@ -42,7 +42,6 @@ export const metadata: Metadata = {
     'SMP 5 Cibeber',
     'SMPN 5 Cibeber Lebak',
     'Sekolah Menengah Pertama Negeri 5 Cibeber',
-    'SMP Terbaik di Cibeber',
     'PPDB SMPN 5 Cibeber',
     'NPSN 20607865',
     'Pendidikan Kabupaten Lebak Banten',
@@ -67,9 +66,9 @@ export const metadata: Metadata = {
     locale: 'id_ID',
     url: 'https://smpn5cibeber.sch.id',
     siteName: 'SMP Negeri 5 Cibeber',
-    title: 'SMP Negeri 5 Cibeber — Sekolah Berkarakter & Unggul di Lebak Banten',
+    title: 'SMP Negeri 5 Cibeber | Satuan Pendidikan Negeri Kab. Lebak Banten',
     description:
-      'Portal informasi resmi SMP Negeri 5 Cibeber, Kab. Lebak, Banten. Membina budi pekerti, keunggulan akademik, kelestarian lingkungan hidup, dan penguasaan teknologi.',
+      'Portal informasi resmi SMP Negeri 5 Cibeber, Desa Warungbanten, Kec. Cibeber, Kab. Lebak, Banten.',
     images: [
       {
         url: 'https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png',
@@ -81,9 +80,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'SMP Negeri 5 Cibeber — The Inspiring School of Cibeber',
+    title: 'SMP Negeri 5 Cibeber | Kab. Lebak, Banten',
     description:
-      'Portal informasi resmi SMP Negeri 5 Cibeber, Kab. Lebak, Banten. Membina budi pekerti, keunggulan akademik, kelestarian lingkungan hidup, dan penguasaan teknologi.',
+      'Portal informasi resmi SMP Negeri 5 Cibeber, Desa Warungbanten, Kec. Cibeber, Kab. Lebak, Banten.',
     images: ['https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png'],
   },
   robots: {
@@ -109,7 +108,7 @@ const schoolSchema = {
   logo: 'https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png',
   image: 'https://smpn5cibeber.sch.id/assets/gedung-smpn5cibeber.jpg',
   description:
-    'Lembaga Pendidikan Menengah Negeri yang berfokus pada pembentukan budi pekerti, keunggulan akademik, keterampilan teknologi, dan kelestarian lingkungan di Kabupaten Lebak, Banten.',
+    'Satuan Pendidikan Menengah Pertama Negeri di Desa Warungbanten, Kecamatan Cibeber, Kabupaten Lebak, Provinsi Banten.',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Jl. Raya Cikotok-Pasirkuray Km.05, Warungbanten',

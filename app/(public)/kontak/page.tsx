@@ -1,21 +1,32 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { getWebSettings } from '@/lib/supabaseData';
-import { Phone, Envelope, MapPin, WhatsappLogo, Clock, ChatTeardropText, ArrowSquareOut } from '@phosphor-icons/react/dist/ssr';
+import {
+  Phone,
+  Envelope,
+  MapPin,
+  WhatsappLogo,
+  Clock,
+  ArrowSquareOut,
+} from '@phosphor-icons/react/dist/ssr';
 import ContactForm from '@/components/ui/ContactForm';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Kontak & Lokasi Sekolah',
-  description: 'Alamat lengkap, peta lokasi Google Maps, kontak WhatsApp, email, dan formulir pengaduan SMPN 5 Cibeber.',
+  title: 'Kontak & Lokasi Sekolah | SMP Negeri 5 Cibeber',
+  description:
+    'Alamat lengkap, peta lokasi Google Maps, kontak WhatsApp, email, dan formulir layanan informasi SMP Negeri 5 Cibeber.',
 };
 
 export default async function KontakPage() {
   const settings = await getWebSettings();
 
   return (
-    <div>
-      {/* Hero Banner Kontak — Background Foto Fasad Gedung dengan Tint Hijau Lembut */}
-      <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
+    <div className="bg-[#F8FAFC] min-h-screen text-[#1E293B]">
+      {/* =========================================================
+          1. HEADER HALAMAN EDITORIAL (KIRI-RATA)
+          ========================================================= */}
+      <section className="relative overflow-hidden text-white pt-16 pb-14 md:pt-20 md:pb-16 border-b border-slate-900/20">
         <div className="absolute inset-0 z-0 pointer-events-none select-none">
           <Image
             src={settings.banner_page_kontak || '/assets/gedung-smpn5cibeber.jpg'}
@@ -25,80 +36,77 @@ export default async function KontakPage() {
             className="object-cover object-center"
             sizes="100vw"
           />
-          {/* Lapisan Hijau Diturunkan Opasitasnya agar Foto Gedung Terlihat Jelas */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/78 via-[#1E5631]/65 to-[#143e22]/88" />
-          <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/20 to-emerald-950/55" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/65 via-slate-950/50 to-[#091e10]/85" />
         </div>
 
-        <div className="container-site relative z-10 text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-xs font-bold text-amber-300 shadow-sm">
-            <ChatTeardropText size={16} weight="fill" />
-            <span>Hubungi &amp; Kunjungi Sekolah</span>
-          </div>
+        <div className="container-site relative z-10">
+          <div className="max-w-3xl space-y-3">
+            <nav className="flex items-center gap-2 text-xs font-medium text-white/75">
+              <Link href="/" className="hover:text-white transition-colors">
+                Beranda
+              </Link>
+              <span className="text-white/40">/</span>
+              <span className="text-amber-300 font-semibold">Kontak &amp; Lokasi</span>
+            </nav>
 
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
-            Kontak &amp; Lokasi Sekolah
-          </h1>
+            <h1 className="font-serif-academic text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+              Kontak &amp; Lokasi Sekolah
+            </h1>
 
-          <p className="text-sm sm:text-base text-emerald-50 max-w-2xl mx-auto leading-relaxed drop-shadow-sm font-medium">
-            Kami siap melayani kebutuhan informasi seputar pendaftaran siswa baru, administrasi sekolah, dan kerjasama pendidikan di SMPN 5 Cibeber, Kabupaten Lebak, Banten.
-          </p>
-
-          <div className="pt-2 flex flex-wrap justify-center gap-2.5 text-xs">
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold shadow-xs">
-              Layanan Cepat via WhatsApp
-            </span>
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-amber-300 font-semibold shadow-xs">
-              Buka Senin – Jumat
-            </span>
+            <p className="text-sm sm:text-base text-white/85 max-w-2xl leading-relaxed">
+              Layanan informasi pendaftaran siswa baru, administrasi tata usaha, dan kunjungan resmi di SMP Negeri 5 Cibeber, Kabupaten Lebak.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Formulir Kontak & Peta */}
-      <section className="relative overflow-hidden section-padding bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
-        <div className="container-site relative z-10">
+      {/* =========================================================
+          2. FORMULIR KONTAK & INFORMASI LAYANAN
+          ========================================================= */}
+      <section className="py-12 sm:py-16">
+        <div className="container-site">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-14">
             {/* Kolom Kiri: Form Kirim Pesan (7 Kolom) */}
             <div className="lg:col-span-7">
               <ContactForm whatsappNumber={settings.school_whatsapp} />
             </div>
 
-            {/* Kolom Kanan: Info Kontak Detail (5 Kolom) - Pure White Card */}
+            {/* Kolom Kanan: Info Kontak Detail (5 Kolom) */}
             <div className="lg:col-span-5 space-y-5">
-              <div className="card p-6 sm:p-7 space-y-5 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-sm">
-                <h2 className="text-base font-bold text-[#1E5631] pb-2 border-b border-slate-100">
+              <div className="p-6 sm:p-7 space-y-5 bg-white border border-slate-200/90 rounded-2xl shadow-xs">
+                <h2 className="text-base font-bold text-slate-900 pb-3 border-b border-slate-100">
                   Informasi Layanan &amp; Kontak Resmi
                 </h2>
 
                 <div className="space-y-4 text-xs sm:text-sm">
                   {/* Alamat */}
                   <div className="flex items-start gap-3">
-                    <div className="h-9 w-9 rounded-xl bg-[#1E5631]/10 text-[#1E5631] flex items-center justify-center shrink-0">
+                    <div className="h-9 w-9 rounded-xl bg-[#eaf4ed] text-[#1E5631] flex items-center justify-center shrink-0">
                       <MapPin size={18} weight="duotone" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-0.5">
+                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
                         Alamat Sekolah
                       </p>
                       <p className="text-[#1E293B] leading-relaxed font-medium">
-                        {settings.school_address ?? 'Kecamatan Cibeber, Kabupaten Lebak, Provinsi Banten'}
+                        {settings.school_address ??
+                          'Jl. Cikotok – Warungbanten, Desa Warungbanten, Kec. Cibeber, Kab. Lebak, Banten 42394'}
                       </p>
                     </div>
                   </div>
 
                   {/* Telepon */}
                   <div className="flex items-start gap-3">
-                    <div className="h-9 w-9 rounded-xl bg-[#1E5631]/10 text-[#1E5631] flex items-center justify-center shrink-0">
+                    <div className="h-9 w-9 rounded-xl bg-[#eaf4ed] text-[#1E5631] flex items-center justify-center shrink-0">
                       <Phone size={18} weight="duotone" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-0.5">
-                        Telepon Kantor
+                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
+                        Telepon / WhatsApp Tata Usaha
                       </p>
                       <a
                         href={`tel:${settings.school_phone}`}
-                        className="text-[#1E293B] hover:text-[#1E5631] font-semibold transition-colors"
+                        className="text-[#1E293B] hover:text-[#1E5631] font-semibold transition-colors tabular-nums"
                       >
                         {settings.school_phone ?? '-'}
                       </a>
@@ -107,32 +115,32 @@ export default async function KontakPage() {
 
                   {/* Email */}
                   <div className="flex items-start gap-3">
-                    <div className="h-9 w-9 rounded-xl bg-[#1E5631]/10 text-[#1E5631] flex items-center justify-center shrink-0">
+                    <div className="h-9 w-9 rounded-xl bg-[#eaf4ed] text-[#1E5631] flex items-center justify-center shrink-0">
                       <Envelope size={18} weight="duotone" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-0.5">
-                        Email Resmi
+                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
+                        Pos Elektronik (Email)
                       </p>
                       <a
                         href={`mailto:${settings.school_email}`}
                         className="text-[#1E293B] hover:text-[#1E5631] font-semibold break-all transition-colors"
                       >
-                        {settings.school_email ?? '-'}
+                        {settings.school_email ?? 'smpnlimacibeber@yahoo.com'}
                       </a>
                     </div>
                   </div>
 
                   {/* Jam Pelayanan */}
                   <div className="flex items-start gap-3">
-                    <div className="h-9 w-9 rounded-xl bg-[#1E5631]/10 text-[#1E5631] flex items-center justify-center shrink-0">
+                    <div className="h-9 w-9 rounded-xl bg-[#eaf4ed] text-[#1E5631] flex items-center justify-center shrink-0">
                       <Clock size={18} weight="duotone" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-0.5">
+                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">
                         Jam Kerja Pelayanan TU
                       </p>
-                      <p className="text-[#1E293B] leading-snug">
+                      <p className="text-[#1E293B] leading-snug tabular-nums">
                         Senin – Kamis: 07.30 – 15.00 WIB
                         <br />
                         Jumat: 07.30 – 11.30 WIB
@@ -147,10 +155,10 @@ export default async function KontakPage() {
                       href={`https://wa.me/${settings.school_whatsapp.replace(/[^0-9]/g, '')}?text=Halo%20SMPN%205%20Cibeber,%20saya%20ingin%20bertanya%20informasi%20sekolah.`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-primary w-full py-2.5 flex items-center justify-center gap-2 bg-[#1E5631] hover:bg-[#164325] border-none text-white font-bold transition-all duration-200"
+                      className="w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#1E5631] hover:bg-[#164325] text-white text-xs sm:text-sm font-bold transition-colors"
                     >
-                      <WhatsappLogo size={20} weight="fill" />
-                      <span>Chat WhatsApp Cepat</span>
+                      <WhatsappLogo size={18} weight="fill" />
+                      <span>Hubungi via WhatsApp</span>
                     </a>
                   </div>
                 )}
@@ -169,25 +177,25 @@ export default async function KontakPage() {
               <div className="space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-[#1E5631]">
-                      Peta Lokasi Resmi Sekolah
+                    <h2 className="font-serif-academic text-xl sm:text-2xl font-bold text-slate-900">
+                      Peta Lokasi Sekolah
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                      Petunjuk navigasi dan rute langsung menuju SMPN 5 Cibeber
+                    <p className="text-xs sm:text-sm text-slate-500">
+                      Petunjuk navigasi menuju kampus SMP Negeri 5 Cibeber di Desa Warungbanten
                     </p>
                   </div>
                   <a
                     href={mapsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#1E5631] border border-emerald-200 text-xs font-bold transition-all shadow-xs w-fit"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-[#1E5631] border border-slate-200 text-xs font-bold transition-all w-fit"
                   >
                     <span>Buka di Google Maps</span>
                     <ArrowSquareOut size={14} weight="bold" />
                   </a>
                 </div>
 
-                <div className="card overflow-hidden p-0 rounded-3xl border border-slate-200/90 shadow-md bg-white">
+                <div className="overflow-hidden rounded-2xl border border-slate-200/90 shadow-xs bg-white">
                   <iframe
                     src={mapsEmbed}
                     width="100%"

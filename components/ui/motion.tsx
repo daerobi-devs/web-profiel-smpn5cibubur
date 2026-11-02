@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import React from "react";
 
-// Apple's signature fluid easing curve (easeOutQuint-like)
+// Fluid cubic-bezier easing curve
 export const appleEase = [0.16, 1, 0.3, 1] as const;
 
 const pageVariants = {
@@ -13,6 +13,10 @@ const pageVariants = {
 };
 
 export function PageTransition({ children, className }: { children: React.ReactNode; className?: string }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div initial="initial" animate="animate" variants={pageVariants} className={className}>
       {children}
@@ -21,14 +25,14 @@ export function PageTransition({ children, className }: { children: React.ReactN
 }
 
 /**
- * ScrollFadeUp — Apple Education style gentle rise and fade-in
+ * ScrollFadeUp — Gentle rise and fade-in with reduced-motion support
  */
 export function ScrollFadeUp({
   children,
   className,
   delay = 0,
-  duration = 0.7,
-  distance = 28,
+  duration = 0.6,
+  distance = 20,
   once = true,
 }: {
   children: React.ReactNode;
@@ -38,6 +42,10 @@ export function ScrollFadeUp({
   distance?: number;
   once?: boolean;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div
       initial={{ opacity: 0, y: distance }}
@@ -56,14 +64,14 @@ export function ScrollFadeUp({
 }
 
 /**
- * ScrollFadeScale — Apple Education style soft scale and fade-in (ideal for portraits & media cards)
+ * ScrollFadeScale — Soft scale and fade-in with reduced-motion support
  */
 export function ScrollFadeScale({
   children,
   className,
   delay = 0,
-  duration = 0.75,
-  initialScale = 0.95,
+  duration = 0.65,
+  initialScale = 0.97,
   once = true,
 }: {
   children: React.ReactNode;
@@ -73,9 +81,13 @@ export function ScrollFadeScale({
   initialScale?: number;
   once?: boolean;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div
-      initial={{ opacity: 0, scale: initialScale, y: 16 }}
+      initial={{ opacity: 0, scale: initialScale, y: 12 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once, margin: "-60px" }}
       transition={{
@@ -91,26 +103,26 @@ export function ScrollFadeScale({
 }
 
 /**
- * Stagger Container & Items for Grids (Facilities, News, Extracurriculars)
+ * Stagger Container & Items for Grids
  */
 const staggerContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: (custom: { delay?: number; stagger?: number } = {}) => ({
     opacity: 1,
     transition: {
-      delayChildren: custom.delay ?? 0.05,
-      staggerChildren: custom.stagger ?? 0.1,
+      delayChildren: custom.delay ?? 0.04,
+      staggerChildren: custom.stagger ?? 0.08,
     },
   }),
 };
 
 const staggerItemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.65,
+      duration: 0.55,
       ease: appleEase,
     },
   },
@@ -119,8 +131,8 @@ const staggerItemVariants: Variants = {
 export function ScrollStaggerContainer({
   children,
   className,
-  stagger = 0.1,
-  delay = 0.05,
+  stagger = 0.08,
+  delay = 0.04,
   once = true,
 }: {
   children: React.ReactNode;
@@ -129,6 +141,10 @@ export function ScrollStaggerContainer({
   delay?: number;
   once?: boolean;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div
       initial="hidden"
@@ -150,6 +166,10 @@ export function ScrollStaggerItem({
   children: React.ReactNode;
   className?: string;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
   return (
     <motion.div variants={staggerItemVariants} className={className}>
       {children}

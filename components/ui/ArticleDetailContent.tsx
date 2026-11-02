@@ -14,7 +14,6 @@ import {
   LinkSimple,
   Check,
   TextAa,
-  ArrowLeft,
   ArrowRight,
   ShareNetwork,
 } from '@phosphor-icons/react';
@@ -51,7 +50,6 @@ export default function ArticleDetailContent({
   relatedArticles = [],
   categoriesList = [],
 }: ArticleDetailContentProps) {
-  // Font Size Resizer State: 'sm' | 'base' | 'lg'
   const [fontSize, setFontSize] = useState<'sm' | 'base' | 'lg'>('base');
   const [copied, setCopied] = useState(false);
 
@@ -70,20 +68,17 @@ export default function ArticleDetailContent({
     ? new Date(article.published_at)
     : new Date(article.created_at);
 
-  // Estimasi kata dan waktu baca (asumsi 180 kata per menit)
   const plainText = article.content.replace(/<[^>]+>/g, '');
   const wordCount = plainText.trim().split(/\s+/).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 180));
 
-
-  // Share Handlers
   const currentUrl =
     typeof window !== 'undefined'
       ? window.location.href
-      : `https://ekosistem.daeroom.my.id/berita/${article.slug}`;
+      : `https://smpn5cibeber.sch.id/berita/${article.slug}`;
 
   const shareText = encodeURIComponent(
-    `${article.title} — SMP Negeri 5 Cibeber\n${currentUrl}`
+    `${article.title} | SMP Negeri 5 Cibeber\n${currentUrl}`
   );
 
   const handleCopyLink = () => {
@@ -94,7 +89,6 @@ export default function ArticleDetailContent({
     }
   };
 
-  // Font Size Classes
   const proseFontSizeClass =
     fontSize === 'sm'
       ? 'text-sm'
@@ -105,53 +99,42 @@ export default function ArticleDetailContent({
   return (
     <div>
       {/* =========================================================
-          1. HERO HEADER ARTIKEL (PERSIS SEPERTI FOTO REFERENSI)
+          1. HEADER ARTIKEL EDITORIAL (KIRI-RATA)
           ========================================================= */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#1E5631] via-[#164325] to-[#12361e] text-white pt-10 pb-12 sm:pt-14 sm:pb-16 border-b border-emerald-950/40">
-        <div className="container-site relative z-10 max-w-6xl mx-auto space-y-4">
-          {/* Breadcrumb Navigasi */}
-          <nav className="flex items-center gap-2 text-xs font-medium text-emerald-200/90 mb-1">
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-[#0e2a17] to-[#164325] text-white pt-12 pb-12 sm:pt-16 sm:pb-14 border-b border-slate-900/20">
+        <div className="container-site relative z-10 max-w-6xl mx-auto space-y-3.5">
+          <nav className="flex items-center gap-2 text-xs font-medium text-white/75">
             <Link href="/" className="hover:text-white transition-colors">
               Beranda
             </Link>
-            <span className="text-emerald-400/60">/</span>
+            <span className="text-white/40">/</span>
             <Link href="/berita" className="hover:text-white transition-colors">
-              Berita
+              Berita Sekolah
             </Link>
-            <span className="text-emerald-400/60">/</span>
-            <span className="text-amber-400 font-semibold truncate max-w-xs sm:max-w-md">
-              {article.title}
+            <span className="text-white/40">/</span>
+            <span className="text-amber-300 font-semibold truncate max-w-xs sm:max-w-md">
+              {category}
             </span>
           </nav>
 
-          {/* Badge Kategori Kuning/Emas di Atas Judul */}
-          <div>
-            <span className="inline-block px-3 py-1 rounded bg-[#D97706] text-white text-[11px] font-black uppercase tracking-wider shadow-sm">
-              KATEGORI: {category.toUpperCase()}
-            </span>
-          </div>
-
-          {/* Judul Artikel Besar & Megah */}
-          <h1 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl xl:text-[2.65rem] font-black tracking-tight text-white leading-tight drop-shadow-sm max-w-5xl">
+          <h1 className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight max-w-4xl">
             {article.title}
           </h1>
 
-          {/* Metadata Row Lengkap: Penulis | Tanggal | Dilihat | Waktu Baca */}
-          <div className="pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-emerald-100/90 font-medium">
+          <div className="pt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-white/85 font-medium">
             <div className="flex items-center gap-1.5">
-              <User size={15} weight="bold" className="text-amber-400" />
-              <span>Penulis: {article.author || 'Administrator'}</span>
+              <User size={15} weight="bold" className="text-amber-300" />
+              <span>{article.author || 'Humas SMPN 5 Cibeber'}</span>
             </div>
-            <span className="hidden sm:inline text-emerald-400/50">&bull;</span>
+            <span className="hidden sm:inline text-white/35">&middot;</span>
             <div className="flex items-center gap-1.5">
-              <CalendarBlank size={15} weight="bold" className="text-amber-400" />
-              <span>{formatDate(pubDate)}</span>
+              <CalendarBlank size={15} weight="bold" className="text-amber-300" />
+              <time className="tabular-nums">{formatDate(pubDate)}</time>
             </div>
-
-            <span className="hidden sm:inline text-emerald-400/50">&bull;</span>
+            <span className="hidden sm:inline text-white/35">&middot;</span>
             <div className="flex items-center gap-1.5">
-              <Clock size={15} weight="bold" className="text-amber-400" />
-              <span>{readingTime} Menit Baca</span>
+              <Clock size={15} weight="bold" className="text-amber-300" />
+              <span className="tabular-nums">{readingTime} menit baca</span>
             </div>
           </div>
         </div>
@@ -162,13 +145,12 @@ export default function ArticleDetailContent({
           ========================================================= */}
       <main className="container-site pt-8 pb-16 sm:pt-10 sm:pb-20 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Kolom Kiri: Wadah Artikel Utama */}
-          <article className="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm space-y-6">
-            {/* Tool Pengatur Ukuran Huruf (A- / Normal / A+) */}
+          <article className="lg:col-span-8 bg-white rounded-2xl p-6 sm:p-10 border border-slate-200/90 shadow-xs space-y-6">
+            {/* Pengatur Ukuran Huruf */}
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 text-xs text-slate-500">
               <div className="flex items-center gap-2 font-medium">
-                <TextAa size={18} weight="bold" className="text-slate-600" />
-                <span>Ukuran Teks:</span>
+                <TextAa size={17} weight="bold" className="text-slate-600" />
+                <span>Ukuran Teks Bacaan</span>
               </div>
               <div className="inline-flex items-center p-0.5 rounded-lg bg-slate-100 border border-slate-200 font-bold">
                 <button
@@ -176,7 +158,7 @@ export default function ArticleDetailContent({
                   onClick={() => setFontSize('sm')}
                   className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                     fontSize === 'sm'
-                      ? 'bg-[#1E5631] text-white shadow-2xs'
+                      ? 'bg-[#1E5631] text-white'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                   aria-label="Ukuran Huruf Kecil"
@@ -188,7 +170,7 @@ export default function ArticleDetailContent({
                   onClick={() => setFontSize('base')}
                   className={`px-3 py-1 rounded-md transition-colors cursor-pointer ${
                     fontSize === 'base'
-                      ? 'bg-[#1E5631] text-white shadow-2xs'
+                      ? 'bg-[#1E5631] text-white'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                   aria-label="Ukuran Huruf Normal"
@@ -200,7 +182,7 @@ export default function ArticleDetailContent({
                   onClick={() => setFontSize('lg')}
                   className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                     fontSize === 'lg'
-                      ? 'bg-[#1E5631] text-white shadow-2xs'
+                      ? 'bg-[#1E5631] text-white'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                   aria-label="Ukuran Huruf Besar"
@@ -211,7 +193,7 @@ export default function ArticleDetailContent({
             </div>
 
             {/* Foto Sampul Utama Artikel */}
-            <div className="relative aspect-16/10 sm:aspect-16/9 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-xs">
+            <div className="relative aspect-16/10 sm:aspect-16/9 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/80">
               <Image
                 src={coverUrl}
                 alt={article.title}
@@ -222,83 +204,76 @@ export default function ArticleDetailContent({
               />
             </div>
 
-            {/* Teks Isi Konten Artikel (Mendukung Paragraf Otomatis & HTML) */}
+            {/* Teks Isi Konten Artikel */}
             <div
               className={`prose-content max-w-none text-[#1E293B] transition-all ${proseFontSizeClass}`}
               dangerouslySetInnerHTML={{ __html: formatArticleContent(article.content) }}
             />
 
             {/* Penulis / Dokumentasi */}
-            <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 italic">
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
               <span>Penulis: {article.author || 'Humas SMPN 5 Cibeber'}</span>
-              <span>Dokumentasi Resmi Sekolah</span>
+              <span>Arsip Publikasi Resmi</span>
             </div>
 
-            {/* =====================================================
-                BAR BAGIKAN SOSIAL MEDIA (PERSIS SEPERTI FOTO)
-                ===================================================== */}
+            {/* Bar Bagikan */}
             <div className="pt-6 border-t border-slate-100 space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                <ShareNetwork size={16} weight="bold" className="text-[#1E5631]" />
-                <span>Bagikan Ke:</span>
+                <ShareNetwork size={15} weight="bold" className="text-[#1E5631]" />
+                <span>Bagikan Artikel:</span>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                {/* WhatsApp */}
                 <a
                   href={`https://wa.me/?text=${shareText}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Bagikan ke WhatsApp"
-                  className="w-9 h-9 rounded-full bg-[#25D366] hover:opacity-90 text-white flex items-center justify-center shadow-xs active:scale-95 transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#25D366] hover:opacity-90 text-white flex items-center justify-center transition-all"
                 >
                   <WhatsappLogo size={18} weight="fill" />
                 </a>
 
-                {/* Facebook */}
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Bagikan ke Facebook"
-                  className="w-9 h-9 rounded-full bg-[#1877F2] hover:opacity-90 text-white flex items-center justify-center shadow-xs active:scale-95 transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#1877F2] hover:opacity-90 text-white flex items-center justify-center transition-all"
                 >
                   <FacebookLogo size={18} weight="fill" />
                 </a>
 
-                {/* Twitter / X */}
                 <a
                   href={`https://twitter.com/intent/tweet?text=${shareText}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Bagikan ke Twitter / X"
-                  className="w-9 h-9 rounded-full bg-[#0F1419] hover:opacity-90 text-white flex items-center justify-center shadow-xs active:scale-95 transition-all"
+                  aria-label="Bagikan ke X"
+                  className="w-9 h-9 rounded-lg bg-[#0F1419] hover:opacity-90 text-white flex items-center justify-center transition-all"
                 >
                   <TwitterLogo size={18} weight="fill" />
                 </a>
 
-                {/* Telegram */}
                 <a
                   href={`https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(article.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Bagikan ke Telegram"
-                  className="w-9 h-9 rounded-full bg-[#229ED9] hover:opacity-90 text-white flex items-center justify-center shadow-xs active:scale-95 transition-all"
+                  className="w-9 h-9 rounded-lg bg-[#229ED9] hover:opacity-90 text-white flex items-center justify-center transition-all"
                 >
                   <TelegramLogo size={18} weight="fill" />
                 </a>
 
-                {/* Salin Tautan (Copy Link) */}
                 <button
                   type="button"
                   onClick={handleCopyLink}
                   aria-label="Salin Tautan"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold shadow-2xs active:scale-95 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all cursor-pointer"
                 >
                   {copied ? (
                     <>
                       <Check size={14} weight="bold" className="text-emerald-600" />
-                      <span className="text-emerald-700 font-bold">Tautan Disalin!</span>
+                      <span className="text-emerald-700 font-bold">Tautan Disalin</span>
                     </>
                   ) : (
                     <>
@@ -310,18 +285,18 @@ export default function ArticleDetailContent({
               </div>
             </div>
 
-            {/* Rekomendasi Warta Terkait di Bagian Bawah */}
+            {/* Rekomendasi Warta Terkait */}
             {relatedArticles.length > 0 && (
               <div className="pt-8 border-t border-slate-100 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-serif-academic font-bold text-base text-[#1E5631]">
-                    Warta &amp; Liputan Terkait Lainnya
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+                    Warta &amp; Liputan Terkait
                   </h3>
                   <Link
                     href="/berita"
-                    className="text-xs font-bold text-[#D97706] hover:underline inline-flex items-center gap-1"
+                    className="text-xs font-bold text-[#1E5631] hover:underline inline-flex items-center gap-1"
                   >
-                    <span>Lihat Semua</span>
+                    <span>Indeks Berita</span>
                     <ArrowRight size={12} weight="bold" />
                   </Link>
                 </div>
@@ -333,9 +308,9 @@ export default function ArticleDetailContent({
                       <Link
                         key={rel.id}
                         href={`/berita/${rel.slug}`}
-                        className="group p-3 rounded-2xl border border-slate-200/80 hover:border-slate-300 hover:shadow-md transition-all flex items-center gap-3 bg-slate-50/50"
+                        className="group p-3 rounded-xl border border-slate-200/80 hover:border-[#1E5631]/40 transition-all flex items-center gap-3 bg-slate-50/50"
                       >
-                        <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-200">
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-slate-200">
                           <Image
                             src={relCover}
                             alt={rel.title}
@@ -345,7 +320,7 @@ export default function ArticleDetailContent({
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <h4 className="font-serif-academic text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors line-clamp-2 leading-snug">
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#1E5631] transition-colors line-clamp-2 leading-snug">
                             {rel.title}
                           </h4>
                         </div>
@@ -357,7 +332,6 @@ export default function ArticleDetailContent({
             )}
           </article>
 
-          {/* Kolom Kanan: Sidebar Modular Konsisten */}
           <div className="lg:col-span-4 sticky top-24">
             <NewsSidebar
               categories={categoriesList}

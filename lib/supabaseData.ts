@@ -44,7 +44,7 @@ export interface WebSettingItem {
 
 export const DEFAULT_SETTINGS: Record<string, string> = {
   school_name: 'SMP Negeri 5 Cibeber',
-  school_tagline: 'The Inspiring School of Cibeber',
+  school_tagline: '',
   school_subdescription: 'Lembaga Pendidikan Menengah Negeri yang Berfokus pada Pembentukan Budi Pekerti, Keunggulan Akademik, dan Kelestarian Lingkungan di Kabupaten Lebak, Provinsi Banten',
   school_address: 'Jl. Raya Cikotok-Pasirkuray Km.05, Warungbanten, Kec. Cibeber, Kabupaten Lebak, Provinsi Banten 42394',
   school_phone: '0852-8145-9726',

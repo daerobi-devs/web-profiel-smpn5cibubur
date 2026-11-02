@@ -11,13 +11,18 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
-  if (!article) return { title: 'Berita Tidak Ditemukan — SMPN 5 Cibeber' };
+  if (!article) return { title: 'Berita Tidak Ditemukan | SMP Negeri 5 Cibeber' };
 
-  const title = `${article.title} — SMP Negeri 5 Cibeber`;
-  const cleanDescription = (article.excerpt || article.content || '').replace(/<[^>]*>?/gm, '').slice(0, 160).trim();
+  const title = `${article.title} | SMP Negeri 5 Cibeber`;
+  const cleanDescription = (article.excerpt || article.content || '')
+    .replace(/<[^>]*>?/gm, '')
+    .slice(0, 160)
+    .trim();
   const rawImage = article.image_url;
   const fullImageUrl = rawImage
-    ? (rawImage.startsWith('http') ? rawImage : `https://smpn5cibeber.sch.id${rawImage}`)
+    ? rawImage.startsWith('http')
+      ? rawImage
+      : `https://smpn5cibeber.sch.id${rawImage}`
     : 'https://smpn5cibeber.sch.id/assets/logo-smpn5cibeber.png';
   const articleUrl = `https://smpn5cibeber.sch.id/berita/${article.slug}`;
 
@@ -63,7 +68,6 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   if (!article) notFound();
 
-  // Rekomendasi Warta Terkait (selain artikel yang sedang dibaca)
   const relatedArticles = allArticles
     .filter((a) => a.slug !== slug)
     .slice(0, 4)
@@ -76,7 +80,6 @@ export default async function ArticleDetailPage({ params }: Props) {
       created_at: a.created_at,
     }));
 
-  // Hitung jumlah artikel per kategori untuk sidebar
   const counts: Record<string, number> = {
     'Semua Berita': allArticles.length,
     'Prestasi Siswa': 0,

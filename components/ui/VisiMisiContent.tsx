@@ -3,16 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  Heart,
-  Trophy,
-  Laptop,
-  Plant,
-  CheckCircle,
-  ArrowRight,
-  Target,
-  Sparkle,
-} from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 import { ScrollFadeUp } from './motion';
 
 interface VisiMisiContentProps {
@@ -24,245 +15,164 @@ export default function VisiMisiContent({ settings }: VisiMisiContentProps) {
     settings.school_vision ||
     'Terwujudnya insan pembelajar yang berakhlak mulia, unggul dalam prestasi, terampil dalam teknologi, dan peduli kelestarian lingkungan hidup.';
 
-  // 4 Pilar Nilai Karakter (Clean, refined, monochromatic/emerald)
-  const corePillars = [
-    {
-      icon: Heart,
-      title: 'Berakhlak Mulia',
-      desc: 'Menanamkan ketakwaan kepada Tuhan YME, kejujuran, sopan santun 5S, dan integritas moral dalam keseharian warga sekolah.',
-    },
-    {
-      icon: Trophy,
-      title: 'Unggul Prestasi',
-      desc: 'Mendorong daya saing sehat dalam bidang akademik sains, kompetisi olahraga, serta pelestarian seni budaya daerah.',
-    },
-    {
-      icon: Laptop,
-      title: 'Terampil Digital',
-      desc: 'Membekali peserta didik dengan literasi digital, penguasaan perangkat TIK dasar, dan pemanfaatan teknologi yang cerdas dan beretika.',
-    },
-    {
-      icon: Plant,
-      title: 'Peduli Lingkungan',
-      desc: 'Membudayakan kepedulian kelestarian alam, pemilahan sampah, penghijauan sekolah, dan komitmen Sekolah Adiwiyata berkelanjutan.',
-    },
-  ];
-
-  // 6 Misi Satuan Pendidikan (Clean Editorial Numbered List)
-  const missions = [
+  const visionIndicators = [
     {
       num: '01',
-      title: 'Penguatan Keimanan & Budi Pekerti',
-      desc: 'Menanamkan keimanan, ketaqwaan, dan budi pekerti luhur melalui pembiasaan ibadah rutin, doa bersama, dan pembentukan karakter saling menghormati.',
+      title: 'Berakhlak Mulia',
+      desc: 'Pembiasaan ibadah, kejujuran, sopan santun, dan sikap saling menghormati dalam keseharian di sekolah.',
     },
     {
       num: '02',
-      title: 'Pembelajaran Kurikulum Merdeka yang Aktif & Inovatif',
-      desc: 'Menyelenggarakan proses pembelajaran aktif, kreatif, inovatif, dan menyenangkan yang berpusat pada minat dan keunikan potensi setiap peserta didik.',
+      title: 'Unggul dalam Prestasi',
+      desc: 'Peningkatan capaian belajar akademik serta partisipasi aktif dalam kompetisi olahraga, sains, dan seni.',
     },
     {
       num: '03',
-      title: 'Pengembangan Bakat Akademik & Non-Akademik',
-      desc: 'Menumbuhkembangkan bakat dan minat siswa dalam bidang sains, olahraga, dan seni guna meraih prestasi membanggakan di tingkat rayon hingga kabupaten.',
+      title: 'Terampil dalam Teknologi',
+      desc: 'Penguasaan perangkat komputer dasar dan pemanfaatan media digital untuk mendukung pembelajaran.',
     },
     {
       num: '04',
-      title: 'Tata Kelola Partisipatif & Akuntabel',
-      desc: 'Mewujudkan manajemen sekolah yang transparan, akuntabel, dan kolaboratif dengan pelibatan aktif dewan guru, komite sekolah, wali murid, dan masyarakat.',
+      title: 'Peduli Lingkungan Hidup',
+      desc: 'Penataan lingkungan sekolah yang bersih, hijau, sehat, dan bebas dari perundungan.',
+    },
+  ];
+
+  const missions = [
+    {
+      num: '01',
+      title: 'Pembinaan Keimanan & Budi Pekerti',
+      desc: 'Menanamkan keimanan, ketakwaan, dan akhlak mulia melalui pembiasaan ibadah rutin serta keteladanan sikap warga sekolah.',
+    },
+    {
+      num: '02',
+      title: 'Pelaksanaan Pembelajaran Kurikulum Merdeka',
+      desc: 'Menyelenggarakan kegiatan belajar mengajar yang aktif, terstruktur, dan memperhatikan perkembangan kompetensi setiap peserta didik.',
+    },
+    {
+      num: '03',
+      title: 'Pengembangan Minat & Bakat Siswa',
+      desc: 'Memfasilitasi latihan rutin ekstrakurikuler kepanduan Pramuka, olahraga, kesenian tradisional, dan kegiatan kesiswaan.',
+    },
+    {
+      num: '04',
+      title: 'Peningkatan Literasi, Numerasi & Kecakapan TIK',
+      desc: 'Mendayagunakan perpustakaan sekolah dan laboratorium komputer untuk menunjang kecakapan literasi serta teknologi informasi.',
     },
     {
       num: '05',
-      title: 'Kecakapan Literasi & Teknologi Digital',
-      desc: 'Membekali peserta didik dengan kemampuan literasi numerasi, kecakapan digital, serta pemanfaatan sarana TIK secara bertanggung jawab.',
+      title: 'Tata Kelola Sekolah yang Transparan & Kolaboratif',
+      desc: 'Membangun kerja sama yang erat antara dewan guru, tenaga kependidikan, komite sekolah, orang tua wali murid, dan masyarakat.',
     },
     {
       num: '06',
-      title: 'Kelestarian Lingkungan Hidup (Adiwiyata)',
-      desc: 'Menciptakan lingkungan sekolah yang bersih, hijau, asri, aman, bebas perundungan (anti-bullying), serta berwawasan pelestarian lingkungan hidup.',
+      title: 'Pemeliharaan Lingkungan Belajar yang Asri & Aman',
+      desc: 'Menjaga kebersihan, keteduhan, dan keamanan lingkungan sekolah agar kondusif bagi tumbuh kembang siswa.',
     },
   ];
 
-  // 4 Sasaran Mutu / Tujuan Pendidikan
-  const objectives = [
-    {
-      title: 'Karakter & Religiusitas',
-      desc: 'Lulusan taat beribadah, memiliki sopan santun, bertoleransi, dan menjunjung tinggi Profil Pelajar Pancasila.',
-    },
-    {
-      title: 'Standar Akademik',
-      desc: 'Peningkatan rata-rata capaian kompetensi belajar dan nilai asesmen peserta didik secara berkelanjutan.',
-    },
-    {
-      title: 'Kecakapan Digital',
-      desc: 'Lulusan menguasai operasional komputer dasar, internet sehat, dan platform pembelajaran digital modern.',
-    },
-    {
-      title: 'Ekosistem Sekolah Aman',
-      desc: 'Suasana lingkungan sekolah yang hijau, teduh, ramah anak, dan bebas dari segala bentuk perundungan (zero bullying).',
-    },
+  const goals = [
+    'Meningkatnya disiplin kehadiran, ketertiban belajar, dan perilaku santun peserta didik di dalam maupun di luar lingkungan sekolah.',
+    'Tercapainya ketuntasan belajar seluruh mata pelajaran sesuai standar kompetensi lulusan jenjang Sekolah Menengah Pertama.',
+    'Terlaksananya Asesmen Nasional Berbasis Komputer (ANBK) dan pembelajaran berbasis TIK secara mandiri di laboratorium sekolah.',
+    'Terwujudnya prestasi siswa pada ajang perlombaan tingkat Kecamatan Cibeber maupun tingkat Kabupaten Lebak.',
   ];
 
   return (
-    <div className="bg-[#FAFBFD] min-h-screen text-[#1E293B]">
-      {/* =========================================================
-          1. HEADER EDITORIAL (CLEAN, MINIMALIS & BERKELAS)
-          ========================================================= */}
-      {/* =========================================================
-          1. HERO BANNER INSTITUSIONAL BER-BACKGROUND FAJAR PEGUNUNGAN
-          ========================================================= */}
-      <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/30">
-        {/* Background Foto Lembah Cibeber Saat Fajar dengan Dark Forest Green Tint (Super Ringan: 189KB) */}
-        <div className="absolute inset-0 z-0 pointer-events-none select-none">
+    <div className="bg-[#F8FAFC] min-h-screen text-[#1E293B]">
+      {/* Header Halaman Editorial Rata Kiri (Tanpa Glass Pill Berulang) */}
+      <section className="relative overflow-hidden text-white py-14 sm:py-20 border-b border-slate-200">
+        <div className="absolute inset-0 z-0 pointer-events-none select-none bg-slate-950">
           <Image
             src={settings.banner_page_visimisi || '/assets/visi-misi-banner-bg.jpg'}
-            alt="Panorama Lingkungan SMP Negeri 5 Cibeber di Pagi Hari"
+            alt="Lingkungan SMP Negeri 5 Cibeber"
             fill
             priority
             className="object-cover object-[center_35%]"
             sizes="100vw"
           />
-          {/* Overlay Gradasi Hijau Hutan Lembut Agar Teks 100% Kontras & Nyaman Dibaca */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/82 via-[#164325]/75 to-[#12361e]/92" />
-          <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/20 to-emerald-950/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/65 via-slate-950/50 to-[#091e10]/85" />
         </div>
 
-        <div className="container-site relative z-10 space-y-3.5 max-w-3xl mx-auto text-center">
-          {/* Badge Pill Emas Berikon */}
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-xs font-bold text-amber-300 shadow-xs">
-            <Target size={15} weight="fill" />
-            <span>Landasan Filosofis &amp; Arah Perjuangan</span>
-          </div>
-
-          {/* Judul Utama Megah */}
-          <h1 className="font-serif-academic text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-            Visi, Misi &amp; Tujuan
-          </h1>
-
-          {/* Deskripsi Pengantar Berwibawa */}
-          <p className="text-xs sm:text-sm md:text-base text-emerald-50 max-w-2xl mx-auto leading-relaxed drop-shadow-sm font-medium">
-            Cita-cita luhur dan komitmen penyelenggaraan pendidikan bermutu di lingkungan SMP Negeri 5 Cibeber, Kabupaten Lebak.
-          </p>
-
-          {/* Breadcrumb Navigasi */}
-          <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-xs sm:text-sm font-medium text-emerald-200/90 pt-1">
+        <div className="container-site relative z-10 max-w-6xl mx-auto">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-300 mb-3">
             <Link href="/" className="hover:text-white transition-colors">
               Beranda
             </Link>
-            <span className="text-emerald-400/60">/</span>
+            <span>/</span>
             <Link href="/profil" className="hover:text-white transition-colors">
-              Profil
+              Profil Sekolah
             </Link>
-            <span className="text-emerald-400/60">/</span>
-            <span className="text-amber-400 font-bold">Visi &amp; Misi</span>
+            <span>/</span>
+            <span className="text-white font-semibold">Visi, Misi &amp; Tujuan</span>
           </nav>
 
-          {/* Quick Info Badges */}
-          <div className="pt-2 flex flex-wrap justify-center gap-2.5 text-xs">
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-white font-semibold shadow-2xs">
-              4 Pilar Karakter
-            </span>
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-amber-300 font-semibold shadow-2xs">
-              6 Misi Strategis
-            </span>
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/15 backdrop-blur-md border border-white/20 text-emerald-200 font-semibold shadow-2xs">
-              Profil Pelajar Pancasila
-            </span>
-          </div>
+          <h1 className="font-serif-academic text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+            Visi, Misi &amp; Tujuan
+          </h1>
+
+          <p className="text-xs sm:text-sm md:text-base text-slate-200 max-w-2xl mt-2.5 leading-relaxed">
+            Arah penyelenggaraan pendidikan dan sasaran pembinaan peserta didik di SMP Negeri 5 Cibeber, Kabupaten Lebak.
+          </p>
         </div>
       </section>
 
-      {/* =========================================================
-          2. KONTEN UTAMA: EDITORIAL MINIMALIS
-          ========================================================= */}
-      <main className="container-site pt-12 pb-24 sm:pt-16 sm:pb-32 max-w-4xl mx-auto space-y-20 sm:space-y-28">
-        {/* =========================================================
-            SEKSI I: VISI UTAMA (EDITORIAL STATEMENT BESAR & BERSIH)
-            ========================================================= */}
-        <ScrollFadeUp distance={24}>
-          <section className="text-center space-y-6">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-xs font-bold text-[#1E5631]">
-              <Target size={14} weight="bold" />
-              <span>Visi Resmi Sekolah</span>
+      <main className="container-site py-12 sm:py-16 max-w-6xl mx-auto space-y-14 sm:space-y-16">
+        {/* Seksi 1: Rumusan Visi & Indikator Visi Terpadu (Tanpa Duplikasi Seksi) */}
+        <ScrollFadeUp distance={18}>
+          <section className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden">
+            <div className="p-6 sm:p-10 lg:p-12 border-b border-slate-200/80">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#1E5631]">
+                Rumusan Visi Satuan Pendidikan
+              </p>
+              <blockquote className="font-serif-academic text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-snug mt-3 max-w-4xl">
+                &ldquo;{visionText}&rdquo;
+              </blockquote>
             </div>
 
-            {/* Visi Text Besar Elegan */}
-            <blockquote className="font-serif-academic text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 leading-snug sm:leading-relaxed max-w-3xl mx-auto">
-              &ldquo;{visionText}&rdquo;
-            </blockquote>
-
-            {/* Garis Aksen Halus */}
-            <div className="w-12 h-1 bg-[#1E5631] mx-auto rounded-full mt-4" />
-
-            <p className="text-xs text-slate-400 font-medium">
-              SMP Negeri 5 Cibeber &bull; Kecamatan Cibeber, Kabupaten Lebak
-            </p>
+            {/* 4 Indikator Visi sebagai Grid Horizontal Terintegrasi */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/80 bg-[#F8FAFC]">
+              {visionIndicators.map((ind) => (
+                <div key={ind.num} className="p-5 sm:p-6 space-y-1.5">
+                  <span className="text-[11px] font-mono font-semibold text-slate-400 tabular-nums">
+                    INDIKATOR {ind.num}
+                  </span>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                    {ind.title}
+                  </h2>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {ind.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
           </section>
         </ScrollFadeUp>
 
-        {/* =========================================================
-            SEKSI II: 4 PILAR NILAI (KARTU BERSIH & SERAGAM)
-            ========================================================= */}
-        <section className="space-y-8">
-          <ScrollFadeUp distance={20}>
-            <div className="text-center space-y-1">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#1E5631]">
-                Empat Dimensi Nilai
-              </span>
-              <h2 className="font-serif-academic text-2xl sm:text-3xl font-black text-slate-900">
-                Pilar Pembentukan Karakter
+        {/* Seksi 2: Misi & Tujuan Satuan Pendidikan (2-Column Editorial Layout) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Kolom Kiri: 6 Misi Satuan Pendidikan (7 Kolom) */}
+          <div className="lg:col-span-7 space-y-5">
+            <div>
+              <h2 className="font-serif-academic text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                Misi Satuan Pendidikan
               </h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                Langkah penyelenggaraan pendidikan untuk mewujudkan visi sekolah.
+              </p>
             </div>
-          </ScrollFadeUp>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {corePillars.map((pillar, idx) => {
-              const Icon = pillar.icon;
-              return (
-                <ScrollFadeUp key={idx} delay={idx * 0.06} distance={18}>
-                  <div className="h-full p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-[#1E5631]/40 hover:shadow-sm transition-all duration-200 space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#1E5631] flex items-center justify-center border border-emerald-100">
-                      <Icon size={22} weight="duotone" />
-                    </div>
-                    <h3 className="text-base font-bold text-slate-900">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                      {pillar.desc}
-                    </p>
-                  </div>
-                </ScrollFadeUp>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* =========================================================
-            SEKSI III: 6 MISI SEKOLAH (EDITORIAL NUMBERED LIST)
-            ========================================================= */}
-        <section className="space-y-8">
-          <ScrollFadeUp distance={20}>
-            <div className="text-center space-y-1">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#1E5631]">
-                Langkah Strategis Nyata
-              </span>
-              <h2 className="font-serif-academic text-2xl sm:text-3xl font-black text-slate-900">
-                Enam Misi Satuan Pendidikan
-              </h2>
-            </div>
-          </ScrollFadeUp>
-
-          {/* Clean Numbered Divider List */}
-          <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-xs divide-y divide-slate-100">
-            {missions.map((mission, idx) => (
-              <ScrollFadeUp key={idx} delay={idx * 0.05} distance={14}>
-                <div className="py-6 first:pt-0 last:pb-0 flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
-                  {/* Clean Monospace Number */}
-                  <span className="font-mono text-base font-black text-[#1E5631] shrink-0 pt-0.5">
-                    {mission.num}.
+            <div className="bg-white rounded-xl border border-slate-200/90 divide-y divide-slate-200/80">
+              {missions.map((mission) => (
+                <div
+                  key={mission.num}
+                  className="p-5 sm:p-6 flex items-start gap-4"
+                >
+                  <span className="font-mono text-sm font-extrabold text-[#1E5631] shrink-0 pt-0.5 tabular-nums">
+                    {mission.num}
                   </span>
-
-                  <div className="space-y-1.5 flex-1 min-w-0">
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                  <div className="space-y-1">
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
                       {mission.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -270,64 +180,55 @@ export default function VisiMisiContent({ settings }: VisiMisiContentProps) {
                     </p>
                   </div>
                 </div>
-              </ScrollFadeUp>
-            ))}
+              ))}
+            </div>
           </div>
-        </section>
 
-        {/* =========================================================
-            SEKSI IV: TUJUAN PENDIDIKAN (SASARAN MUTU LULUSAN)
-            ========================================================= */}
-        <section className="space-y-8">
-          <ScrollFadeUp distance={20}>
-            <div className="text-center space-y-1">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#1E5631]">
-                Sasaran Capaian
-              </span>
-              <h2 className="font-serif-academic text-2xl sm:text-3xl font-black text-slate-900">
-                Tujuan Pendidikan Sekolah
+          {/* Kolom Kanan: Tujuan Satuan Pendidikan (5 Kolom) */}
+          <div className="lg:col-span-5 space-y-5">
+            <div>
+              <h2 className="font-serif-academic text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                Tujuan Sekolah
               </h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                Capaian nyata yang ditargetkan dalam penyelenggaraan kurikulum.
+              </p>
             </div>
-          </ScrollFadeUp>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {objectives.map((obj, idx) => (
-              <ScrollFadeUp key={idx} delay={idx * 0.05} distance={16}>
-                <div className="h-full p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-start gap-3.5">
-                  <CheckCircle size={20} weight="fill" className="text-[#1E5631] shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <h3 className="text-sm font-bold text-slate-900">
-                      {obj.title}
-                    </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      {obj.desc}
-                    </p>
-                  </div>
-                </div>
-              </ScrollFadeUp>
-            ))}
-          </div>
-        </section>
-
-        {/* =========================================================
-            SEKSI V: FOOTER NAVIGASI BERSIH
-            ========================================================= */}
-        <ScrollFadeUp distance={16}>
-          <div className="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-            <span>SMP Negeri 5 Cibeber &bull; Terakreditasi B</span>
-            <div className="flex items-center gap-4 font-semibold text-[#1E5631]">
-              <Link href="/profil/sejarah" className="hover:underline flex items-center gap-1">
-                <span>Baca Sejarah Sekolah</span>
-                <ArrowRight size={13} weight="bold" />
-              </Link>
-              <span>&bull;</span>
-              <Link href="/profil/guru" className="hover:underline flex items-center gap-1">
-                <span>Direktori Dewan Guru</span>
-                <ArrowRight size={13} weight="bold" />
-              </Link>
+            <div className="bg-white rounded-xl border border-slate-200/90 p-5 sm:p-6">
+              <ol className="space-y-4 text-xs sm:text-sm text-slate-600">
+                {goals.map((goal, idx) => (
+                  <li key={idx} className="flex items-start gap-3 leading-relaxed">
+                    <span className="font-mono text-xs font-bold text-slate-400 shrink-0 pt-0.5 tabular-nums">
+                      0{idx + 1}.
+                    </span>
+                    <span>{goal}</span>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
-        </ScrollFadeUp>
+        </div>
+
+        {/* Sub-Navigation Footer */}
+        <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs">
+          <Link
+            href="/profil"
+            className="text-slate-500 hover:text-slate-900 font-semibold transition-colors"
+          >
+            &larr; Kembali ke Profil Satuan Pendidikan
+          </Link>
+          <div className="flex flex-wrap items-center gap-5 font-bold text-[#1E5631]">
+            <Link href="/profil/sejarah" className="inline-flex items-center gap-1.5 hover:text-[#164325]">
+              <span>Sejarah Sekolah</span>
+              <ArrowRight size={13} weight="bold" />
+            </Link>
+            <Link href="/profil/guru" className="inline-flex items-center gap-1.5 hover:text-[#164325]">
+              <span>Direktori Dewan Guru</span>
+              <ArrowRight size={13} weight="bold" />
+            </Link>
+          </div>
+        </div>
       </main>
     </div>
   );

@@ -1,19 +1,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getActiveAchievements, getWebSettings } from '@/lib/supabaseData';
-import { Trophy } from '@phosphor-icons/react/dist/ssr';
 import PrestasiArticleList from '@/components/ui/PrestasiArticleList';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Prestasi & Kejuaraan Siswa — SMPN 5 Cibeber',
-  description: 'Daftar raihan juara, liputan penghargaan, dan rekam prestasi akademik serta non-akademik siswa SMPN 5 Cibeber.',
+  title: 'Prestasi & Penghargaan Siswa | SMP Negeri 5 Cibeber',
+  description:
+    'Daftar capaian kejuaraan dan penghargaan akademik maupun non-akademik peserta didik SMP Negeri 5 Cibeber.',
 };
 
 export default async function PrestasiPage() {
   const [rawAchievements, settings] = await Promise.all([
     getActiveAchievements(),
-    getWebSettings()
+    getWebSettings(),
   ]);
 
   const bannerImage = settings.banner_page_prestasi || '/assets/prestasi-siswa-smpn5cibeber.jpg';
@@ -31,10 +31,10 @@ export default async function PrestasiPage() {
   const years = Array.from(new Set(achievements.map((a) => a.year))).sort((a, b) => b - a);
 
   return (
-    <div>
-      {/* Hero Banner Prestasi — Background Foto Dinamis dengan Tint Hijau Almamater */}
-      <section className="relative overflow-hidden text-white py-16 md:py-20 border-b border-emerald-950/20">
-        <div className="absolute inset-0 z-0 pointer-events-none select-none">
+    <div className="bg-[#F8FAFC] min-h-screen text-[#1E293B]">
+      {/* Header Halaman Editorial Rata Kiri */}
+      <section className="relative overflow-hidden text-white py-14 sm:py-20 border-b border-slate-200">
+        <div className="absolute inset-0 z-0 pointer-events-none select-none bg-slate-950">
           <Image
             src={bannerImage}
             alt="Prestasi Siswa SMP Negeri 5 Cibeber"
@@ -43,45 +43,31 @@ export default async function PrestasiPage() {
             className="object-cover object-[center_40%]"
             sizes="100vw"
           />
-          {/* Lapisan Hijau Diturunkan Opasitasnya agar Foto Siswa Terlihat Nyata & Berwarna */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1E5631]/78 via-[#1E5631]/65 to-[#143e22]/88" />
-          <div className="absolute inset-0 bg-radial from-transparent via-[#1E5631]/20 to-emerald-950/55" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/65 via-slate-950/50 to-[#091e10]/85" />
         </div>
 
-        <div className="container-site relative z-10 text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-xs font-bold text-amber-300 shadow-sm">
-            <Trophy size={16} weight="fill" />
-            <span>Rekam Jejak Prestasi Siswa</span>
-          </div>
+        <div className="container-site relative z-10 max-w-6xl mx-auto">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-300 mb-3">
+            <Link href="/" className="hover:text-white transition-colors">
+              Beranda
+            </Link>
+            <span>/</span>
+            <span className="text-white font-semibold">Prestasi Siswa</span>
+          </nav>
 
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
-            Prestasi &amp; Kejuaraan Siswa
+          <h1 className="font-serif-academic text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+            Prestasi &amp; Penghargaan Siswa
           </h1>
 
-          <p className="text-sm sm:text-base text-emerald-50 max-w-2xl mx-auto leading-relaxed drop-shadow-sm font-medium">
-            Bukti nyata dedikasi belajar, bakat istimewa, serta bimbingan dewan guru dalam mengantarkan siswa-siswi SMPN 5 Cibeber meraih kejuaraan di berbagai tingkatan.
+          <p className="text-xs sm:text-sm md:text-base text-slate-200 max-w-2xl mt-2.5 leading-relaxed">
+            Catatan capaian kejuaraan dan partisipasi peserta didik SMP Negeri 5 Cibeber pada ajang perlombaan akademik, olahraga, kepanduan, dan kesenian.
           </p>
-
-          <div className="pt-2 flex flex-wrap justify-center gap-2.5 text-xs">
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold shadow-xs">
-              {achievements.length} Total Penghargaan
-            </span>
-            <span className="px-3.5 py-1.5 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-amber-300 font-semibold shadow-xs">
-              Dokumentasi {years.length} Tahun Terakhir
-            </span>
-            <Link
-              href="/ekstrakurikuler"
-              className="px-3.5 py-1.5 rounded-lg bg-amber-500/90 hover:bg-amber-500 text-slate-950 font-bold shadow-xs transition-colors"
-            >
-              Lihat Ekstrakurikuler Siswa &rarr;
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Konten Prestasi Siswa — Direct Read Editorial Hall of Fame */}
-      <section className="section-padding bg-[#F8FAFC]">
-        <div className="container-site">
+      {/* Konten Arsip Prestasi */}
+      <section className="section-padding">
+        <div className="container-site max-w-6xl mx-auto">
           <PrestasiArticleList achievements={achievements} years={years} />
         </div>
       </section>
