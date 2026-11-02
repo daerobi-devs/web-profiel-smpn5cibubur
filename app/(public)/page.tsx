@@ -177,7 +177,7 @@ Melalui penerapan Kurikulum Merdeka yang didukung suasana alam pedesaan yang asr
               {/* Kolom Kiri: Potret Resmi Tanpa Teks Menumpuk di Wajah/Badan */}
               <div className="lg:col-span-4 relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-auto lg:min-h-[400px] bg-slate-100 border-b lg:border-b-0 lg:border-r border-slate-200/80">
                 <Image
-                  src={settings.headmaster_image || '/assets/kepala-sekolah.jpg'}
+                  src={settings.headmaster_image && settings.headmaster_image !== '/assets/kepala-sekolah.jpg' ? settings.headmaster_image : '/assets/kepala-sekolah-official.jpg'}
                   alt={settings.headmaster_name || 'Adang Restuwardani, S.Pd'}
                   fill
                   className="object-cover object-top"

@@ -24,7 +24,7 @@ export const defaultStaffList: StaffMember[] = [
     order: 1,
     nip: '19680512 199412 1 002',
     education: 'S1 Pendidikan',
-    imageUrl: '/assets/kepala-sekolah.jpg',
+    imageUrl: '/assets/kepala-sekolah-official.jpg',
     active: true,
     subject: 'Manajemen Satuan Pendidikan',
     additionalTask: 'Penanggung Jawab Penyelenggaraan Pendidikan',

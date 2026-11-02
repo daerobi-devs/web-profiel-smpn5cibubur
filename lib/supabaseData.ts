@@ -55,7 +55,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   headmaster_name: 'Adang Restuwardani, S.Pd',
   headmaster_nip: '19680512 199412 1 002',
   headmaster_welcome: 'Selamat datang di portal informasi resmi SMP Negeri 5 Cibeber. Kami meyakini bahwa setiap anak memiliki keunikan dan potensi luar biasa yang siap bertumbuh bila didukung oleh lingkungan sekolah yang kondusif.',
-  headmaster_image: '/assets/kepala-sekolah.jpg',
+  headmaster_image: '/assets/kepala-sekolah-official.jpg',
   school_vision: 'Terwujudnya insan pembelajar yang berakhlak mulia, unggul dalam prestasi, terampil dalam teknologi, dan peduli kelestarian lingkungan hidup.',
   tu_hours: 'Senin – Kamis: 07.30 – 15.00 WIB | Jumat: 07.30 – 14.30 WIB',
   show_ppdb_menu: 'true',
