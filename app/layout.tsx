@@ -131,7 +131,7 @@ const schoolSchema = {
   },
   sameAs: [
     'https://www.youtube.com/@SMPNegeri5Cibeber',
-    'https://instagram.com/smpn5cibeber',
+    'https://www.instagram.com/smpn.5cibeber',
   ],
 };
 

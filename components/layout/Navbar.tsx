@@ -150,7 +150,7 @@ export default function Navbar({ settings }: NavbarProps) {
   const rawWa = settings?.school_whatsapp || '085281459726';
   const waNumber = rawWa.replace(/[^0-9]/g, '').replace(/^0/, '62');
   const youtubeUrl = settings?.school_youtube || 'https://www.youtube.com/@SMPNegeri5Cibeber';
-  const instagramUrl = settings?.school_instagram || 'https://instagram.com/smpn5cibeber';
+  const instagramUrl = settings?.school_instagram || 'https://www.instagram.com/smpn.5cibeber';
   const ppdbYear = settings?.ppdb_year || '2026/2027';
   const adminUrl =
     process.env.NEXT_PUBLIC_ADMIN_PORTAL_URL ||

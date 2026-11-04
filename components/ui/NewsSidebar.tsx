@@ -205,7 +205,7 @@ export default function NewsSidebar({
         <div className="space-y-3">
           <div>
             <p className="font-bold text-slate-900 text-sm">
-              @smpn5cibeber
+              @smpn.5cibeber
             </p>
             <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
               Dokumentasi kegiatan harian dan pengumuman singkat SMP Negeri 5 Cibeber di Instagram.
@@ -213,12 +213,12 @@ export default function NewsSidebar({
           </div>
 
           <a
-            href="https://instagram.com/smpn5cibeber"
+            href="https://www.instagram.com/smpn.5cibeber"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-between w-full py-2.5 px-3.5 rounded-xl bg-slate-900 hover:bg-[#1E5631] text-white text-xs font-bold transition-colors"
           >
-            <span>Kunjungi @smpn5cibeber</span>
+            <span>Kunjungi @smpn.5cibeber</span>
             <ArrowUpRight size={14} weight="bold" />
           </a>
         </div>
