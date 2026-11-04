@@ -192,15 +192,16 @@ export default function ArticleDetailContent({
               </div>
             </div>
 
-            {/* Foto Sampul Utama Artikel */}
-            <div className="relative aspect-16/10 sm:aspect-16/9 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/80">
+            {/* Foto Sampul Utama Artikel (Adaptif: Mendukung 16:9, 4:3, 1:1, maupun 3:4 Portret tanpa terpotong) */}
+            <div className="relative w-full rounded-2xl overflow-hidden bg-slate-100/90 border border-slate-200/80 flex items-center justify-center p-1.5 sm:p-2.5 shadow-2xs">
               <Image
                 src={coverUrl}
                 alt={article.title}
-                fill
+                width={1200}
+                height={800}
                 priority
-                sizes="(max-width: 1024px) 100vw, 750px"
-                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 800px"
+                className="w-auto h-auto max-h-[580px] max-w-full rounded-xl object-contain mx-auto shadow-xs"
               />
             </div>
 
