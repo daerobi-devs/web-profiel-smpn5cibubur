@@ -51,16 +51,19 @@ export default function Navbar({ settings }: NavbarProps) {
   const [profilOpen, setProfilOpen] = useState(false);
   const [mobileProfilExpanded, setMobileProfilExpanded] = useState(false);
   const profilTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const profilRef = useRef<HTMLDivElement | null>(null);
 
   // Dropdown Submenu Kesiswaan State
   const [kesiswaanOpen, setKesiswaanOpen] = useState(false);
   const [mobileKesiswaanExpanded, setMobileKesiswaanExpanded] = useState(false);
   const kesiswaanTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const kesiswaanRef = useRef<HTMLDivElement | null>(null);
 
   // Dropdown Submenu Berita State
   const [beritaOpen, setBeritaOpen] = useState(false);
   const [mobileBeritaExpanded, setMobileBeritaExpanded] = useState(false);
   const beritaTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const beritaRef = useRef<HTMLDivElement | null>(null);
 
   const handleProfilEnter = () => {
     if (profilTimeoutRef.current) clearTimeout(profilTimeoutRef.current);
@@ -107,6 +110,38 @@ export default function Navbar({ settings }: NavbarProps) {
       if (profilTimeoutRef.current) clearTimeout(profilTimeoutRef.current);
       if (kesiswaanTimeoutRef.current) clearTimeout(kesiswaanTimeoutRef.current);
       if (beritaTimeoutRef.current) clearTimeout(beritaTimeoutRef.current);
+    };
+  }, []);
+
+  // Tutup dropdown jika klik di luar atau tekan Escape (Ramah Touchscreen & Remote Smart TV)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      const insideProfil = profilRef.current?.contains(target);
+      const insideKesiswaan = kesiswaanRef.current?.contains(target);
+      const insideBerita = beritaRef.current?.contains(target);
+
+      if (!insideProfil && !insideKesiswaan && !insideBerita) {
+        setProfilOpen(false);
+        setKesiswaanOpen(false);
+        setBeritaOpen(false);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeAllDropdowns();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
@@ -268,9 +303,21 @@ export default function Navbar({ settings }: NavbarProps) {
                     return (
                       <div
                         key={link.href}
+                        ref={profilRef}
                         className="relative"
                         onMouseEnter={handleProfilEnter}
                         onMouseLeave={handleProfilLeave}
+                        onFocus={() => {
+                          if (profilTimeoutRef.current) clearTimeout(profilTimeoutRef.current);
+                          setKesiswaanOpen(false);
+                          setBeritaOpen(false);
+                          setProfilOpen(true);
+                        }}
+                        onBlur={(e) => {
+                          if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                            setProfilOpen(false);
+                          }
+                        }}
                       >
                         <motion.div
                           whileTap={{ scale: 0.94 }}
@@ -280,6 +327,14 @@ export default function Navbar({ settings }: NavbarProps) {
                           <Link
                             href="/profil"
                             onClick={(e) => {
+                              // Di Touchscreen & Remote TV tanpa hover: tap/klik pertama membuka dropdown
+                              if (!profilOpen) {
+                                e.preventDefault();
+                                setKesiswaanOpen(false);
+                                setBeritaOpen(false);
+                                setProfilOpen(true);
+                                return;
+                              }
                               closeAllDropdowns();
                               setSelectedPath('/profil');
                               router.push('/profil');
@@ -287,6 +342,8 @@ export default function Navbar({ settings }: NavbarProps) {
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                               }
                             }}
+                            aria-expanded={profilOpen}
+                            aria-haspopup="true"
                             className={`relative flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-[13px] font-semibold tracking-wide whitespace-nowrap select-none transition-colors duration-150 z-10 cursor-pointer ${
                               isSelected
                                 ? 'text-[#1E5631] font-bold'
@@ -307,13 +364,36 @@ export default function Navbar({ settings }: NavbarProps) {
                               />
                             )}
                             <span className="relative z-10">{link.label}</span>
-                            <CaretDown
-                              size={12}
-                              weight="bold"
-                              className={`relative z-10 transition-transform duration-200 ${
-                                profilOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
-                              }`}
-                            />
+                            <span
+                              role="button"
+                              tabIndex={0}
+                              aria-label="Toggle submenu Profil"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setKesiswaanOpen(false);
+                                setBeritaOpen(false);
+                                setProfilOpen((prev) => !prev);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setKesiswaanOpen(false);
+                                  setBeritaOpen(false);
+                                  setProfilOpen((prev) => !prev);
+                                }
+                              }}
+                              className="relative z-10 p-0.5 -mr-1 rounded hover:bg-emerald-100/60 focus:bg-emerald-100/80 transition-colors"
+                            >
+                              <CaretDown
+                                size={12}
+                                weight="bold"
+                                className={`transition-transform duration-200 ${
+                                  profilOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
+                                }`}
+                              />
+                            </span>
                           </Link>
                         </motion.div>
 
@@ -332,7 +412,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/profil/sejarah"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Sejarah
                                 </Link>
@@ -341,7 +421,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/profil/visi-misi"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Visi &amp; Misi
                                 </Link>
@@ -350,7 +430,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/profil/guru"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Dewan Guru &amp; Tenaga Pendidik
                                 </Link>
@@ -366,9 +446,21 @@ export default function Navbar({ settings }: NavbarProps) {
                     return (
                       <div
                         key={link.href}
+                        ref={kesiswaanRef}
                         className="relative"
                         onMouseEnter={handleKesiswaanEnter}
                         onMouseLeave={handleKesiswaanLeave}
+                        onFocus={() => {
+                          if (kesiswaanTimeoutRef.current) clearTimeout(kesiswaanTimeoutRef.current);
+                          setProfilOpen(false);
+                          setBeritaOpen(false);
+                          setKesiswaanOpen(true);
+                        }}
+                        onBlur={(e) => {
+                          if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                            setKesiswaanOpen(false);
+                          }
+                        }}
                       >
                         <motion.div
                           whileTap={{ scale: 0.94 }}
@@ -377,7 +469,14 @@ export default function Navbar({ settings }: NavbarProps) {
                         >
                           <Link
                             href="/prestasi"
-                            onClick={() => {
+                            onClick={(e) => {
+                              if (!kesiswaanOpen) {
+                                e.preventDefault();
+                                setProfilOpen(false);
+                                setBeritaOpen(false);
+                                setKesiswaanOpen(true);
+                                return;
+                              }
                               closeAllDropdowns();
                               setSelectedPath('/kesiswaan');
                               router.push('/prestasi');
@@ -385,6 +484,8 @@ export default function Navbar({ settings }: NavbarProps) {
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                               }
                             }}
+                            aria-expanded={kesiswaanOpen}
+                            aria-haspopup="true"
                             className={`relative flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-[13px] font-semibold tracking-wide whitespace-nowrap select-none transition-colors duration-150 z-10 cursor-pointer ${
                               isSelected
                                 ? 'text-[#1E5631] font-bold'
@@ -405,13 +506,36 @@ export default function Navbar({ settings }: NavbarProps) {
                               />
                             )}
                             <span className="relative z-10">{link.label}</span>
-                            <CaretDown
-                              size={12}
-                              weight="bold"
-                              className={`relative z-10 transition-transform duration-200 ${
-                                kesiswaanOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
-                              }`}
-                            />
+                            <span
+                              role="button"
+                              tabIndex={0}
+                              aria-label="Toggle submenu Kesiswaan"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setProfilOpen(false);
+                                setBeritaOpen(false);
+                                setKesiswaanOpen((prev) => !prev);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setProfilOpen(false);
+                                  setBeritaOpen(false);
+                                  setKesiswaanOpen((prev) => !prev);
+                                }
+                              }}
+                              className="relative z-10 p-0.5 -mr-1 rounded hover:bg-emerald-100/60 focus:bg-emerald-100/80 transition-colors"
+                            >
+                              <CaretDown
+                                size={12}
+                                weight="bold"
+                                className={`transition-transform duration-200 ${
+                                  kesiswaanOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
+                                }`}
+                              />
+                            </span>
                           </Link>
                         </motion.div>
 
@@ -430,7 +554,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/prestasi"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Prestasi Siswa
                                 </Link>
@@ -439,7 +563,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/ekstrakurikuler"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Ekstrakurikuler
                                 </Link>
@@ -455,9 +579,21 @@ export default function Navbar({ settings }: NavbarProps) {
                     return (
                       <div
                         key={link.href}
+                        ref={beritaRef}
                         className="relative"
                         onMouseEnter={handleBeritaEnter}
                         onMouseLeave={handleBeritaLeave}
+                        onFocus={() => {
+                          if (beritaTimeoutRef.current) clearTimeout(beritaTimeoutRef.current);
+                          setProfilOpen(false);
+                          setKesiswaanOpen(false);
+                          setBeritaOpen(true);
+                        }}
+                        onBlur={(e) => {
+                          if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                            setBeritaOpen(false);
+                          }
+                        }}
                       >
                         <motion.div
                           whileTap={{ scale: 0.94 }}
@@ -466,7 +602,14 @@ export default function Navbar({ settings }: NavbarProps) {
                         >
                           <Link
                             href="/berita"
-                            onClick={() => {
+                            onClick={(e) => {
+                              if (!beritaOpen) {
+                                e.preventDefault();
+                                setProfilOpen(false);
+                                setKesiswaanOpen(false);
+                                setBeritaOpen(true);
+                                return;
+                              }
                               closeAllDropdowns();
                               setSelectedPath('/berita');
                               router.push('/berita');
@@ -474,6 +617,8 @@ export default function Navbar({ settings }: NavbarProps) {
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                               }
                             }}
+                            aria-expanded={beritaOpen}
+                            aria-haspopup="true"
                             className={`relative flex items-center gap-1 px-3.5 py-1.5 rounded-xl text-[13px] font-semibold tracking-wide whitespace-nowrap select-none transition-colors duration-150 z-10 cursor-pointer ${
                               isSelected
                                 ? 'text-[#1E5631] font-bold'
@@ -494,13 +639,36 @@ export default function Navbar({ settings }: NavbarProps) {
                               />
                             )}
                             <span className="relative z-10">{link.label}</span>
-                            <CaretDown
-                              size={12}
-                              weight="bold"
-                              className={`relative z-10 transition-transform duration-200 ${
-                                beritaOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
-                              }`}
-                            />
+                            <span
+                              role="button"
+                              tabIndex={0}
+                              aria-label="Toggle submenu Berita"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setProfilOpen(false);
+                                setKesiswaanOpen(false);
+                                setBeritaOpen((prev) => !prev);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setProfilOpen(false);
+                                  setKesiswaanOpen(false);
+                                  setBeritaOpen((prev) => !prev);
+                                }
+                              }}
+                              className="relative z-10 p-0.5 -mr-1 rounded hover:bg-emerald-100/60 focus:bg-emerald-100/80 transition-colors"
+                            >
+                              <CaretDown
+                                size={12}
+                                weight="bold"
+                                className={`transition-transform duration-200 ${
+                                  beritaOpen ? 'rotate-180 text-[#1E5631]' : isSelected ? 'text-[#1E5631]' : 'text-slate-400'
+                                }`}
+                              />
+                            </span>
                           </Link>
                         </motion.div>
 
@@ -519,7 +687,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/berita"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Berita &amp; Pengumuman
                                 </Link>
@@ -528,7 +696,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/galeri"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Galeri Kegiatan
                                 </Link>
@@ -537,7 +705,7 @@ export default function Navbar({ settings }: NavbarProps) {
                                 <Link
                                   href="/agenda"
                                   onClick={closeAllDropdowns}
-                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 transition-colors duration-150"
+                                  className="flex items-center px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#1E5631] hover:bg-emerald-50 focus:text-[#1E5631] focus:bg-emerald-50 focus:outline-none transition-colors duration-150"
                                 >
                                   Agenda Sekolah
                                 </Link>
