@@ -173,7 +173,7 @@ export function TeacherDirectory({ initialStaff }: TeacherDirectoryProps) {
                 }`}
               >
                 {/* 1. Area Potret Pendidik */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100 border-b border-slate-200/70 select-none">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-100 border-b border-slate-200/70 select-none">
                   {staff.imageUrl ? (
                     <Image
                       src={staff.imageUrl}
