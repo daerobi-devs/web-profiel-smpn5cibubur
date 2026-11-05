@@ -66,12 +66,12 @@ function CounterValue({
 
 export default function HomeStatsCounter({
   accreditation = 'B',
-  staffCount = 12,
+  staffCount = 19,
   achievementCount = 15,
   npsn = '20607865',
 }: HomeStatsCounterProps) {
   const resolvedAchievements = achievementCount > 0 ? achievementCount : 15;
-  const resolvedStaff = staffCount > 0 ? staffCount : 12;
+  const resolvedStaff = staffCount > 0 ? staffCount : 19;
 
   return (
     <section
